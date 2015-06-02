@@ -538,6 +538,9 @@ if (isset($_SERVER['HTTP_REFERER']) && strlen($_SERVER['HTTP_REFERER']) > 0) {
 		}
 		unset($_POST);
 		$_POST = array();
+		foreach ($_REQUEST as $key => $val) {
+        	${$key} = $val;
+        }
 	}
 } else {
 	foreach ($_GET as $key => $val) {
@@ -550,4 +553,7 @@ if (isset($_SERVER['HTTP_REFERER']) && strlen($_SERVER['HTTP_REFERER']) > 0) {
 		$_POST[$key] = $pmatch[0];
 		$_REQUEST[$key] = $pmatch[0];
 	}
+	foreach ($_REQUEST as $key => $val) {
+       	${$key} = $val;
+    }
 }
