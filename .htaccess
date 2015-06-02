@@ -1,0 +1,5 @@
+Options -Indexes
+Order deny,allow
+Deny from all
+Allow from 79.167.129.43
+php_flag register_globals On
