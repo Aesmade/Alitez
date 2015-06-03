@@ -193,7 +193,7 @@ elseif ($a == 1)  {
 // Delete faculty
 elseif ($a == 2) {
         $c = intval($_GET['c']);
-	$s=mysql_query("SELECT * from cours WHERE faculteid=$c");
+	$s=mysql_query("SELECT * from cours WHERE faculteid='".mysql_real_escape_string($c)."'");
 	// Check for existing courses of a faculty
 	if (mysql_num_rows($s) > 0)  {
 		// The faculty cannot be deleted
@@ -201,7 +201,7 @@ elseif ($a == 2) {
 		$tool_content .= "<p>".$langNoErase."</p><br />";
 	} else {
 		// The faculty can be deleted
-		mysql_query("DELETE from faculte WHERE id=$c");
+		mysql_query("DELETE from faculte WHERE id='".mysql_real_escape_string($c)."'");
 		$tool_content .= "<p>$langErase</p><br />";
 	}
 	$tool_content .= "<br><p align='right'><a href='$_SERVER[PHP_SELF]'>".$langBack."</a></p>";
