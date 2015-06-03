@@ -71,13 +71,13 @@ if($view == 2)	// coming from search_user.php(search with criteria)
 	if((!empty($search)) && ($search="yes"))
 	{
 		// get the incoming values
-		$user_surname = isset($_POST['user_surname'])?$_POST['user_surname']:'';
-		$user_firstname = isset($_POST['user_firstname'])?$_POST['user_firstname']:'';
-		$user_username = isset($_POST['user_username'])?$_POST['user_username']:'';
-		$user_am = isset($_POST['user_am'])?$_POST['user_am']:'';
-		$user_type = isset($_POST['user_type'])?$_POST['user_type']:'';
-		$user_email = isset($_POST['user_email'])?$_POST['user_email']:'';
-		$user_registered_at_flag = isset($_POST['user_registered_at_flag'])?$_POST['user_registered_at_flag']:'';
+		$user_surname = isset($_POST['user_surname'])?htmlspecialchars($_POST['user_surname'], ENT_QUOTES, "utf-8"):'';
+		$user_firstname = isset($_POST['user_firstname'])?htmlspecialchars($_POST['user_firstname'], ENT_QUOTES, "utf-8"):'';
+		$user_username = isset($_POST['user_username'])?htmlspecialchars($_POST['user_username'], ENT_QUOTES, "utf-8"):'';
+		$user_am = isset($_POST['user_am'])?htmlspecialchars($_POST['user_am'], ENT_QUOTES, "utf-8"):'';
+		$user_type = isset($_POST['user_type'])?htmlspecialchars($_POST['user_type'], ENT_QUOTES, "utf-8")'';
+		$user_email = isset($_POST['user_email'])?htmlspecialchars($_POST['user_email'], ENT_QUOTES, "utf-8"):'';
+		$user_registered_at_flag = isset($_POST['user_registered_at_flag'])?htmlspecialchars($_POST['user_registered_at_flag'], ENT_QUOTES, "utf-8"):'';
 
 	  	$date = explode("-",  $_POST['date']);
 		if (array_key_exists(1, $date)) {

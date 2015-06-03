@@ -123,7 +123,7 @@ if (isset($_POST['back1']) or !isset($_POST['visit'])) {
 	</tr>
 	<tr>
 	<th class='left' width=\"160\">$langTitle&nbsp;:</th>
-	<td width=\"160\"><input class='FormData_InputText' type='text' name='intitule' size='60' value='".@$intitule."' /></td>
+	<td width=\"160\"><input class='FormData_InputText' type='text' name='intitule' size='60' value='".htmlspecialchars(@$intitule, ENT_QUOTES, "utf-8")."' /></td>
 	<td><small>$langEx</small></td>
 	</tr>
 	<tr>
@@ -139,7 +139,7 @@ if (isset($_POST['back1']) or !isset($_POST['visit'])) {
 	unset($repertoire);
 	$tool_content .= "<tr>
 	<th class='left'>$langTeachers&nbsp;:</th>
-	<td><input class='FormData_InputText' type='text' name='titulaires' size='60' value='".$titulaire_probable."' /></td>
+	<td><input class='FormData_InputText' type='text' name='titulaires' size='60' value='".htmlspecialchars($titulaire_probable, ENT_QUOTES, "utf-8")."' /></td>
 	<td>&nbsp;</td></tr>
 	<tr>
 	<th class='left'>$langType&nbsp;:</th>

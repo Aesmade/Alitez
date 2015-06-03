@@ -48,7 +48,7 @@ if ($is_adminOfCourse and isset($currentCourseID)) {
 }
 //template path for logged out + logged in (ex., when session expires)
 $extraMessage = ""; //initialise var for security
-if (isset($errorMessagePath)) {
+if (isset($errorMessagePath) && $errorMessagePath === "../../") {
 	$relPath = $errorMessagePath;
 }
 
@@ -490,7 +490,7 @@ function print_a($TheArray) {
  *
  */
 function lang_selections() {
-	$html = '<form name="langform" action="' . $_SERVER ['PHP_SELF'] . '" method="get" >';
+	$html = '<form name="langform" action="' . htmlspecialchars($_SERVER["PHP_SELF"], ENT_QUOTES, "utf-8") . '" method="get" >';
 	$html .= lang_select_options('localize', 'onChange="document.langform.submit();"');
 	$html .= '</form>';
 	return $html;
@@ -532,7 +532,7 @@ if (isset($_SERVER['HTTP_REFERER']) && strlen($_SERVER['HTTP_REFERER']) > 0) {
 				unset($_REQUEST[$key]);
 		}
 		foreach ($_GET as $key => $val) {
-			preg_match("/^[0-9a-zA-Z]*/", $val, $pmatch);
+			preg_match("/^[0-9a-zA-Z ]*/", $val, $pmatch);
 			$_GET[$key] = $pmatch[0];
 			$_REQUEST[$key] = $pmatch[0];
 		}
@@ -541,15 +541,22 @@ if (isset($_SERVER['HTTP_REFERER']) && strlen($_SERVER['HTTP_REFERER']) > 0) {
 		foreach ($_REQUEST as $key => $val) {
         	${$key} = $val;
         }
+	} else {
+		foreach ($_GET as $key => $val) {
+			preg_match("/^[0-9a-zA-Z ]*/", $val, $pmatch);
+			$_GET[$key] = $pmatch[0];
+			$_REQUEST[$key] = $pmatch[0];
+			${$key} = $pmatch[0];
+		}
 	}
 } else {
 	foreach ($_GET as $key => $val) {
-		preg_match("/^[0-9a-zA-Z]*/", $val, $pmatch);
+		preg_match("/^[0-9a-zA-Z ]*/", $val, $pmatch);
 		$_GET[$key] = $pmatch[0];
 		$_REQUEST[$key] = $pmatch[0];
 	}
 	foreach ($_POST as $key => $val) {
-		preg_match("/^[0-9a-zA-Z]*/", $val, $pmatch);
+		preg_match("/^[0-9a-zA-Z ]*/", $val, $pmatch);
 		$_POST[$key] = $pmatch[0];
 		$_REQUEST[$key] = $pmatch[0];
 	}
@@ -557,3 +564,5 @@ if (isset($_SERVER['HTTP_REFERER']) && strlen($_SERVER['HTTP_REFERER']) > 0) {
        	${$key} = $val;
     }
 }
+
+$_SERVER['PHP_SELF'] = htmlspecialchars($_SERVER["PHP_SELF"], ENT_QUOTES, "utf-8");

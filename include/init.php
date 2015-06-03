@@ -78,14 +78,14 @@ if (isset($_REQUEST['localize'])) {
 $active_ui_languages = array('el', 'en', 'es');
 
 // Get configuration variables
-if (!isset($webDir)) {
+//if (!isset($webDir)) {
 	//path for course_home
 	@include($relPath . "config/config.php");
 	if (!isset($webDir)) {
 		include 'not_installed.php';
                 die("Unable to find configuration file, please contact the system administrator");
 	}
-}
+//}
 
 // Set active user interface languages
 $native_language_names = array();
@@ -111,6 +111,9 @@ if (!$db) {
 }
 if (mysql_version()) mysql_query("SET NAMES utf8");
 mysql_select_db($mysqlMainDb, $db);
+
+if ((!isset($language)) || ($language != "greek" && $language != "english" && $language != "spanish"))
+	$language = "greek";
 
 // include_messages
 include("${webDir}modules/lang/$language/common.inc.php");
@@ -244,6 +247,8 @@ if (isset($require_current_course) and $require_current_course) {
                 if ($language != $languageInterface) {
                         $language = $languageInterface;
                         // include_messages
+                        if ($language != "greek" && $language != "english" && $language != "spanish")
+							$language = "greek";
                         include("${webDir}modules/lang/$language/common.inc.php");
                         $extra_messages = "${webDir}/config/$language.inc.php";
                         if (file_exists($extra_messages)) {

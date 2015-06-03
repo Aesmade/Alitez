@@ -40,6 +40,19 @@ if (isset($_POST['localize'])) {
 
 $auth = get_auth_id();
 
+if(isset($nom_form))
+  $nom_form = htmlspecialchars($nom_form, ENT_QUOTES, "utf-8");
+if(isset($prenom_form))
+  $prenom_form = htmlspecialchars($prenom_form, ENT_QUOTES, "utf-8");
+if(isset($userphone))
+  $userphone = htmlspecialchars($userphone, ENT_QUOTES, "utf-8");
+if(isset($uname))
+  $uname = htmlspecialchars($uname, ENT_QUOTES, "utf-8");
+if(isset($email_form))
+  $email_form = htmlspecialchars($email_form, ENT_QUOTES, "utf-8");
+if(isset($usercomment))
+  $usercomment = htmlspecialchars($usercomment, ENT_QUOTES, "utf-8");
+
 // display form
 if (!isset($submit)) {
 
@@ -189,7 +202,7 @@ $registration_errors = array();
                 foreach ($registration_errors as $error) {
                         $tool_content .= "<p>$error</p>";
                 }
-	       $tool_content .= "<p><a href='$_SERVER[PHP_SELF]?prenom_form=$_POST[prenom_form]&amp;nom_form=$_POST[nom_form]&amp;userphone=$_POST[userphone]&amp;uname=$_POST[uname]&amp;email_form=$_POST[email_form]&amp;usercomment=$_POST[usercomment]'>$langAgain</a></p>" .
+	       $tool_content .= "<p><a href='$_SERVER[PHP_SELF]?prenom_form=$prenom_form&amp;nom_form=$nom_form&amp;userphone=$userphone&amp;uname=$uname&amp;email_form=$email_form&amp;usercomment=$usercomment'>$langAgain</a></p>" .
                 "</td></tr></tbody></table><br /><br />";
 	}
 
