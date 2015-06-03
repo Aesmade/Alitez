@@ -129,7 +129,7 @@ if (isset($_POST['back1']) or !isset($_POST['visit'])) {
 	<tr>
 	<th class='left'>$langFaculty&nbsp;:</th>
 	<td>";
-	list($homefac) = mysql_fetch_row(db_query("SELECT department FROM user WHERE user_id=$uid"));
+	list($homefac) = mysql_fetch_row(db_query("SELECT department FROM user WHERE user_id='".mysql_real_escape_string($uid)."'"));
 	$facs = db_query("SELECT id, name FROM faculte order by id");
 	while ($n = mysql_fetch_array($facs)) {
 		$fac[$n['id']] = $n['name'];
