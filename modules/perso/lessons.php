@@ -89,7 +89,7 @@ function getUserLessonInfo($uid, $type)
 	}
 
 	$memory = "SELECT user.announce_flag, user.doc_flag, user.forum_flag
-		FROM user WHERE user.user_id = $uid";
+		FROM user WHERE user.user_id = '".mysql_real_escape_string($uid)."'";
 	$memory_result = db_query($memory, $mysqlMainDb);
 	while ($my_memory_result = mysql_fetch_row($memory_result)) {
 		$lesson_announce_f = str_replace('-', ' ', $my_memory_result[0]);
