@@ -293,7 +293,7 @@ $caption ="";
 if($view == 3) { // users per course
 	$qry = "SELECT a.user_id, a.nom, a.prenom, a.username, a.email, b.statut
 		FROM user AS a LEFT JOIN cours_user AS b ON a.user_id = b.user_id
-		WHERE b.cours_id = $c";
+		WHERE b.cours_id = '".mysql_real_escape_string($c)."'";
 } else {
 	// Count users, with or without criteria/filters
 	$qry = "SELECT user_id,nom,prenom,username,email,statut FROM user";
