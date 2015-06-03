@@ -69,7 +69,7 @@ $tool_content .= "
     <td><a name='top'>&nbsp;</a>$langFaculty:&nbsp;<b>$fac</b></td>
     <td><div align='right'>";
 // get the different course types available for this faculte
-$typesresult = db_query("SELECT DISTINCT cours.type types FROM cours WHERE cours.faculteid = $fc ORDER BY cours.type");
+$typesresult = db_query("SELECT DISTINCT cours.type types FROM cours WHERE cours.faculteid = '".mysql_real_escape_string($fc)."' ORDER BY cours.type");
 // count the number of different types
 $numoftypes = mysql_num_rows($typesresult);;
 // output the nav bar only if we have more than 1 types of courses
