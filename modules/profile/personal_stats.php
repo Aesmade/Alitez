@@ -57,14 +57,14 @@ if (!extension_loaded('gd')) {
 		}
 		mysql_free_result($result);
 		foreach ($course_codes as $course_code) {
-			$sql = "SELECT COUNT(*) AS cnt FROM actions WHERE user_id = '$uid'";
+			$sql = "SELECT COUNT(*) AS cnt FROM actions WHERE user_id = '".mysql_real_escape_string($uid)."'";
 			$result = db_query($sql, $course_code);
 			while ($row = mysql_fetch_assoc($result)) {
 				$totalHits += $row['cnt'];
 				$hits[$course_code] = $row['cnt'];
 			}
 			mysql_free_result($result);
-			$sql = "SELECT SUM(duration) FROM actions WHERE user_id = '$uid'";
+			$sql = "SELECT SUM(duration) FROM actions WHERE user_id = '".mysql_real_escape_string($uid)."'";
 			$result = db_query($sql, $course_code);
 			list($duration[$course_code]) = mysql_fetch_row($result);
                         $totalDuration += $duration[$course_code];
