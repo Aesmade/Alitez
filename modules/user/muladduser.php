@@ -180,7 +180,7 @@ function adduser($user, $cid) {
 
 	list($userid) = mysql_fetch_array($result);
 
-	$result = db_query("SELECT * from cours_user WHERE user_id = '".mysql_real_escape_string($user_id)."' AND cours_id = '".mysql_real_escape_string($cid)."'");
+	$result = db_query("SELECT * from cours_user WHERE user_id = '".mysql_real_escape_string($userid)."' AND cours_id = '".mysql_real_escape_string($cid)."'");
 	if (mysql_num_rows($result) > 0)
 	return -2;
 
