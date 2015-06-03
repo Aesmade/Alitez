@@ -73,7 +73,7 @@ if (!$doit) {
                         $tool_content .= $langTryDeleteAdmin;
                 } else {
                         // now check if the user has registered courses...
-                        $q1 = db_query("SELECT * FROM cours_user WHERE user_id = $u");
+                        $q1 = db_query("SELECT * FROM cours_user WHERE user_id = '".mysql_real_escape_string($u)."'");
                         $total = mysql_num_rows($q1);
                         if ($total>0) {
                                 // user has courses, so not allowed to delete
@@ -95,7 +95,7 @@ if (!$doit) {
                                                 $tool_content .= "$langUnregFirst <br><br>";
                                                 $sql = db_query("SELECT a.code, a.intitule, b.statut, a.cours_id, b.tutor
                                                                  FROM cours AS a LEFT JOIN cours_user AS b ON a.cours_id = b.cours_id
-                                                                 WHERE b.user_id = $u AND b.tutor=0 ORDER BY b.statut, a.faculte");
+                                                                 WHERE b.user_id = '".mysql_real_escape_string($u)."' AND b.tutor=0 ORDER BY b.statut, a.faculte");
                                                 // αν ο χρήστης συμμετέχει σε μαθήματα τότε παρουσίασε τη λίστα
                                                 if (mysql_num_rows($sql) > 0) {
                                                         $tool_content .= "<h4>$langStudentParticipation</h4>\n".
@@ -206,7 +206,7 @@ if (!$doit) {
 
                         // delete guest user from cours_user
                         if($u_statut == '10') {
-                                $sql = db_query("DELETE from cours_user WHERE user_id = $u");
+                                $sql = db_query("DELETE from cours_user WHERE user_id = '".mysql_real_escape_string($u)."'");
                         }
                 }
 
