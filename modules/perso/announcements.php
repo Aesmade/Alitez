@@ -114,7 +114,7 @@ function getUserAnnouncements($param = null, $type) {
 		$announceGroup = array();
 		array_push($announceGroup, $announceSubGroup);
 		$sqlNowDate = eregi_replace(" ", "-",$usr_lst_login);
-		$sql = "UPDATE `user` SET `announce_flag` = '$sqlNowDate' WHERE `user_id` = $uid ";
+		$sql = "UPDATE `user` SET `announce_flag` = '$sqlNowDate' WHERE `user_id` = '".mysql_real_escape_string($uid)."' ";
 		db_query($sql, $mysqlMainDb);
 
 	} elseif (!$getNewAnnounce) {
