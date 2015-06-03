@@ -100,7 +100,7 @@ function getUserForumPosts($param, $type)
 
 	if ($getNewPosts) {
 		$sqlNowDate = eregi_replace(" ", "-",$usr_lst_login);
-		$sql = "UPDATE `user` SET `forum_flag` = '$sqlNowDate' WHERE `user_id` = $uid ";
+		$sql = "UPDATE `user` SET `forum_flag` = '$sqlNowDate' WHERE `user_id` = '".mysql_real_escape_string($uid)."' ";
 		db_query($sql, $mysqlMainDb);
 	} elseif (!$getNewPosts) {
 		//if there are no new announcements, get the last announcements the user had
