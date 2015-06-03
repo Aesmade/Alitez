@@ -99,7 +99,7 @@ if (!is_dir($dropbox_cnf["sysPath"])) {
 } 
 	
 // get dropbox quotas from database
-$d = mysql_fetch_array(db_query("SELECT dropbox_quota FROM `".$mysqlMainDb."`.`cours` WHERE code='$currentCourseID'"));
+$d = mysql_fetch_array(db_query("SELECT dropbox_quota FROM `".$mysqlMainDb."`.`cours` WHERE code='".mysql_real_escape_string($currentCourseID)."'"));
 $diskQuotaDropbox = $d['dropbox_quota'];
 $dropbox_cnf["allowJustUpload"] = false;
 $dropbox_cnf["allowStudentToStudent"] = false;
