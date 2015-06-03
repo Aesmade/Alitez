@@ -80,7 +80,7 @@ $result2 = db_query("
         SELECT cours.cours_id cours_id, cours.code code, cours.fake_code fake_code,
                cours.intitule title, cours.titulaires profs, cours_user.statut statut
 	FROM cours JOIN cours_user ON cours.cours_id = cours_user.cours_id
-        WHERE cours_user.user_id = $uid
+        WHERE cours_user.user_id = '".mysql_real_escape_string($uid)."'
         ORDER BY statut, cours.intitule, cours.titulaires");
 if ($result2 and mysql_num_rows($result2) > 0) {
 	$k = 0;
@@ -145,11 +145,11 @@ if (count($status) > 0) {
         foreach ($status as $code => $code_statut) {
                 $cid = $cours_id_map[$code];
                 $result = db_query("SELECT contenu, temps, title
-                                FROM `$mysqlMainDb`.annonces, `$mysqlMainDb`.accueil
-                                WHERE cours_id = $cid
+                                FROM `$mysqlMainDb`.annonces, `$code`.accueil
+                                WHERE cours_id = '".mysql_real_escape_string($cid)."'
                                 AND temps > DATE_SUB('$logindate', INTERVAL 10 DAY)
-                                AND `$mysqlMainDb`.accueil.visible = 1
-                                AND `$mysqlMainDb`.accueil.id = 7
+                                AND `$code`.accueil.visible = 1
+                                AND `$code`.accueil.id = 7
                                 ORDER BY temps DESC", $mysqlMainDb);
 
                 if ($result and mysql_num_rows($result) > 0) {
