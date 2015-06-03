@@ -224,21 +224,21 @@ elseif ($a == 3)  {
 		} else {
 		// OK Update the faculte
 			mysql_query("UPDATE faculte SET name = " .
-                                    autoquote($faculte) . " WHERE id=$c")
+                                    autoquote($faculte) . " WHERE id='".mysql_real_escape_string($c)."'")
 				or die ($langNoSuccess);
 		// For backwards compatibility update cours and cours_facult also
 			db_query("UPDATE cours SET faculte = " .
-                                    autoquote($faculte) . " WHERE faculteid=$c")
+                                    autoquote($faculte) . " WHERE faculteid='".mysql_real_escape_string($c)."'")
 				or die ($langNoSuccess);
 			db_query("UPDATE cours_faculte SET faculte = " .
-                                    autoquote($faculte) . " WHERE facid=$c")
+                                    autoquote($faculte) . " WHERE facid='".mysql_real_escape_string($c)."'")
 				or die ($langNoSuccess);
 			$tool_content .= "<p>$langEditFacSucces</p><br>";
 			}
 	} else {
 		// Get faculte information
                 $c = intval($_GET['c']);
-		$sql = "SELECT code, name FROM faculte WHERE id=$c";
+		$sql = "SELECT code, name FROM faculte WHERE id='".mysql_real_escape_string($c)."'";
 		$result = mysql_query($sql);
 		$myrow = mysql_fetch_array($result);
 		// Display form for edit faculte information
