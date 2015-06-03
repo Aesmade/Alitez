@@ -52,7 +52,7 @@ function confirmation (name)
 ';
 
 $sql = "SELECT user.user_id, cours_user.statut FROM cours_user, user
-	WHERE cours_user.cours_id = $cours_id AND cours_user.user_id = user.user_id";
+	WHERE cours_user.cours_id = '".mysql_real_escape_string($cours_id)."' AND cours_user.user_id = user.user_id";
 $result_numb = db_query($sql, $mysqlMainDb);
 $countUser = mysql_num_rows($result_numb);
 
@@ -79,30 +79,30 @@ if ($is_adminOfCourse) {
         if (isset($_GET['giveAdmin'])) {
                 $new_admin_gid = intval($_GET['giveAdmin']);
                 db_query("UPDATE cours_user SET statut = 1
-                                WHERE user_id = $new_admin_gid AND cours_id = $cours_id", $mysqlMainDb);
+                                WHERE user_id = '".mysql_real_escape_string($new_admin_gid)."' AND cours_id = '".mysql_real_escape_string($cours_id)."'", $mysqlMainDb);
         } elseif (isset($_GET['giveTutor'])) {
                 $new_tutor_gid = intval($_GET['giveTutor']);
                 db_query("UPDATE cours_user SET tutor = 1
-                                WHERE user_id = $new_tutor_gid AND cours_id = $cours_id", $mysqlMainDb);
-                db_query("DELETE FROM user_group WHERE user = $new_tutor_gid", $currentCourseID);
+                                WHERE user_id = '".mysql_real_escape_string($new_tutor_gid)."' AND cours_id = '".mysql_real_escape_string($cours_id)."'", $mysqlMainDb);
+                db_query("DELETE FROM user_group WHERE user = '".mysql_real_escape_string($new_tutor_gid)."'", $currentCourseID);
         } elseif (isset($_GET['removeAdmin'])) {
                 $removed_admin_gid = intval($_GET['removeAdmin']);
                 db_query("UPDATE cours_user SET statut = 5
                                 WHERE user_id <> $uid AND
                                       user_id = $removed_admin_gid AND
-                                      cours_id = $cours_id", $mysqlMainDb);
+                                      cours_id = '".mysql_real_escape_string($cours_id)."'", $mysqlMainDb);
         } elseif (isset($_GET['removeTutor'])) {
                 $removed_tutor_gid = intval($_GET['removeTutor']);
                 db_query("UPDATE cours_user SET tutor = 0
                                 WHERE user_id = $removed_tutor_gid AND
-                                      cours_id = $cours_id", $mysqlMainDb);
+                                      cours_id = '".mysql_real_escape_string($cours_id)."'", $mysqlMainDb);
         } elseif (isset($_GET['unregister'])) {
                 $unregister_gid = intval($_GET['unregister']);
                 $unregister_ok = true;
                 // Security: don't remove myself except if there is another prof
                 if ($unregister_gid == $uid) {
                         $result = db_query("SELECT user_id FROM cours_user
-                                                WHERE cours_id = $cours_id AND
+                                                WHERE cours_id = '".mysql_real_escape_string($cours_id)."' AND
                                                       statut = 1 AND
                                                       user_id != $uid
                                                 LIMIT 1", $mysqlMainDb);
