@@ -577,7 +577,7 @@ function doImportFromBetaCMSAfterCourseCreation($repertoire, $mysqlMainDb, $webD
 
 		if ($_SESSION[IMPORT_UNITS_SIZE] > 0) {
 			// find course id
-			$result = db_query("SELECT cours_id FROM cours WHERE cours.code='" . $repertoire ."'");
+			$result = db_query("SELECT cours_id FROM cours WHERE cours.code='".mysql_real_escape_string($repertoire)."'");
 			$theCourse = mysql_fetch_array($result);
 			$cid = $theCourse["cours_id"];
 			
@@ -591,7 +591,7 @@ function doImportFromBetaCMSAfterCourseCreation($repertoire, $mysqlMainDb, $webD
 				db_query("INSERT INTO course_units SET title = '" . $unit[KEY_TITLE] ."', 
 						comments = '" . $unit[KEY_DESCRIPTION] ."', `order` = '" . $order ."', course_id = '" . $cid ."'");
 				$unitId = mysql_insert_id();
-				list($unitResOrder) = mysql_fetch_array(db_query("SELECT MAX(`order`) FROM unit_resources WHERE unit_id=$unitId"));
+				list($unitResOrder) = mysql_fetch_array(db_query("SELECT MAX(`order`) FROM unit_resources WHERE unit_id='".mysql_real_escape_string($unitId)."'"));
 				
 				// add unit texts
 				foreach ($unit[KEY_TEXTS] as $key => $text) {
