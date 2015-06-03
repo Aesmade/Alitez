@@ -70,7 +70,7 @@ if((!empty($u)) && ctype_digit($u) )	// validate the user id
 	$u = (int)$u;
 	if(empty($u_submitted)) // if the form was not submitted
 	{
-		$sql = mysql_query("SELECT nom, prenom, username, password, email, phone, department, registered_at, expires_at, statut, am FROM user WHERE user_id = '$u'");
+		$sql = mysql_query("SELECT nom, prenom, username, password, email, phone, department, registered_at, expires_at, statut, am FROM user WHERE user_id = '".mysql_real_escape_string($u)."'");
 		$info = mysql_fetch_array($sql);
 		$tool_content .= "
   <div id=\"operations_container\">
@@ -218,7 +218,7 @@ $tool_content .= "
 		$sql = mysql_query("SELECT nom, prenom, username FROM user WHERE user_id = '$u'");
 		$sql = mysql_query("SELECT a.code, a.intitule, b.reg_date, b.statut, a.cours_id
 			FROM cours AS a LEFT JOIN cours_user AS b ON a.cours_id = b.cours_id
-			WHERE b.user_id = '$u' ORDER BY b.statut, a.faculte");
+			WHERE b.user_id = '".mysql_real_escape_string($u)." ORDER BY b.statut, a.faculte");
 
 		// αν ο χρήστης συμμετέχει σε μαθήματα τότε παρουσίασε τη λίστα
 		if (mysql_num_rows($sql) > 0)
