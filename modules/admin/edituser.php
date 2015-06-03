@@ -215,7 +215,7 @@ $tool_content .= "
   </table>
 </form>";
 
-		$sql = mysql_query("SELECT nom, prenom, username FROM user WHERE user_id = '$u'");
+		$sql = mysql_query("SELECT nom, prenom, username FROM user WHERE user_id ='".mysql_real_escape_string($u)."'");
 		$sql = mysql_query("SELECT a.code, a.intitule, b.reg_date, b.statut, a.cours_id
 			FROM cours AS a LEFT JOIN cours_user AS b ON a.cours_id = b.cours_id
 			WHERE b.user_id = '".mysql_real_escape_string($u)." ORDER BY b.statut, a.faculte");
