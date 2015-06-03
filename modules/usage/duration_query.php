@@ -42,7 +42,7 @@ function user_duration_query($course_code, $course_id, $start = false, $end = fa
                             FROM $from
                                       LEFT JOIN cours_user ON user.user_id = cours_user.user_id
                                       LEFT JOIN duration ON user.user_id = duration.user_id
-                            WHERE cours_user.cours_id = $course_id
+                            WHERE cours_user.cours_id = '".mysql_real_escape_string($cours_id)."'
                                   $and
                             ORDER BY nom, prenom");
 }
