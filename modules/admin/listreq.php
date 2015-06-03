@@ -98,7 +98,7 @@ switch ($show) {
 if (!empty($show) && ($show=="closed")) {
 	if (!empty($id) && ($id>0)) {
 		// restore request
-		$sql = db_query("UPDATE prof_request set status='1', date_closed=NULL WHERE rid='$id'");
+		$sql = db_query("UPDATE prof_request set status='1', date_closed=NULL WHERE rid='".mysql_real_escape_string($id)."'");
 		$tool_content = "<p class=\"success_small\">$langReintroductionApplication</p>";
 	} else {
 		$tool_content .= "<table class=\"FormData\" width=\"99%\" align=\"left\">";
@@ -146,7 +146,7 @@ if (!empty($show) && ($show=="closed")) {
 } elseif (!empty($show) && ($show=="rejected")) {
 	if (!empty($id) && ($id>0)) {
 	// restore request
-		$sql = db_query("UPDATE prof_request set status='1', date_closed=NULL WHERE rid='$id'");
+		$sql = db_query("UPDATE prof_request set status='1', date_closed=NULL WHERE rid='".mysql_real_escape_string($id)."'");
 		$tool_content = "<table><tbody><tr>
 		<td class=\"success\">$langReintroductionApplication</td></tr></tbody></table>";
 	} else {
@@ -238,7 +238,7 @@ if (!empty($show) && ($show=="closed")) {
 } elseif(!empty($close)) {
 	switch($close) {
 	case '1':
-		$sql = db_query("UPDATE prof_request set status='2', date_closed=NOW() WHERE rid='$id'");
+		$sql = db_query("UPDATE prof_request set status='2', date_closed=NOW() WHERE rid='".mysql_real_escape_string($id)."'");
                 if ($list_statut == 1) {
         		$tool_content .= "<p><center>$langProfessorRequestClosed</p>";
                 } else {
@@ -253,7 +253,7 @@ if (!empty($show) && ($show=="closed")) {
 				$sql = "UPDATE prof_request set status = '3',
 						date_closed = NOW(),
 						comment = '".mysql_escape_string($comment)."'
-						WHERE rid = '$id'";
+						WHERE rid = '".mysql_real_escape_string($id)."'";
 				if (db_query($sql)) {
 					if (isset($sendmail) and ($sendmail == 1)) {
 						$emailsubject = $langemailsubjectBlocked;
@@ -273,7 +273,7 @@ $langEmail: $emailhelpdesk";
 		} else {
 			// display the form
 			$r = db_query("SELECT comment, profname, profsurname, profemail, statut
-				FROM prof_request WHERE rid = '$id'");
+				FROM prof_request WHERE rid = '".mysql_real_escape_string($cid)."'");
 			$d = mysql_fetch_assoc($r);
                         $warning = ($d['statut'] == 5)? $langWarnReject: $langGoingRejectRequest;
 			$tool_content .= "<form action='$_SERVER[PHP_SELF]' method='post'>
