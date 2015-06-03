@@ -86,20 +86,20 @@ if ($is_adminOfCourse || $is_admin) {
 
 if(isset($forumcatnotify)) { // modify forum category notification
 		$rows = mysql_num_rows(db_query("SELECT * FROM forum_notify 
-			WHERE user_id = $uid AND cat_id = $cat_id AND course_id = $cours_id", $mysqlMainDb));
+			WHERE user_id = '".mysql_real_escape_string($uid)."' AND cat_id = '".mysql_real_escape_string($cat_id)."' AND course_id = '".mysql_real_escape_string($cours_id)."'", $mysqlMainDb));
 		if ($rows > 0) {
 			db_query("UPDATE forum_notify SET notify_sent = '$forumcatnotify' 
-				WHERE user_id = $uid AND cat_id = $cat_id AND course_id = $cours_id", $mysqlMainDb);
+				WHERE user_id = '".mysql_real_escape_string($uid)."' AND cat_id = '".mysql_real_escape_string($cat_id)."' AND course_id = '".mysql_real_escape_string($cours_id)."'", $mysqlMainDb);
 	} else {
 		db_query("INSERT INTO forum_notify SET user_id = $uid,
 		cat_id = $cat_id, notify_sent = 1, course_id = $cours_id", $mysqlMainDb);
 	}
 } elseif(isset($forumnotify)) { // modify forum notification
 	$rows = mysql_num_rows(db_query("SELECT * FROM forum_notify 
-		WHERE user_id = $uid AND forum_id = $forum_id AND course_id = $cours_id", $mysqlMainDb));
+		WHERE user_id = '".mysql_real_escape_string($uid)."' AND forum_id = '".mysql_real_escape_string($forum_id)."' AND course_id = '".mysql_real_escape_string($cours_id)."'", $mysqlMainDb));
 	if ($rows > 0) {
 		db_query("UPDATE forum_notify SET notify_sent = '$forumnotify' 
-			WHERE user_id = $uid AND forum_id = $forum_id AND course_id = $cours_id", $mysqlMainDb);
+			WHERE user_id = '".mysql_real_escape_string($uid)."' AND forum_id = '".mysql_real_escape_string($forum_id)."' AND course_id = '".mysql_real_escape_string($cours_id)."'", $mysqlMainDb);
 	} else {
 		db_query("INSERT INTO forum_notify SET user_id = $uid,
 		forum_id = $forum_id, notify_sent = 1, course_id = $cours_id", $mysqlMainDb);
@@ -141,7 +141,7 @@ if ($total_categories) {
 	}
 	$limit_forums = "";
 	if ($viewcat != -1) {
-		$limit_forums = "WHERE f.cat_id = $viewcat";
+		$limit_forums = "WHERE f.cat_id = '".mysql_real_escape_string($viewcat)."'";
 	}
 	$sql = "SELECT f.*, p.post_time, p.nom, p.prenom, p.topic_id
 		FROM forums f LEFT JOIN posts p ON p.post_id = f.forum_last_post_id
@@ -162,7 +162,7 @@ if ($total_categories) {
 		$title = stripslashes($categories[$i]["cat_title"]);
 		$catNum = $categories[$i]["cat_id"];
 		list($action_notify) = mysql_fetch_row(db_query("SELECT notify_sent FROM forum_notify 
-				WHERE user_id = $uid AND cat_id = $catNum AND course_id = $cours_id", $mysqlMainDb));
+				WHERE user_id = '".mysql_real_escape_string($uid)."' AND cat_id = '".mysql_real_escape_string($catNum)."' AND course_id = '".mysql_real_escape_string($cours_id)."'", $mysqlMainDb));
 		if (!isset($action_notify)) {
 			$link_notify = FALSE;
 			$icon = '_off';
@@ -212,7 +212,7 @@ if ($total_categories) {
 				$forum = $forum_row[$x]["forum_id"];
 				if ($is_adminOfCourse) { // admin
 					$sqlTutor = db_query("SELECT id FROM student_group
-						WHERE forumId='$forum' AND tutor='$uid'", $currentCourseID );
+						WHERE forumId='".mysql_real_escape_string($forum)."' AND tutor='".mysql_real_escape_string($uid)."'", $currentCourseID );
 					$countTutor = mysql_num_rows($sqlTutor);
 					if ($countTutor == 0) {
 						$tool_content .= "<a href='viewforum.php?forum=" . $forum . "'>$name</a>";
