@@ -43,7 +43,7 @@ if (!isset($doit) or $doit != "yes") {
 		draw($tool_content,1);
 		exit;
 	} else {
-		$q = db_query ("SELECT code FROM cours, cours_user WHERE cours.cours_id = cours_user.cours_id AND user_id = '$uid' LIMIT 1") ;
+		$q = db_query ("SELECT code FROM cours, cours_user WHERE cours.cours_id = cours_user.cours_id AND user_id = '".mysql_real_escape_string($uid)."' LIMIT 1") ;
 		if (mysql_num_rows($q) == 0) {
 			$tool_content .=  "<p><b>$langConfirm</b></p>";
 			$tool_content .=  "<ul class=\"listBullet\">";
@@ -65,7 +65,7 @@ if (!isset($doit) or $doit != "yes") {
 		$tool_content .=  "<table width=99%><tbody>";
 		$tool_content .=  "<tr>";
 		$tool_content .=  "<td class=\"success\">";
-		db_query("DELETE from user WHERE user_id = '$uid'");
+		db_query("DELETE from user WHERE user_id = '".mysql_real_escape_string($uid)."'");
 		if (mysql_affected_rows() > 0) {
 			$tool_content .=  "<p><b>$langDelSuccess</b></p>";
 			$tool_content .=  "<p>$langThanks</p>";
