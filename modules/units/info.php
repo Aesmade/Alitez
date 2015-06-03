@@ -82,7 +82,7 @@ _editor_lang = '$lang_editor';
 
 if (isset($_GET['edit'])) { // display form for editing course unit
         $id = intval($_GET['edit']); 
-        $sql = db_query("SELECT id, title, comments FROM course_units WHERE id='$id'");
+        $sql = db_query("SELECT id, title, comments FROM course_units WHERE id='".mysql_real_escape_string($id)."'");
         $cu = mysql_fetch_array($sql);
         $unittitle = " value='" . htmlspecialchars($cu['title'], ENT_QUOTES) . "'";
         $unitdescr = $cu['comments'];
