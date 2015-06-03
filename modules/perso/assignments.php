@@ -204,11 +204,11 @@ function findSubmission($uid, $id, $lesson_db)
 	if (isGroupAssignment($id, $lesson_db))	{
 		$gid = getUserGroup($uid, $lesson_db);
 		$res = db_query("SELECT id FROM `$lesson_db`.assignment_submit
-			WHERE assignment_id = '$id'
+			WHERE assignment_id = '".mysql_real_escape_string($id)."'
 			AND (uid = '$uid' OR group_id = '$gid')", $lesson_db);
 	} else {
 		$res =db_query("SELECT id FROM `$lesson_db`.assignment_submit
-			WHERE assignment_id = '$id' AND uid = '$uid'", $lesson_db);
+			WHERE assignment_id = '".mysql_real_escape_string($cid)."' AND uid = '".mysql_real_escape_string($uid)."'", $lesson_db);
 	}
 	if ($res) {
 		$row = mysql_fetch_row($res);
@@ -234,7 +234,7 @@ function findSubmission($uid, $id, $lesson_db)
  */
 function isGroupAssignment($id, $lesson_db)
 {
-	$res = db_query("SELECT group_submissions FROM `$lesson_db`.assignments WHERE id = '$id'", $lesson_db);
+	$res = db_query("SELECT group_submissions FROM `$lesson_db`.assignments WHERE id = '".mysql_real_escape_string($id)."'", $lesson_db);
 	if ($res) {
 		$row = mysql_fetch_row($res);
 		if ($row[0] == 0) {
@@ -259,7 +259,7 @@ function isGroupAssignment($id, $lesson_db)
  */
 function getUserGroup($uid, $lesson_db)
 {
-	$res =db_query("SELECT team FROM `$lesson_db`.user_group WHERE user = '$uid'", $lesson_db);
+	$res =db_query("SELECT team FROM `$lesson_db`.user_group WHERE user = '".mysql_real_escape_string($uid)."'", $lesson_db);
 	if ($res) {
 		$row = mysql_fetch_row($res);
 		if ($row[0] == 0) {
