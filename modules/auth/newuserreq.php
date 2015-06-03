@@ -51,7 +51,7 @@ if($submit) {
   $lang = langname_to_code($localize);	
 
       // check if user name exists
-  $username_check=mysql_query("SELECT username FROM `$mysqlMainDb`.user WHERE username='$uname'");
+  $username_check=mysql_query("SELECT username FROM `$mysqlMainDb`.user WHERE username='".mysql_real_escape_string($uname)."'");
   while ($myusername = mysql_fetch_array($username_check)) {
     $user_exist=$myusername[0];
   }
