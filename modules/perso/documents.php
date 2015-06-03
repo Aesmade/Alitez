@@ -113,7 +113,7 @@ function getUserDocuments($param = null, $type)
 		$docsGroup = array();
 		array_push($docsGroup, $docsSubGroup);
 		$sqlNowDate = eregi_replace(" ", "-",$usr_lst_login);
-		$sql = "UPDATE `user` SET `doc_flag` = '$sqlNowDate' WHERE `user_id` = $uid ";
+		$sql = "UPDATE `user` SET `doc_flag` = '$sqlNowDate' WHERE `user_id` = '".mysql_real_escape_string($uid)."' ";
 		db_query($sql, $mysqlMainDb);
 	} elseif (!$getNewDocs) {
 		//if there are no new documents, get the last documents the user had
