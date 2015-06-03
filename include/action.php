@@ -116,7 +116,7 @@ class action {
 
     function get_module_id($module_name) {
         global $currentCourseID;
-        $sql = "SELECT id FROM accueil WHERE define_var = '$module_name'";
+        $sql = "SELECT id FROM accueil WHERE define_var = '".mysql_real_escape_string($module_name)."'";
         $result = db_query($sql, $currentCourseID);
         if ($result and mysql_num_rows($result) > 0) {
                 list($id) = mysql_fetch_row($result);
@@ -132,7 +132,7 @@ class action {
 class action_type {
     function get_action_type_id($action_name) {
         global $currentCourseID;
-        $sql = "SELECT id FROM action_types WHERE name = '$action_name'";
+        $sql = "SELECT id FROM action_types WHERE name = '".mysql_real_escape_string($action_name)."'";
         $result = db_query($sql, $currentCourseID);
         if ($result and mysql_num_rows($result) > 0) {
                 list($id) = mysql_fetch_row($result);
