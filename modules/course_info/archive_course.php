@@ -158,7 +158,7 @@ function backup_annonces($f, $cours_id) {
 	global $mysqlMainDb;
 
 	$res = mysql_query("SELECT * FROM `$mysqlMainDb`.annonces
-				    WHERE cours_id = $cours_id");
+				    WHERE cours_id = '".mysql_real_escape_string($cours_id)."'");
 	while($q = mysql_fetch_array($res)) {
 		fputs($f, "announcement(".
 			quote($q['contenu']).",\n".
@@ -172,7 +172,7 @@ function backup_course_units($f) {
 	global $mysqlMainDb, $cours_id;
 	
 	$res = mysql_query("SELECT * FROM `$mysqlMainDb`.course_units
-				    WHERE course_id = $cours_id");
+				    WHERE course_id = '".mysql_real_escape_string($cours_id)."'");
 	while($q = mysql_fetch_array($res)) {
 		fputs($f, "course_units(".
 			quote($q['title']).", ".
@@ -349,7 +349,7 @@ function backup_course_details($f, $course) {
 	global $mysqlMainDb;
 
 	$res = mysql_query("SELECT * FROM `$mysqlMainDb`.cours
-				    WHERE code = '$course'");
+				    WHERE code = '".mysql_real_escape_string($course)."'");
 	$q = mysql_fetch_array($res);
 	fputs($f, "course_details('$course',\t// Course code\n\t".
 		quote($q['languageCourse']).",\t// Language\n\t".
