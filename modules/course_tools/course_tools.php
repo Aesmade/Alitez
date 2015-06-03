@@ -211,7 +211,7 @@ if ($is_adminOfCourse){
 					//from the main agenda table (main database)
 
 					$perso_sql= "DELETE FROM $mysqlMainDb.agenda 
-						WHERE lesson_code= '$currentCourseID'";
+						WHERE lesson_code= '".mysql_real_escape_string($currentCourseID)."'";
 					db_query($perso_sql, $mysqlMainDb);
 				}
 			}
@@ -219,7 +219,7 @@ if ($is_adminOfCourse){
 	}
 
 	if (isset($delete)) {
-		$sql = "SELECT lien, define_var FROM accueil WHERE `id` = ". $delete ." ";
+		$sql = "SELECT lien, define_var FROM accueil WHERE `id` = '".mysql_real_escape_string($delete)."' ";
 		$result = db_query($sql, $dbname);
 		while ($res = mysql_fetch_row($result)){
 			if($res[1] == "HTML_PAGE") {
@@ -229,7 +229,7 @@ if ($is_adminOfCourse){
 				@unlink($file2Delete);
 			}
 		}
-		$sql = "DELETE FROM `accueil` WHERE `id` = " . $delete ." ";
+		$sql = "DELETE FROM `accueil` WHERE `id` = '".mysql_real_escape_string($delete)."' ";
 		db_query($sql, $dbname);
 		unset($sql);
 
