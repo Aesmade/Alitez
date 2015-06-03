@@ -108,7 +108,7 @@ tCont;
 	$query = join(' AND ', $search);
 	if (!empty($query)) {
 			db_query("CREATE TEMPORARY TABLE lala AS
-			SELECT user_id FROM cours_user WHERE cours_id = $cours_id
+			SELECT user_id FROM cours_user WHERE cours_id = '".mysql_real_escape_string($cours_id)."'
 			");
 			$result = db_query("SELECT u.user_id, u.nom, u.prenom, u.username FROM
 			user u LEFT JOIN lala c ON u.user_id = c.user_id WHERE
