@@ -44,13 +44,13 @@ if (strpos($shib_nom, $shibseparator)) {
 $sqlLogin= "SELECT user_id, nom, username, password, prenom, statut, email, iduser is_admin, perso, lang
 	FROM user LEFT JOIN admin
 	ON user.user_id = admin.iduser
-	WHERE username='".$shib_uname."'";
+	WHERE username='".mysql_real_escape_string($shib_uname)."'";
 $r = db_query($sqlLogin); 
 if (mysql_num_rows($r) > 0) { // if shibboleth user found 
 	while ($myrow = mysql_fetch_array($r)) {
 		// update user information
 		db_query("UPDATE user SET nom = '$shib_nom', prenom = '$shib_prenom', email = '$shib_email' 
-			WHERE username = '$shib_uname'");
+			WHERE username = '".mysql_real_escape_string($shib_uname)."'");
 
 		$r2 = db_query($sqlLogin);
 		while ($myrow2 = mysql_fetch_array($r2)) {
