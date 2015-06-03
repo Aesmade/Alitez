@@ -105,10 +105,10 @@ function createguest($username, $cours_id, $password)
 	mysql_select_db($mysqlMainDb);
         $password = md5($password);
 
-	$q = db_query("SELECT user_id from cours_user WHERE statut=10 AND cours_id = $cours_id");
+	$q = db_query("SELECT user_id from cours_user WHERE statut=10 AND cours_id = '".mysql_real_escape_string($cours_id)."'");
 	if (mysql_num_rows($q) > 0) {
 		list($guest_id) = mysql_fetch_array($q);
-		db_query("UPDATE user SET password = '$password' WHERE user_id = $guest_id");
+		db_query("UPDATE user SET password = '$password' WHERE user_id = '".mysql_real_escape_string($quest_id)."'");
 	} else {
                 $regtime = time();
                 $exptime = 126144000 + $regtime;
@@ -128,7 +128,7 @@ function guestinfo($cours_id) {
 	$q = db_query("SELECT nom, prenom, username FROM user, cours_user
                        WHERE user.user_id = cours_user.user_id AND
                              cours_user.statut = 10 AND
-                             cours_user.cours_id = $cours_id");
+                             cours_user.cours_id = '".mysql_real_escape_string($cours_id)."'");
 	if (mysql_num_rows($q) == 0) {
 		return false;
 	} else {
