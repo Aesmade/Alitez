@@ -25,188 +25,217 @@
 * =========================================================================*/
 
 
-$require_admin = TRUE;
+/*===========================================================================
+	newuser.php
+* @version $Id: newuser.php,v 1.35 2009-12-03 14:31:20 adia Exp $
+	@authors list: Karatzidis Stratos <kstratos@uom.gr>
+		       Vagelis Pitsioygas <vagpits@uom.gr>
+==============================================================================
+
+ 	Purpose: The file displays the form that that the candidate user must fill
+ 	in with all the basic information.
+
+==============================================================================
+*/
+
 include '../../include/baseTheme.php';
 include '../../include/sendMail.inc.php';
+include 'auth.inc.php';
+$nameTools = $langUserDetails;
+// Main body
+$navigation[] = array("url"=>"registration.php", "name"=> $langNewUser);
 
-$nameTools = $langNewUser;
-$navigation[]= array ("url"=>"../admin/", "name"=> $langAdmin);
+$tool_content = "";	// Initialise $tool_content
 
-// Initialise $tool_content
-$tool_content = "";
-$submit = isset($_POST['submit'])?$_POST['submit']:'';
-// ----------------------------
-// register user
-// ----------------------------
-
-if($submit) {
-   // register user
-  $nom_form = isset($_POST['nom_form'])?$_POST['nom_form']:'';
-  $prenom_form = isset($_POST['prenom_form'])?$_POST['prenom_form']:'';
-  $uname = isset($_POST['uname'])?$_POST['uname']:'';
-  $password = isset($_POST['password'])?$_POST['password']:'';
-  $email_form = isset($_POST['email_form'])?$_POST['email_form']:'';
-  $department = isset($_POST['department'])?$_POST['department']:'';
-  $localize = isset($_POST['localize'])?$_POST['localize']:'';
-  $lang = langname_to_code($localize);	
-
-      // check if user name exists
-  $username_check=mysql_query("SELECT username FROM `$mysqlMainDb`.user WHERE username='".mysql_real_escape_string($uname)."'");
-  while ($myusername = mysql_fetch_array($username_check)) {
-    $user_exist=$myusername[0];
-  }
-
-// check if there are empty fields
-  if (empty($nom_form) or empty($prenom_form) or empty($password)
-        or empty($uname) or empty($email_form)) {
-      $tool_content .= error_screen($langEmptyFields);
-      $tool_content .= end_tables();
-  }
-  elseif(isset($user_exist) and $uname==$user_exist) {
-      $tool_content .= error_screen($langUserFree);
-      $tool_content .= end_tables();
+if (isset($close_user_registration) and $close_user_registration == TRUE) {
+	$tool_content .= "<div class='td_main'>$langForbidden</div>";
+        draw($tool_content,0);
+	exit;
  }
+ 
+$lang = langname_to_code($language);
 
-// check if email syntax is valid
- elseif(!email_seems_valid($email_form)) {
-        $tool_content .= error_screen($langEmailWrong);
-        $tool_content .= end_tables();
- }
-
-
-// registration accepted
-
-  else {
-    $emailsubject = "$langYourReg $siteName"; // $langAsUser
-
-      $emailbody = "
-$langDestination $prenom_form $nom_form
-
-$langYouAreReg$siteName, $langSettings $uname
-$langPass : $password
-$langAddress $siteName $langIs: $urlServer
-$langProblem
-
-$administratorName $administratorSurname
-$langManager $siteName
-$langTel $telephone
-$langEmail : $emailhelpdesk
-";
-
-send_mail('', '', '', $email_form, $emailsubject, $emailbody, $charset);
-
-
-// register user
-    $registered_at = time();
-    $expires_at = time() + $durationAccount;
-
-    $password_encrypted = md5($password);
-    $s = mysql_query("SELECT id FROM faculte WHERE name='$department'");
-    $dep = mysql_fetch_array($s);
-    $inscr_user=mysql_query("INSERT INTO `$mysqlMainDb`.user
-      (user_id, nom, prenom, username, password, email, statut, department, registered_at, expires_at, lang)
-      VALUES ('NULL', '$nom_form', '$prenom_form', '$uname', '$password_encrypted', '$email_form', '5', '$dep[id]', '$registered_at', '$expires_at', '$lang')");
-
-    // close request
-        $rid = intval($_POST['rid']);
-        db_query("UPDATE prof_request set status = '2',
-         date_closed = NOW() WHERE rid = '$rid'");
-
-    $tool_content .= "<tr><td valign='top' align='center' class='alert1'>$usersuccess
-    <br><br><a href='../admin/listreq.php?type=user' class='mainpage'>$langBack</a>";
-  }
-
+// display form
+if (!isset($submit)) {
+	// Main body
+	@$tool_content .= "<form action='$_SERVER[PHP_SELF]' method='post'>
+	<table width='99%' style='border: 1px solid #edecdf;'>
+	<thead>
+	<tr>
+	<td>
+	<table width='100%' align='left' class='FormData'>
+	<thead>
+	<tr>
+	<th class='left' width='220'>$langName</th>
+	<td colspan='2'><input type='text' name='prenom_form' value='$prenom_form' class='FormData_InputText' />&nbsp;&nbsp;<small>(*)</small></td>
+	</tr>
+	<tr>
+	<th class='left'>$langSurname</th>
+	<td colspan='2'><input type='text' name='nom_form' value='$nom_form' class='FormData_InputText' />&nbsp;&nbsp;<small>(*)</small></td>
+	</tr>
+	<tr>
+	<th class='left'>$langUsername</th>
+	<td colspan='2'><input type='text' name='uname' value='$uname' size='20' maxlength='20' class='FormData_InputText' />&nbsp;&nbsp;<small>(*) $langUserNotice</small></td>
+	</tr>
+	<tr>
+	<th class='left'>$langPass</th>
+	<td colspan='2'><input type='password' name='password1' size='20' maxlength='20' class='FormData_InputText' />&nbsp;&nbsp;<small>(*)</small></td>
+	</tr>
+	<tr>
+	<th class='left'>$langConfirmation</th>
+	<td colspan='2'><input type='password' name='password' size='20' maxlength='20' class='FormData_InputText' />&nbsp;&nbsp;<small>(*) $langUserNotice</small></td>
+	</tr>
+	<tr>
+	<th class='left'>$langEmail</th>
+	<td valign='top'><input type='text' name='email' value='$email' class='FormData_InputText' /></td>
+	<td><small>$langEmailNotice</small></td>
+	</tr>
+	<tr>
+	<th class='left'>$langAm</th>
+	<td colspan='2' valign='top'><input type='text' name='am' value='$am' class='FormData_InputText' /></td>
+	</tr>
+	<tr>
+	<th class='left'>$langFaculty</th>
+		<td colspan='2'><select name='department'>";
+	$deps=mysql_query("SELECT name, id FROM faculte ORDER BY id");
+	while ($dep = mysql_fetch_array($deps)) {
+		$tool_content .= "\n<option value='".$dep[1]."'>".$dep[0]."</option>";
+	}
+	$tool_content .= "\n</select>
+	</td>
+	</tr>
+	<tr>
+	<th class='left'>$langLanguage</th>
+	<td width='1'>";
+	$tool_content .= lang_select_options('localize');
+	$tool_content .= "</td>
+	<td><small>$langTipLang2</small></td>
+	</tr>
+	<tr>
+	<th class='left'>&nbsp;</th>
+	<td colspan='2'>
+	<input type='hidden' name='auth' value='1' />
+	<input type='submit' name='submit' value='".$langRegistration."' />
+	</td>
+	</tr>
+	</thead>
+	</table>
+	<div align='right'><small>$langRequiredFields</small></div>
+	</td>
+	</tr>
+	</thead>
+	</table>
+	</form>";
 } else {
 
-//---------------------------
-// 	display form
-// ---------------------------
-
-if (isset($_GET['lang'])) {
-	$lang = $_GET['lang'];
-	$lang = langname_to_code($language);
-}
-
-$tool_content .= "<table width=\"99%\"><tbody>
-   <tr>
-    <td>
-    <form action='$_SERVER[PHP_SELF]' method='post'>
-    <table border=0 cellpadding='1' cellspacing='2' border='0' width='100%' align=center>
-	<thead>
-    <tr>
-    <th class='left' width=20%>$langSurname</th>
-	 <td><input type='text' class=auth_input_admin name='nom_form' value='".@$ps."' >
-	<small>&nbsp;(*)</small></td>
-	  </tr>
-	  <tr>
-	  <th class='left'>$langName</th>
-	  <td><input type='text' class=auth_input_admin name='prenom_form' value='".@$pn."' >
-	<small>&nbsp;(*)</small></td>
-	  </tr>
-	  <tr>
-	  <th class='left'>$langUsername</th>
-	  <td><input type='text' class=auth_input_admin name='uname' value='".@$pu."'>
-		<small>&nbsp;(*)</small></td>
-	  </tr>
-	  <tr>
-	  <th class='left'>$langPass&nbsp;:</th>
-	  <td><input type='text' class=auth_input_admin name='password' value=".create_pass()."></td>
-	  </tr>
-	  <tr>
-    	<th class='left'>$langEmail</th>
-	  <td><input type='text' class=auth_input_admin name='email_form' value='".@$pe."'>
-		<small>&nbsp;(*)</small></td>
-	  </tr>
-	  <tr>
-	  <th class='left'>$langFaculty &nbsp;
-		</span></th><td>";
-
-	$dep = array();
-        $deps=db_query("SELECT name FROM faculte order by id");
-			while ($n = mysql_fetch_array($deps))
-				$dep[$n[0]] = $n['name'];  
-
-		if (isset($pt))
-			$tool_content .= selection ($dep, 'department', $pt);
-		else 
-			$tool_content .= selection ($dep, 'department');
- 
-	$tool_content .= "<tr><th class='left'>$langLanguage</th><td>";
-	$tool_content .= lang_select_options('localize');
-	$tool_content .= "</td></tr>";
-
-	$tool_content .= "</td></tr><tr><td colspan=\"2\">".$langRequiredFields."</td></tr>
-		<tr><td>&nbsp;</td>
-		<td><input type=\"submit\" name=\"submit\" value=\"".$langSubmit."\" ></td>
-		</tr></thead></table>
-		<input type='hidden' name='rid' value='".@$id."'>
-		</tbody></table></form>";
-    $tool_content .= "<center><p><a href=\"../admin/index.php\">$langBack</p></center>";
-
-} // end of if 
-
-draw($tool_content,3, 'auth');
-
-// -----------------
-// functions
-// -----------------
-function error_screen($message) {
-
-	global $langTryAgain;
-
-	return "<tr height='80'><td colspan='3' valign='top' align='center' class=alert1>$message</td></tr><br><br>
-      <tr height='30' valign='top' align='center'><td align=center>
-      <a href='../admin/listreq.php?type=user' class=mainpage>$langTryAgain</a><br><br></td></tr>";
-}
-
-function end_tables() {
-	global $langBack;
+	// trim white spaces in the end and in the beginning of the word
+	$uname = preg_replace('/\ +/', ' ', trim(isset($_POST['uname'])?$_POST['uname']:''));
+	// registration
+	$registration_errors = array();
+	// check if there are empty fields
+	if (empty($nom_form) or empty($prenom_form) or empty($password) or empty($uname)) {
+		$registration_errors[] = $langEmptyFields;
+	} else {
+	// check if the username is already in use
+		$q2 = "SELECT username FROM `$mysqlMainDb`.user WHERE username='".escapeSimple($uname)."'";
+		$username_check = mysql_query($q2);
+		if ($myusername = mysql_fetch_array($username_check)) {
+			$registration_errors[] = $langUserFree;
+		}
+	}
+	if (!empty($email) and !email_seems_valid($email)) {
+		$registration_errors[] = $langEmailWrong;
+	}
+	$auth_method_settings = get_auth_settings($auth);
+	if (!empty($auth_method_settings) and $auth != 1) {
+		$password = $auth_method_settings['auth_name'];
+	} else {
+		// check if the two passwords match
+		if ($password != $_POST['password1']) {
+			$registration_errors[] = $langPassTwice;
+		} elseif (strtoupper($password) == strtoupper($uname)
+			or strtoupper($password) == strtoupper($nom_form)
+			or strtoupper($password) == strtoupper($prenom_form)
+			or strtoupper($password) == strtoupper($email)) {
+				// if the passwd is too easy offer a password sugestion
+				$registration_errors[] = $langPassTooEasy . ': <strong>' .
+					substr(md5(date("Bis").$_SERVER['REMOTE_ADDR']),0,8) . '</strong>';
+			}
+	}
+	if (count($registration_errors) == 0) {
+	$emailsubject = "$langYourReg $siteName";
+			$uname = unescapeSimple($uname); // un-escape the characters: simple and double quote
+			$password = unescapeSimple($password);
+			if((!empty($auth_method_settings)) && ($auth!=1)) {
+				$emailbody = "$langDestination $prenom_form $nom_form\n" .
+					"$langYouAreReg $siteName $langSettings $uname\n" .
+					"$langPassSameAuth\n$langAddress $siteName: " .
+					"$urlServer\n$langProblem\n$langFormula" .
+					"$administratorName $administratorSurname" .
+					"$langManager $siteName \n$langTel $telephone \n" .
+					"$langEmail: $emailhelpdesk";
+		} else {
+			$emailbody = "$langDestination $prenom_form $nom_form\n" .
+				"$langYouAreReg $siteName $langSettings $uname\n" .
+				"$langPass: $password\n$langAddress $siteName: " .
+				"$urlServer\n$langProblem\n$langFormula" .
+				"$administratorName $administratorSurname" .
+				"$langManager $siteName \n$langTel $telephone \n" .
+				"$langEmail: $emailhelpdesk";
+		}
 	
-	$retstring = "</td></tr><tr><td align=right valign=bottom height='180'>";
-	$retstring .= "<a href='../admin/index.php' class=mainpage>$langBack&nbsp;</a>";
-	$retstring .= "</td></tr></table>";
+	send_mail('', '', '', $email, $emailsubject, $emailbody, $charset);
+	$registered_at = time();
+	$expires_at = time() + $durationAccount;  //$expires_at = time() + 31536000;
 	
-	return $retstring;
-}
+	// manage the store/encrypt process of password into database
+	$authmethods = array("2","3","4","5");
+	$uname = escapeSimple($uname);  // escape the characters: simple and double quote
+	$password = escapeSimpleSelect($password);  // escape the characters: simple and double quote
+	if(!in_array($auth,$authmethods)) {
+		$password_encrypted = md5($password);
+	} else {
+		$password_encrypted = $password;
+	}
+	$q1 = "INSERT INTO `$mysqlMainDb`.user
+	(user_id, nom, prenom, username, password, email, statut, department, am, registered_at, expires_at, lang)
+	VALUES ('NULL', '$nom_form', '$prenom_form', '$uname', '$password_encrypted', '$email','5',
+		'$department','$am',".$registered_at.",".$expires_at.",'$lang')";
+	$inscr_user = mysql_query($q1);
+	$last_id = mysql_insert_id();
+	$result=mysql_query("SELECT user_id, nom, prenom FROM `$mysqlMainDb`.user WHERE user_id='".mysql_real_escape_string($last_id)."'");
+	while ($myrow = mysql_fetch_array($result)) {
+		$uid=$myrow[0];
+		$nom=$myrow[1];
+		$prenom=$myrow[2];
+	}
+	mysql_query("INSERT INTO `$mysqlMainDb`.loginout (loginout.idLog, loginout.id_user, loginout.ip, loginout.when, loginout.action)
+	VALUES ('', '".$uid."', '".$REMOTE_ADDR."', NOW(), 'LOGIN')");
+	$_SESSION['uid'] = $uid;
+	$_SESSION['statut'] = 5;
+	$_SESSION['prenom'] = $prenom;
+	$_SESSION['nom'] = $nom;
+	$_SESSION['uname'] = $uname;
+	
+	// registration form
+	$tool_content .= "<table width='99%'><tbody><tr>" .
+			"<td class='well-done' height='60'>" .
+			"<p>$langDear $prenom $nom,</p>" .
+			"<p>$langPersonalSettings</p></td>" .
+			"</tr></tbody></table><br /><br />" .
+			"<p>$langPersonalSettingsMore</p>";
+	} else {
+		// errors exist - registration failed
+		$tool_content .= "<table width='99%'><tbody><tr>" .
+				"<td class='caution' height='60'>";
+		foreach ($registration_errors as $error) {
+			$tool_content .= "<p>$error</p>";
+		}
+		$tool_content .= "<p><a href='$_SERVER[PHP_SELF]?prenom_form=$_POST[prenom_form]&nom_form=$_POST[nom_form]&uname=$_POST[uname]&email=$_POST[email]&am=$_POST[am]'>$langAgain</a></p>" .
+					"</td></tr></tbody></table><br /><br />";
+	}
 
+} // end of registration
+
+draw($tool_content,0);
 ?>
