@@ -87,7 +87,7 @@ if($submit) {
 
 		// close request
 	  	$rid = intval($_POST['rid']);
-  	  	db_query("UPDATE prof_request set status = 2, date_closed = NOW() WHERE rid = '$rid'");
+  	  	db_query("UPDATE prof_request set status = 2, date_closed = NOW() WHERE rid = '".mysql_real_escape_string($rid)."'");
 
                 if ($pstatut == 1) {
                         $message = $profsuccess;
@@ -126,7 +126,7 @@ $langEmail : $emailhelpdesk
         $lang = false;
 	if (isset($id)) { // if we come from prof request
 		$res = mysql_fetch_array(db_query("SELECT profname, profsurname, profuname, profemail, proftmima, comment, lang, statut 
-			FROM prof_request WHERE rid='$id'"));
+			FROM prof_request WHERE rid='".mysql_real_escape_string($id)."'"));
 		$ps = $res['profsurname'];
 		$pn = $res['profname'];
 		$pu = $res['profuname'];
