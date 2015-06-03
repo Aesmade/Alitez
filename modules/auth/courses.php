@@ -67,7 +67,7 @@ if (isset($_POST["submit"])) {
                         } else {
                                 db_query("DELETE FROM cours_user
                                                 WHERE statut <> 1 AND statut <> 10 AND
-                                                user_id = $uid AND cours_id = $cid");
+                                                user_id = '".mysql_real_escape_string($uid)."' AND cours_id = '".mysql_real_escape_string($cid)."'");
                         }
                 }
         }
@@ -75,7 +75,7 @@ if (isset($_POST["submit"])) {
 	$errorExists = false;
         foreach ($selectCourse as $key => $value) {
                 $cid = intval($value);
-                $course_info = db_query("SELECT fake_code, password FROM cours WHERE cours_id = $cid");
+                $course_info = db_query("SELECT fake_code, password FROM cours WHERE cours_id = '".mysql_real_escape_string($cid)."'");
                 if ($course_info) {
                         $row = mysql_fetch_array($course_info);
                         if (!empty($row['password']) and $row['password'] != autounquote($_POST['pass' . $cid])) {
@@ -175,7 +175,7 @@ draw($tool_content, 1);
 function getfacfromfc( $dep_id) {
 	$dep_id = intval( $dep_id);
 
-	$fac = mysql_fetch_row(db_query("SELECT name FROM faculte WHERE id = '$dep_id'"));
+	$fac = mysql_fetch_row(db_query("SELECT name FROM faculte WHERE id = '".mysql_real_escape_string($dep_id)."'"));
 	if (isset($fac[0]))
 		return $fac[0];
 	else
@@ -183,7 +183,7 @@ function getfacfromfc( $dep_id) {
 }
 
 function getfcfromuid($uid) {
-	$res = mysql_fetch_row(db_query("SELECT department FROM user WHERE user_id = '$uid'"));
+	$res = mysql_fetch_row(db_query("SELECT department FROM user WHERE user_id = '".mysql_real_escape_string($uid)."'"));
 	if (isset($res[0]))
 		return $res[0];
 	else
@@ -440,7 +440,7 @@ function dep_selection($fc) {
 // check if a course is restricted
 function is_restricted($cours_id)
 {
-	$res = mysql_fetch_row(db_query("SELECT visible FROM cours WHERE cours_id = $cours_id"));
+	$res = mysql_fetch_row(db_query("SELECT visible FROM cours WHERE cours_id = '".mysql_real_escape_string($cours_id)."'"));
 	if ($res[0] == 0) {
 		return true;
 	} else {
