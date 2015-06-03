@@ -92,12 +92,12 @@ elseif (isset($submit) && isset($changePass) && ($changePass == "do")) {
 		exit();
 	}
 	//all checks ok. Change password!
-	$sql = "SELECT `password` FROM `user` WHERE `user_id`='$userid'";
+	$sql = "SELECT `password` FROM `user` WHERE `user_id`='".mysql_real_escape_string($userid)."'";
 	$result = db_query($sql, $mysqlMainDb);
 	$myrow = mysql_fetch_array($result);
 	$old_pass_db = $myrow['password'];
 	$new_pass = md5($_REQUEST['password_form']);
-	$sql = "UPDATE `user` SET `password` = '$new_pass' WHERE `user_id` = '$userid'";
+	$sql = "UPDATE `user` SET `password` = '$new_pass' WHERE `user_id` = '".mysql_real_escape_string($userid)."'";
 	db_query($sql, $mysqlMainDb);
 	$tool_content .= mes($langPassChanged, $langHome, 'success_small');
 	draw($tool_content, 3);
