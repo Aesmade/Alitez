@@ -59,7 +59,7 @@ if (isset($_POST['submit']))  {
                 $reglist = "AND user_id NOT IN ($reglist)";
         }
         $sql = db_query("DELETE FROM cours_user
-                         WHERE cours_id = $cid AND statut <> 10 $reglist");
+                         WHERE cours_id = '".mysql_real_escape_string($cid)."' AND statut <> 10 $reglist");
 
         function regusers($cid, $users, $statut)
         {
@@ -187,7 +187,7 @@ function reverseAll(cbList) {
 	// Students registered in the selected course
 	$resultStud = db_query("SELECT DISTINCT u.user_id , u.nom, u.prenom
 				FROM user u, cours_user cu
-				WHERE cu.cours_id = $cid
+				WHERE cu.cours_id = '".mysql_real_escape_string($cid)."'
 				AND cu.user_id=u.user_id
 				AND cu.statut=5 ORDER BY nom");
 
