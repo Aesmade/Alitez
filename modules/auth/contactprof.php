@@ -76,7 +76,7 @@ $errorExists = false;
 }
 else
 {
-	$sql = "SELECT * FROM user WHERE user_id='".$uid."'";
+	$sql = "SELECT * FROM user WHERE user_id='".mysql_real_escape_string($uid)."'";
 	$res = mysql_query($sql);
 	$row = mysql_fetch_array($res);
 
