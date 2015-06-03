@@ -99,11 +99,11 @@ if (isset($_POST['submit'])) {
                               type = " . autoquote($_POST['type']) . ",
                               password = " . autoquote($_POST['password']) . ",
                               faculteid = " . intval($facid) . "
-                          WHERE cours_id = $cours_id");
+                          WHERE cours_id = '".mysql_real_escape_string($cours_id)."'");
                 db_query("UPDATE `$mysqlMainDb`.cours_faculte
                           SET faculte = " . autoquote($facname) . ",
                               facid = " . intval($facid) . "
-                          WHERE code='$currentCourseID'");
+                          WHERE code='".mysql_real_escape_string($currentCourseID)."'");
 
                 // update Home Page Menu Titles for new language
                 mysql_select_db($currentCourseID, $db);
@@ -144,8 +144,8 @@ if (isset($_POST['submit'])) {
 			cours.visible, cours.fake_code, cours.titulaires, cours.languageCourse,
 			cours.departmentUrlName, cours.departmentUrl, cours.type, cours.password, cours.faculteid
 			FROM `$mysqlMainDb`.cours, `$mysqlMainDb`.cours_faculte
-			WHERE cours.code='$currentCourseID'
-			AND cours_faculte.code='$currentCourseID'";
+			WHERE cours.code='".mysql_real_escape_string($currentCourseID)."'
+			AND cours_faculte.code='".mysql_real_escape_string($currentCourseID)."'";
 		$result = mysql_query($sql);
 		$c = mysql_fetch_array($result);
 		$title = q($c['intitule']);
