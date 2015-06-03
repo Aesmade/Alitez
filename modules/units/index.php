@@ -80,22 +80,22 @@ _editor_lang = '$lang_editor';
 		$result = db_query("UPDATE unit_resources SET
 				title = $restitle,
 				comments = $rescomments
-				WHERE unit_id = $id AND id = $res_id");
+				WHERE unit_id = '".mysql_real_escape_string($id)."' AND id = '".mysql_real_escape_string($res_id)."'");
 	}
 	$tool_content .= "<p class='success_small'>$langResourceUnitModified</p>";
 } elseif(isset($_REQUEST['del'])) { // delete resource from course unit
 	$res_id = intval($_GET['del']);
 	if ($id = check_admin_unit_resource($res_id)) {
-		db_query("DELETE FROM unit_resources WHERE id = '$res_id'", $mysqlMainDb);
+		db_query("DELETE FROM unit_resources WHERE id = '".mysql_real_escape_string($res_id)."'", $mysqlMainDb);
 		$tool_content .= "<p class='success_small'>$langResourceCourseUnitDeleted</p>";
 	}
 } elseif (isset($_REQUEST['vis'])) { // modify visibility in text resources only 
 	$res_id = intval($_REQUEST['vis']);
 	if ($id = check_admin_unit_resource($res_id)) {
-		$sql = db_query("SELECT `visibility` FROM unit_resources WHERE id=$res_id");
+		$sql = db_query("SELECT `visibility` FROM unit_resources WHERE id='".mysql_real_escape_string($res_id)."'");
 		list($vis) = mysql_fetch_row($sql);
 		$newvis = ($vis == 'v')? 'i': 'v';
-		db_query("UPDATE unit_resources SET visibility = '$newvis' WHERE id = $res_id");
+		db_query("UPDATE unit_resources SET visibility = '$newvis' WHERE id = '".mysql_real_escape_string($res_id)."'");
 	}
 } elseif (isset($_REQUEST['down'])) { // change order down
 	$res_id = intval($_REQUEST['down']);
@@ -117,7 +117,7 @@ if ($is_adminOfCourse) {
         $visibility_check = "AND visibility='v'";
 }
 $q = db_query("SELECT * FROM course_units
-               WHERE id = $id AND course_id=$cours_id " . $visibility_check);
+               WHERE id = '".mysql_real_escape_string($id)."' AND course_id='".mysql_real_escape_string($cours_id)."' " . $visibility_check);
 if (!$q or mysql_num_rows($q) == 0) {
         $nameTools = $langUnitUnknown;
         draw('', 2, 'units', $head_content);
@@ -141,7 +141,7 @@ foreach (array('previous', 'next') as $i) {
                 $arrow2 = ' »';
         }
         $q = db_query("SELECT id, title FROM course_units
-                       WHERE course_id = $cours_id
+                       WHERE course_id = '".mysql_real_escape_string($cours_id)."'
                              AND id <> $id
                              AND `order` $op $info[order]
                              $visibility_check
@@ -194,7 +194,7 @@ $tool_content .= '<form class="unit-select" name="unitselect" action="' .
                  '<table align="left"><tbody><tr><th class="left">'.$langCourseUnits.':&nbsp;</th><td>'.
                  '<select class="auth_input" name="id" onChange="document.unitselect.submit();">';
 $q = db_query("SELECT id, title FROM course_units
-               WHERE course_id = $cours_id
+               WHERE course_id = '".mysql_real_escape_string($cours_id)."'
                      $visibility_check
                ORDER BY `order`", $mysqlMainDb);
 while ($info = mysql_fetch_array($q)) {
@@ -221,7 +221,7 @@ function check_admin_unit_resource($resource_id)
 	
 	if ($is_adminOfCourse) {
 		$q = db_query("SELECT course_units.id FROM course_units,unit_resources WHERE
-			course_units.course_id = $cours_id AND course_units.id = unit_resources.unit_id
+			course_units.course_id = '".mysql_real_escape_string($cours_id)."' AND course_units.id = unit_resources.unit_id
 			AND unit_resources.id = $resource_id");
 		if (mysql_num_rows($q) > 0) {
 			list($unit_id) = mysql_fetch_row($q);
@@ -235,10 +235,10 @@ function check_admin_unit_resource($resource_id)
 function show_resources($unit_id)
 {
 	global $tool_content, $max_resource_id;
-	$req = db_query("SELECT * FROM unit_resources WHERE unit_id = $unit_id ORDER BY `order`");
+	$req = db_query("SELECT * FROM unit_resources WHERE unit_id = '".mysql_real_escape_string($unit_id)."' ORDER BY `order`");
 	if (mysql_num_rows($req) > 0) {
 		list($max_resource_id) = mysql_fetch_row(db_query("SELECT id FROM unit_resources
-                                WHERE unit_id = $unit_id ORDER BY `order` DESC LIMIT 1"));
+                                WHERE unit_id = '".mysql_real_escape_string($unit_id)."' ORDER BY `order` DESC LIMIT 1"));
 		$tool_content .= "<br /><table class='resources' width='99%'>";
 		while ($info = mysql_fetch_array($req)) {
 			show_resource($info);
@@ -348,7 +348,7 @@ function show_lp($title, $comments, $resource_id, $lp_id)
 
 	$comment_box = $class_vis = $imagelink = $link = '';
         $title = htmlspecialchars($title);
-	$r = db_query("SELECT * FROM lp_learnPath WHERE learnPath_id = $lp_id",
+	$r = db_query("SELECT * FROM lp_learnPath WHERE learnPath_id = '".mysql_real_escape_string($lp_id)."'",
                       $currentCourseID);
 	if (mysql_num_rows($r) == 0) { // check if lp was deleted
 		if (!$is_adminOfCourse) {
@@ -384,7 +384,7 @@ function show_video($table, $title, $comments, $resource_id, $video_id, $visibil
 {
         global $is_adminOfCourse, $currentCourseID, $tool_content;
 
-        $result = db_query("SELECT * FROM $table WHERE id=$video_id",
+        $result = db_query("SELECT * FROM $table WHERE id='".mysql_real_escape_string($video_id)."'",
                            $currentCourseID);
         if ($result and mysql_num_rows($result) > 0) {
                 $row = mysql_fetch_array($result, MYSQL_ASSOC);
@@ -423,7 +423,7 @@ function show_work($title, $comments, $resource_id, $work_id, $visibility)
 
 	$comment_box = $class_vis = $imagelink = $link = '';
         $title = htmlspecialchars($title);
-	$r = db_query("SELECT * FROM assignments WHERE id = $work_id",
+	$r = db_query("SELECT * FROM assignments WHERE id = '".mysql_real_escape_string($work_id)."'",
                       $currentCourseID);
 	if (mysql_num_rows($r) == 0) { // check if it was deleted
 		if (!$is_adminOfCourse) {
@@ -460,7 +460,7 @@ function show_exercise($title, $comments, $resource_id, $exercise_id, $visibilit
 
 	$comment_box = $class_vis = $imagelink = $link = '';
         $title = htmlspecialchars($title);
-	$r = db_query("SELECT * FROM exercices WHERE id = $exercise_id",
+	$r = db_query("SELECT * FROM exercices WHERE id = '".mysql_real_escape_string($exercise_id)."'",
                       $currentCourseID);
 	if (mysql_num_rows($r) == 0) { // check if it was deleted
 		if (!$is_adminOfCourse) {
@@ -500,7 +500,7 @@ function show_forum($type, $title, $comments, $resource_id, $ft_id, $visibility)
 		$link = "<a href='${urlServer}modules/phpbb/viewforum.php?forum=$ft_id&amp;unit=$id'>";
                 $forumlink = $link . "$title</a>";
 	} else {
-		$r = db_query("SELECT forum_id FROM topics WHERE topic_id = $ft_id", $currentCourseID);
+		$r = db_query("SELECT forum_id FROM topics WHERE topic_id = '".mysql_real_escape_string($ft_id)."'", $currentCourseID);
 		list($forum_id) = mysql_fetch_array($r);
 		$link = "<a href='${urlServer}modules/phpbb/viewtopic.php?topic=$ft_id&amp;forum=$forum_id&amp;unit=$id'>";
                 $forumlink = $link . "$title</a>";
@@ -526,7 +526,7 @@ function show_wiki($title, $comments, $resource_id, $wiki_id, $visibility)
 	$comment_box = $imagelink = $link = $class_vis = '';
 	$class_vis = ($visibility == 'i')? ' class="invisible"': '';
         $title = htmlspecialchars($title);
-	$r = db_query("SELECT * FROM wiki_properties WHERE id = $wiki_id",
+	$r = db_query("SELECT * FROM wiki_properties WHERE id = '".mysql_real_escape_string($wiki_id)."'",
                       $currentCourseID);
 	if (mysql_num_rows($r) == 0) { // check if it was deleted
 		if (!$is_adminOfCourse) {
@@ -611,7 +611,7 @@ function edit_res($resource_id)
 {
 	global $tool_content, $id, $urlServer, $langTitle, $langDescr, $langContents, $langModify;
 	 
-        $sql = db_query("SELECT id, title, comments, type FROM unit_resources WHERE id='$resource_id'");
+        $sql = db_query("SELECT id, title, comments, type FROM unit_resources WHERE id='".mysql_real_escape_string($resource_id)."'");
         $ru = mysql_fetch_array($sql);
         $restitle = " value='" . htmlspecialchars($ru['title'], ENT_QUOTES) . "'";
         $rescomments = $ru['comments'];
