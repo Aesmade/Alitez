@@ -114,7 +114,7 @@ $myrow = mysql_fetch_array($result);
 $last_stud_info = "<b>".$myrow['prenom']." ".$myrow['nom']."</b> (".$myrow['email'].", ".date("j/n/Y H:i",$myrow['registered_at']).")";
 
 // Find admin's last login
-$sql = "SELECT `when` FROM loginout WHERE id_user = '".$uid."' AND action = 'LOGIN' ORDER BY `when` DESC LIMIT 1,1";
+$sql = "SELECT `when` FROM loginout WHERE id_user = '".mysql_real_escape_string($uid)."' AND action = 'LOGIN' ORDER BY `when` DESC LIMIT 1,1";
 $result = mysql_query($sql);
 $myrow = mysql_fetch_array($result);
 $lastadminlogin = strtotime($myrow['when']!=""?$myrow['when']:0);
