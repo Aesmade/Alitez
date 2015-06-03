@@ -47,7 +47,7 @@ $result2 = db_query("
         SELECT cours.code code, cours.fake_code fake_code,
                cours.intitule title, cours.titulaires profs, cours_user.statut statut
         FROM cours JOIN cours_user ON cours.cours_id = cours_user.cours_id
-        WHERE cours_user.user_id = $uid
+        WHERE cours_user.user_id = '".mysql_real_escape_string($uid)."'
         ORDER BY statut, cours.intitule, cours.titulaires");
 if ($result2 and mysql_num_rows($result2) > 0) {
 	while ($mycours = mysql_fetch_array($result2)) {
@@ -69,7 +69,7 @@ $_user['persoLastLogin'] = last_login($uid);
 $_user['lastLogin'] = str_replace('-', ' ', $_user['persoLastLogin']);
 
 //	BEGIN user's status query]=====================================================
-$user_status_query = db_query("SELECT statut FROM user WHERE user_id = '$uid'", $mysqlMainDb);
+$user_status_query = db_query("SELECT statut FROM user WHERE user_id = '".mysql_real_escape_string($uid)."'", $mysqlMainDb);
 if ($row = mysql_fetch_row($user_status_query)) {
 	$statut = $row[0];
 }
