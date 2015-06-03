@@ -35,12 +35,12 @@ if($is_adminOfCourse) {
 	if(isset($delete)) {
 		mysql_select_db("$mysqlMainDb",$db);
 		mysql_query("DROP DATABASE `$currentCourseID`");
-		mysql_query("DELETE FROM `$mysqlMainDb`.cours WHERE code='$currentCourseID'");
-		mysql_query("DELETE FROM `$mysqlMainDb`.cours_user WHERE cours_id='$cours_id'");
-		mysql_query("DELETE FROM `$mysqlMainDb`.cours_faculte WHERE code='$currentCourseID'");
-		mysql_query("DELETE FROM `$mysqlMainDb`.annonces WHERE cours_id='$cours_id'");
+		mysql_query("DELETE FROM `$mysqlMainDb`.cours WHERE code='".mysql_real_escape_string($currentCourseID)."'");
+		mysql_query("DELETE FROM `$mysqlMainDb`.cours_user WHERE cours_id='".mysql_real_escape_string($cours_id)."'");
+		mysql_query("DELETE FROM `$mysqlMainDb`.cours_faculte WHERE code='".mysql_real_escape_string($currentCourseID)."'");
+		mysql_query("DELETE FROM `$mysqlMainDb`.annonces WHERE cours_id='".mysql_real_escape_string($cours_id)."'");
 		##[BEGIN personalisation modification]############
-		mysql_query("DELETE FROM `$mysqlMainDb`.agenda WHERE lesson_code='$currentCourseID'");
+		mysql_query("DELETE FROM `$mysqlMainDb`.agenda WHERE lesson_code='".mysql_real_escape_string($currentCourseID)."'");
 		##[END personalisation modification]############
 		@mkdir("../../courses/garbage");
 		rename("../../courses/$currentCourseID", "../../courses/garbage/$currentCourseID");
