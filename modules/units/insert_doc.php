@@ -66,7 +66,7 @@ function display_docs()
                         $colspan = 5;
                 } else {
                         list($dirname) = mysql_fetch_row(db_query("SELECT filename FROM document
-                                                                   WHERE path = '$path'"));
+                                                                   WHERE path = '".mysql_real_escape_string($path)."'"));
 			$parentpath = dirname($path);
                         $dirname = "/".htmlspecialchars($dirname);
                         $parentlink = $_SERVER['PHP_SELF'] . "?type=doc&amp;id=$id&amp;path=" . $parentpath;
