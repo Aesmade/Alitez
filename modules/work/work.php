@@ -237,7 +237,7 @@ function add_assignment($title, $comments, $desc, $deadline, $group_submissions)
 {
 	global $tool_content, $workPath;
 
-	$secret = uniqid("");
+	$secret = uniqid("a", true);
 	db_query("INSERT INTO assignments
 		(title, description, comments, deadline, submission_date, secret_directory,
 			group_submissions) VALUES

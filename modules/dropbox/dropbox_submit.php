@@ -414,7 +414,7 @@ if (isset($_GET['mailingIndex']))  // examine or send
 					}
 					else
 					{
-						$newName = $uid . "_" . $thisFile . "_" . uniqid('');
+						$newName = $uid . "_" . $thisFile . "_" . uniqid('o');
 						if (rename($dropbox_cnf["sysPath"] . '/' . $thisFile, $dropbox_cnf["sysPath"] . '/' . $newName))
 						new Dropbox_SentWork( $mailingPseudoId, $thisFile, $mailing_item->description, $mailing_item->author, $newName, $thisContent['size'], array($thisRecip[0]));
 					}

@@ -662,7 +662,7 @@ function create_pass() {
                        'sy', 'zy', 'gy', 'ky', 'tri', 'kro', 'pra');
         $max = count($parts) - 1;
         $num = rand(10,499);
-        return $parts[rand(0,$max)] . $parts[rand(0,$max)] . $num;
+        return $parts[rand(0,$max)] . $parts[rand(0,$max)] . $parts[rand(0,$max)] . $num;
 }
 
 
