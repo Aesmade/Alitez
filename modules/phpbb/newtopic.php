@@ -80,7 +80,7 @@ include("functions.php"); // application logic for phpBB
  *****************************************************************************/
 
 $sql = "SELECT forum_name, forum_access, forum_type FROM forums
-	WHERE (forum_id = '$forum')";
+	WHERE (forum_id = '".mysql_real_escape_string($forum)."')";
 if (!$result = db_query($sql, $currentCourseID)) {
 	$tool_content .= $langErrorDataForum;
 	draw($tool_content, 2, 'phpbb', $head_content);
@@ -163,13 +163,13 @@ if (isset($submit) && $submit) {
 			$result = db_query($sql, $currentCourseID);
 			$sql = "UPDATE topics
 				SET topic_last_post_id = $post_id
-				WHERE topic_id = '$topic_id'";
+				WHERE topic_id = '".mysql_real_escape_string($topic_id)."'";
 			$result = db_query($sql, $currentCourseID);
 		}
 	}
 	$sql = "UPDATE forums
 		SET forum_posts = forum_posts+1, forum_topics = forum_topics+1, forum_last_post_id = $post_id
-		WHERE forum_id = '$forum'";
+		WHERE forum_id = '".mysql_real_escape_string($forum)."'";
 	$result = db_query($sql, $currentCourseID);
 	
 	$topic = $topic_id;
@@ -185,7 +185,7 @@ if (isset($submit) && $submit) {
 	$category_id = forum_category($forum);
 	$cat_name = category_name($category_id);
 	$sql = db_query("SELECT DISTINCT user_id FROM forum_notify 
-			WHERE (forum_id = $forum OR cat_id = $category_id) 
+			WHERE (forum_id = '".mysql_real_escape_string($forum)."' OR cat_id = '".mysql_real_escape_string($category_id)."') 
 			AND notify_sent = 1 AND course_id = $cours_id", $mysqlMainDb);
 	$c = course_code_to_title($currentCourseID);
 	$body_topic_notify = "$langCourse: '$c'\n\n$langBodyForumNotify $langInForums '$forum_name' $langInCat '$cat_name' \n\n$gunet";
