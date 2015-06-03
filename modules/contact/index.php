@@ -36,7 +36,7 @@ $nameTools = $langContactProf;
 // Initialise $tool_content
 $tool_content = "";
 
-$userdata = mysql_fetch_array(db_query("SELECT nom, prenom, email FROM user WHERE user_id=$uid", $mysqlMainDb));
+$userdata = mysql_fetch_array(db_query("SELECT nom, prenom, email FROM user WHERE user_id='".mysql_real_escape_string($uid)."'", $mysqlMainDb));
 
 if (empty($userdata['email'])) {
 	if ($uid) {
@@ -93,7 +93,7 @@ return $ret;
 // send email
 function email_profs($cours_id, $content, $from_name, $from_address)
 {
-        $q = db_query("SELECT fake_code FROM cours WHERE cours_id = $cours_id");
+        $q = db_query("SELECT fake_code FROM cours WHERE cours_id = '".mysql_real_escape_string($cours_id)."'");
         list($fake_code) = mysql_fetch_row($q);
 
 	$ret = "<p>$GLOBALS[langSendingMessage]</p>";
@@ -101,7 +101,7 @@ function email_profs($cours_id, $content, $from_name, $from_address)
 	$profs = db_query("SELECT user.email AS email, user.nom AS nom,
 		user.prenom AS prenom
 		FROM cours_user JOIN user ON user.user_id = cours_user.user_id
-		WHERE cours_id = $cours_id AND cours_user.statut=1");
+		WHERE cours_id = '".mysql_real_escape_string($cours_id)."' AND cours_user.statut=1");
 
 	$message = sprintf($GLOBALS['langContactIntro'],
 		$from_name, $from_address, $content);
