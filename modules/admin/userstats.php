@@ -52,7 +52,7 @@ $u = (string)isset($_GET['u'])?$_GET['u']:(isset($_POST['u'])?$_POST['u']:'');
 if((!empty($u)) && ctype_digit($u))	// validate the user id
 {
 	$u = (int)$u;
-	$sql = mysql_query("SELECT nom, prenom, username, password, email, phone, department, registered_at, expires_at FROM user WHERE user_id = '$u'");
+	$sql = mysql_query("SELECT nom, prenom, username, password, email, phone, department, registered_at, expires_at FROM user WHERE user_id = '".mysql_real_escape_string($u)."'");
 	$info = mysql_fetch_array($sql);
     	$tool_content .= "<table class=\"FormData\" width=\"99%\" align=\"left\">
 	<thead>
@@ -60,10 +60,10 @@ if((!empty($u)) && ctype_digit($u))	// validate the user id
 	<td><b>$langUserStats</b>: $info[2]</td>
 	</tr>";
 
-	$sql = mysql_query("SELECT nom, prenom, username FROM user WHERE user_id = '$u'");
+	$sql = mysql_query("SELECT nom, prenom, username FROM user WHERE user_id = '".mysql_real_escape_string($u)."'");
 	$sql = mysql_query("SELECT a.code, a.intitule, b.statut, a.cours_id
 		FROM cours AS a LEFT JOIN cours_user AS b ON a.cours_id = b.cours_id
-		WHERE b.user_id = '$u' ORDER BY b.statut, a.faculte");
+		WHERE b.user_id ='".mysql_real_escape_string($u)."' ORDER BY b.statut, a.faculte");
 
 		// αν ο χρήστης συμμετέχει σε μαθήματα τότε παρουσίασε τη λίστα
 	if (mysql_num_rows($sql) > 0) {
@@ -143,7 +143,7 @@ if (!extension_loaded('gd')) {
 	require_once '../../include/libchart/libchart.php';
 	$sql = "SELECT a.code, a.intitule, b.statut, a.cours_id
 			FROM cours AS a LEFT JOIN cours_user AS b ON a.cours_id = b.cours_id
-			WHERE b.user_id = '$u' ORDER BY b.statut, a.faculte";
+			WHERE b.user_id = '".mysql_real_escape_string($u)."' ORDER BY b.statut, a.faculte";
 	$result = db_query($sql);
 	if (mysql_num_rows($result) > 0) {
 		while ($row = mysql_fetch_assoc($result)) {
@@ -152,7 +152,7 @@ if (!extension_loaded('gd')) {
 		}
 		mysql_free_result($result);
 		foreach ($course_codes as $course_code) {
-			$sql = "SELECT COUNT(*) AS cnt FROM actions WHERE user_id = '$u'";
+			$sql = "SELECT COUNT(*) AS cnt FROM actions WHERE user_id = '".mysql_real_escape_string($u)."'";
 			$result = db_query($sql, $course_code);
 			while ($row = mysql_fetch_assoc($result)) {
 				$totalHits += $row['cnt'];
@@ -184,7 +184,7 @@ if (!extension_loaded('gd')) {
 // End of chart display; chart unlinked at end of script.
 
 
-$sql = "SELECT * FROM loginout WHERE id_user = '$u' ORDER by idLog DESC LIMIT 15";
+$sql = "SELECT * FROM loginout WHERE id_user = '".mysql_real_escape_string($u)."' ORDER by idLog DESC LIMIT 15";
 
 $leResultat = db_query($sql, $mysqlMainDb);
     $tool_content .= "
