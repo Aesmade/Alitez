@@ -219,7 +219,7 @@ if (isset($require_current_course) and $require_current_course) {
                         } else {
         			$res2 = db_query("SELECT statut FROM cours_user
                                                   WHERE user_id = $uid AND
-                                                        cours_id = $cours_id");
+                                                        cours_id = '".mysql_real_escape_string($cours_id)."'");
         			if ($res2 and mysql_num_rows($res2) > 0) {
 	        			list($statut) = mysql_fetch_row($res2);
 		        	}
