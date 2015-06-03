@@ -48,7 +48,7 @@ $id = intval($_REQUEST['id']);
 
 // Check that the current unit id belongs to the current course
 $q = db_query("SELECT * FROM course_units
-               WHERE id=$id AND course_id=$cours_id");
+               WHERE id='".mysql_real_escape_string($id)."' AND course_id='".mysql_real_escape_string($cours_id)."'");
 if (!$q or mysql_num_rows($q) == 0) {
         $nameTools = $langUnitUnknown;
         draw('', 2, 'units', $head_content);
@@ -119,7 +119,7 @@ draw($tool_content, 2, 'units', $head_content);
 // insert docs in database
 function insert_docs($id)
 {
-	list($order) = mysql_fetch_array(db_query("SELECT MAX(`order`) FROM unit_resources WHERE unit_id=$id"));
+	list($order) = mysql_fetch_array(db_query("SELECT MAX(`order`) FROM unit_resources WHERE unit_id='".mysql_real_escape_string($id)."'"));
 	
 	foreach ($_POST['document'] as $file_id) {
 		$order++;
@@ -140,7 +140,7 @@ function insert_text($id)
 {
 	global $title, $comments;
 	
-	list($order) = mysql_fetch_array(db_query("SELECT MAX(`order`) FROM unit_resources WHERE unit_id=$id"));
+	list($order) = mysql_fetch_array(db_query("SELECT MAX(`order`) FROM unit_resources WHERE unit_id='".mysql_real_escape_string($id)."'"));
 	$order++;
 	db_query("INSERT INTO unit_resources SET unit_id=$id, type='text', title='', 
 		comments=" . autoquote($comments) . ", visibility='v', `order`=$order, `date`=NOW(), res_id=0",
@@ -154,7 +154,7 @@ function insert_text($id)
 // insert lp in database
 function insert_lp($id)
 {
-	list($order) = mysql_fetch_array(db_query("SELECT MAX(`order`) FROM unit_resources WHERE unit_id=$id"));
+	list($order) = mysql_fetch_array(db_query("SELECT MAX(`order`) FROM unit_resources WHERE unit_id='".mysql_real_escape_string($id)."'"));
 	
 	foreach ($_POST['lp'] as $lp_id) {
 		$order++;
@@ -177,7 +177,7 @@ function insert_lp($id)
 // insert video in database
 function insert_video($id)
 {
-	list($order) = mysql_fetch_array(db_query("SELECT MAX(`order`) FROM unit_resources WHERE unit_id=$id"));
+	list($order) = mysql_fetch_array(db_query("SELECT MAX(`order`) FROM unit_resources WHERE unit_id='".mysql_real_escape_string($id)."'"));
 	
 	foreach ($_POST['video'] as $video_id) {
 		$order++;
@@ -185,7 +185,7 @@ function insert_video($id)
                 $res_id = intval($res_id);
                 $table = ($table == 'video')? 'video': 'videolinks';
 		$row = mysql_fetch_array(db_query("SELECT * FROM $table
-			WHERE id = $res_id", $GLOBALS['currentCourseID']), MYSQL_ASSOC);
+			WHERE id = '".mysql_real_escape_string($res_id)."'", $GLOBALS['currentCourseID']), MYSQL_ASSOC);
                 db_query("INSERT INTO unit_resources SET unit_id=$id, type='$table', title=" . quote($row['titre']) . ", comments=" . quote($row['description']) . ", visibility='v', `order`=$order, `date`=NOW(), res_id=$res_id", $GLOBALS['mysqlMainDb']);
 	}
 	header('Location: index.php?id=' . $id);
@@ -195,7 +195,7 @@ function insert_video($id)
 // insert work (assignment) in database
 function insert_work($id)
 {
-	list($order) = mysql_fetch_array(db_query("SELECT MAX(`order`) FROM unit_resources WHERE unit_id=$id"));
+	list($order) = mysql_fetch_array(db_query("SELECT MAX(`order`) FROM unit_resources WHERE unit_id='".mysql_real_escape_string($id)."'"));
 	
 	foreach ($_POST['work'] as $work_id) {
 		$order++;
@@ -225,7 +225,7 @@ function insert_work($id)
 // insert exercise in database
 function insert_exercise($id)
 {
-	list($order) = mysql_fetch_array(db_query("SELECT MAX(`order`) FROM unit_resources WHERE unit_id=$id"));
+	list($order) = mysql_fetch_array(db_query("SELECT MAX(`order`) FROM unit_resources WHERE unit_id='".mysql_real_escape_string($id)."'"));
 	
 	foreach ($_POST['exercise'] as $exercise_id) {
 		$order++;
@@ -248,7 +248,7 @@ function insert_exercise($id)
 // insert forum in database
 function insert_forum($id)
 {
-	list($order) = mysql_fetch_array(db_query("SELECT MAX(`order`) FROM unit_resources WHERE unit_id=$id"));
+	list($order) = mysql_fetch_array(db_query("SELECT MAX(`order`) FROM unit_resources WHERE unit_id='".mysql_real_escape_string($id)."'"));
 	foreach ($_POST['forum'] as $for_id) {
 		$order++;
 		$ids = explode(':', $for_id);
@@ -277,7 +277,7 @@ function insert_forum($id)
 // insert wiki in database
 function insert_wiki($id)
 {
-	list($order) = mysql_fetch_array(db_query("SELECT MAX(`order`) FROM unit_resources WHERE unit_id=$id"));
+	list($order) = mysql_fetch_array(db_query("SELECT MAX(`order`) FROM unit_resources WHERE unit_id='".mysql_real_escape_string($id)."'"));
 	
 	foreach ($_POST['wiki'] as $wiki_id) {
 		$order++;
