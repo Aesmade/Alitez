@@ -129,14 +129,14 @@ draw($tool_content, 2, 'course_info');
 function delete_users() {
 	global $cours_id, $langUsersDeleted;
 
-	db_query("DELETE FROM cours_user WHERE cours_id = $cours_id and statut <> '1'");
+	db_query("DELETE FROM cours_user WHERE cours_id = '".mysql_real_escape_string($course_id)."' and statut <> '1'");
 	return "<p>$langUsersDeleted</p>";
 }
 
 function delete_announcements() {
 	global $cours_id, $langAnnDeleted;
 
-	db_query("DELETE FROM annonces WHERE cours_id = $cours_id");
+	db_query("DELETE FROM annonces WHERE cours_id = '".mysql_real_escape_string($course_id)."'");
 	return "<p>$langAnnDeleted</p>";
 }
 
@@ -146,7 +146,7 @@ function delete_agenda() {
 	db_query("DELETE FROM agenda");
 
 	##[BEGIN personalisation modification]############
-	db_query("DELETE FROM ".$mysqlMainDb.".agenda WHERE lesson_code='$currentCourseID'");
+	db_query("DELETE FROM ".$mysqlMainDb.".agenda WHERE lesson_code='".mysql_real_escape_string($currentCourseID)."'");
 	##[END personalisation modification]############
 	return "<p>$langAgendaDeleted</p>";
 }
