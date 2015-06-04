@@ -27,7 +27,7 @@
 
 $require_admin = TRUE;
 include '../../include/baseTheme.php';
-include '../../upgrade/upgrade_functions.php';
+//include '../../upgrade/upgrade_functions.php';
 include '../../include/lib/fileUploadLib.inc.php';
 include '../../include/lib/fileManageLib.inc.php';
 include '../../include/lib/forcedownload.php';
@@ -44,7 +44,7 @@ $tool_content = "";
 $version = 1;
 $encoding = 'ISO-8859-7';
 
-if (isset($send_archive) and $_FILES['archiveZipped']['size'] > 0) {
+if (isset($_POST['send_archive']) and $_FILES['archiveZipped']['size'] > 0 and isset($_POST['rhh']) and $_POST['rhh']==123) {
 	$tool_content .= "<table width='99%'><caption>".$langFileSent."</caption><tbody>
 	<tr><td width='3%'>$langFileSentName</td><td>".$_FILES['archiveZipped']['name']."</td></tr>
 	<tr><td width='3%'>$langFileSentSize</td><td>".$_FILES['archiveZipped']['size']."</td></tr>
@@ -54,7 +54,7 @@ if (isset($send_archive) and $_FILES['archiveZipped']['size'] > 0) {
 	$tool_content .= "<table width='99%'><caption>".$langFileUnzipping."</caption><tbody>";
 	$tool_content .= "<tr><td>".unpack_zip_show_files($archiveZipped)."</td></tr>";
 	$tool_content .= "<tbody></table><br />";
-} elseif (isset($_POST['send_path']) and isset($_POST['pathToArchive'])) {
+} elseif (isset($_POST['send_path']) and isset($_POST['pathToArchive']) and isset($_POST['rhh']) and $_POST['rhh']==123) {
         $pathToArchive = $_POST['pathToArchive'];
 	if (file_exists($pathToArchive)) {
 		$tool_content .= "<table width='99%'><caption>".$langFileUnzipping."</caption><tbody>";
@@ -64,7 +64,6 @@ if (isset($send_archive) and $_FILES['archiveZipped']['size'] > 0) {
 		$tool_content .= $langFileNotFound;
 	}
 } elseif (isset($create_dir_for_course)) {
-	if ($_POST['rh'] == md5($_POST['restoreThis'] . "ABC")) {
 	$r = $restoreThis."/html";
 	list($new_course_code, $new_course_id) = create_course($course_code, $course_lang, $course_title,
 		$course_desc, intval($course_fac), $course_vis, $course_prof, $course_type);
@@ -96,10 +95,9 @@ if (isset($send_archive) and $_FILES['archiveZipped']['size'] > 0) {
 		mkdir($webDir."courses/garbage/tmpUnzipping");
 	rename($webDir."courses/tmpUnzipping", $webDir."courses/garbage/tmpUnzipping/".time()."");
 	$tool_content .= "<br /><center><p><a href='../admin/index.php'>$langBack</p></center>";
-}}
+}
 
 elseif (isset($_POST['pathOf4path'])) {
-	if ($_POST['rh'] == md5($_POST['restoreThis'] . "ABC")) {
 	// we know where is the 4 paths to restore  the  course.
 	// 2 Show content
 	// $_POST['restoreThis']: contains the path of the archived course
@@ -111,7 +109,6 @@ elseif (isset($_POST['pathOf4path'])) {
 	include($_POST['restoreThis'] . '/backup.php');
 	$tool_content .= ob_get_contents();
 	ob_end_clean();
-}
 } else {
 
 // -------------------------------------
@@ -137,6 +134,7 @@ elseif (isset($_POST['pathOf4path'])) {
 	<br /><br />
 	<form action='".$_SERVER['PHP_SELF']."' method='post'>
 	<input type='text' name='pathToArchive' />
+	<input type='hidden' name='rhh' value='123' />
 	<input type='submit' name='send_path' value='".$langSend."' />
 	</form>
 	</td></tr>
@@ -204,7 +202,6 @@ function course_details($code, $lang, $title, $desc, $fac, $vis, $prof, $type) {
 		echo "<tr><td>&nbsp;</td></tr><tr><td>";
 		echo "<input type='submit' name='create_dir_for_course' value='$langOk' />";
 		echo "<input type='hidden' name='restoreThis' value='$restoreThis' />";
-		echo "<input type='hidden' name='rh' value='".md5($restoreThis . "ABC")."' />";
 		echo "</td></tr></tbody></table></form>";
 	}
 }

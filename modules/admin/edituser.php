@@ -203,6 +203,7 @@ $tool_content .= "
   <tr>
     <th class='left'>&nbsp;</th>
     <td>
+    <input type='hidden' name='gk' value='3' />
       <input type='hidden' name='u' value='$u' />
       <input type='hidden' name='u_submitted' value='1' />
       <input type='hidden' name='registered_at' value='".$info['registered_at']."' />
@@ -287,7 +288,7 @@ $tool_content .= "
 				$tool_content .= $langCannotDeleteAdmin;
 			}
 		}
-	}  else { // if the form was submitted then update user
+	}  else if (isset($_POST['gk']) && $_POST['gk'] == 3) { // if the form was submitted then update user
 
 		// get the variables from the form and initialize them
 		$fname = isset($_POST['fname'])?$_POST['fname']:'';

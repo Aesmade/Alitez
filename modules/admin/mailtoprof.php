@@ -68,7 +68,8 @@ $tool_content = "";
 ******************************************************************************/
 
 // Send email after form post
-if (isset($_POST['submit']) && ($_POST['body_mail'] != "") && ($_POST['submit'] == $langSend)) {
+if (isset($_POST['submit']) && ($_POST['body_mail'] != "") && ($_POST['submit'] == $langSend) &&
+	isset($_POST['ss']) && $_POST['ss']=='s') {
 	// Where to send the email
 	if ($_POST['sendTo'] == "0") {
 		// All users
@@ -116,6 +117,7 @@ $langEmail : $emailhelpdesk
   </tr>
   <tr>
     <th>&nbsp;</th>
+    <input type='hidden' name='ss' value='s' />
     <td><input type=\"submit\" name=\"submit\" value=\"$langSend\"></input></td>
   </tr>
   </tbody>

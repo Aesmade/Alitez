@@ -92,7 +92,7 @@ if (isset($_GET['delete'])) {
                 $visibleToModify = $myrow['visible'];
                 $displayAnnouncementList = true;
         }
-} elseif (isset($_POST['submitAnnouncement'])) {
+} elseif (isset($_POST['submitAnnouncement']) && isset($_POST['lel']) && $_POST['lel'] == 'lal') {
 	// submit announcement command
         if (isset($_POST['id'])) {
                 // modify announcement
@@ -121,7 +121,7 @@ if (isset($message) && !empty($message)) {
 }
 
 // display form
-if ($displayForm && (@$addAnnouce==1 || isset($modify))) {
+if ($displayForm && (@$_GET['addAnnouce']==1 || isset($_GET['modify']))) {
         $displayAnnouncementList = false;
         // display add announcement command
         $tool_content .= "<form method='post' action='$_SERVER[PHP_SELF]?localize=$localize'>";
@@ -169,6 +169,7 @@ if ($displayForm && (@$addAnnouce==1 || isset($modify))) {
                    <td><textarea name='comment_en' rows='2' cols='50' class='FormData_InputText'>$commentToModifyEn</textarea>
                        </td></tr>
               <tr><th class='left'>&nbsp;</th>
+              <input type='hidden' name='lel' value='lal' />
                   <td><input type='submit' name='submitAnnouncement' value='$langSubmit' /></td></tr>
               <tr><td colspan='2'>&nbsp;</td></tr>
           </tbody>

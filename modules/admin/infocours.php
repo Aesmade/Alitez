@@ -75,7 +75,21 @@ if (isset($search) && ($search=="yes")) {
 	$searchurl = "&search=yes";
 }
 // Update cours basic information
-if (isset($submit))  {
+if (isset($_POST['submit']))
+  $submit = $_POST['submit'];
+if (isset($_POST['facname']))
+  $facname = $_POST['facname'];
+if (isset($_POST['titulaires']))
+  $titulaires = $_POST['titulaires'];
+if (isset($_POST['intitule']))
+  $intitule = $_POST['intitule'];
+if (isset($_POST['facid']))
+  $facid = $_POST['facid'];
+if (isset($_POST['vv']))
+  $vv = $_POST['vv'];
+if (isset($_POST['faculte']))
+  $faculte = $_POST['faculte'];
+if (isset($submit) && isset($vv) && $vv=='3')  {
   // Get faculte ID and faculte name for $faculte
   // $faculte example: 12--Tmima 1
   list($facid, $facname) = explode("--", $faculte);
@@ -135,6 +149,7 @@ else {
   </tr>
   <tr>
     <th>&nbsp;</th>
+    <input type='hidden' name='vv' value='3' />
     <td><input type='submit' name='submit' value='$langModify'></td>
   </tr>
   </tbody>

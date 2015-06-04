@@ -20,7 +20,7 @@ $tool_content = "";
 $error = '';
 $acceptable_fields = array('first', 'last', 'email', 'id', 'phone', 'username');
 
-if (isset($_POST['submit'])) {
+if (isset($_POST['submit']) && isset($_POST['go']) && $_POST['go']=='11') {
         $send_mail = isset($_POST['send_mail']) && $_POST['send_mail'];
         $unparsed_lines = '';
         $new_users_info = array();
@@ -140,6 +140,7 @@ if (isset($_POST['submit'])) {
     <td><input name='send_mail' type='checkbox' />
         $langMultiRegSendMail</td>
 </tr>
+<input type='hidden' name='go' value='11' />
 <tr><th>&nbsp;</th>
     <td><input type='submit' name='submit' value='$langSubmit' /></td>
 </tr>

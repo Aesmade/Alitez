@@ -63,7 +63,7 @@ $tool_content = "";
 		MAIN BODY
 ******************************************************************************/
 // Display phpinfo
-if ($to=="phpinfo") {
+if ($_GET['to']=="phpinfo") {
 	$tool_content .= '<div>';
 	ob_start();
 	phpinfo();

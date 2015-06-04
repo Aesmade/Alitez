@@ -67,12 +67,12 @@ $tool_content = "";
 		MAIN BODY
 ******************************************************************************/
 // Save new config.php
-if (isset($submit))  {
+if (isset($_POST['submit']) && isset($_POST['lol']) && $_POST['lol']=='kekk')  {
 	// Make config directory writable
 	@chmod( "../../config",700 );
 	@chmod( "../../config", 0700 );
 	// Create backup file
-	if ($backupfile=="on") {
+	if ($_POST['backupfile']=="on") {
 		// If a backup already exists delete it
 		if (file_exists("../../config/config_backup.php"))
 			unlink("../../config/config_backup.php");
@@ -152,7 +152,9 @@ $durationAccount = "'.$_POST['formdurationAccount'].'";
 else {
 	$titleextra = "config.php";
 	// Check if restore has been selected
-	if (isset($restore) && $restore=="yes") {
+  if (isset($_GET['restore']))
+    $restore = $_GET['restore'];
+	if (isset($restore) && $restore=="yep") {
 		// Substitute variables with those from backup file
 		$titleextra = " ($langRestoredValues)";
 		@include("../../config/config_backup.php");
@@ -303,6 +305,7 @@ $tool_content .= "
     <th class=\"left\">".$langReplaceBackupFile."</th>
     <td><input type=\"checkbox\" name=\"backupfile\" checked></td>
   </tr>
+  <input type='hidden' name='lol' value='kekk' />
   <tr>
     <th class=\"left\">&nbsp;</th>
     <td><input type='submit' name='submit' value='$langModify'></td>
@@ -318,7 +321,7 @@ $tool_content .= "
   <tbody>
   <tr>
     <th width=\"220\" class=\"left\">".$langOtherActions."</th>
-    <td><a href=\"eclassconf.php?restore=yes\">$langRestoredValues</a></td>
+    <td><a href=\"eclassconf.php?restore=yep\">$langRestoredValues</a></td>
   </tr>
   </tbody>
   </table>";

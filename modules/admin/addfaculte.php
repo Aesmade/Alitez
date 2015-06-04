@@ -90,6 +90,10 @@ $tool_content = "";
 	</div>";
 
 // Display all available faculties
+	if (isset($_GET['a']))
+		$a = $_GET['a'];
+	if (isset($_GET['c']))
+		$c = $_GET['c'];
 if (!isset($a)) {
 	// Count available faculties
 	$a=mysql_fetch_array(mysql_query("SELECT COUNT(*) FROM faculte"));
@@ -138,6 +142,12 @@ if (!isset($a)) {
 }
 // Add a new faculte
 elseif ($a == 1)  {
+	if (isset($_POST['codefaculte']))
+		$codefaculte = $_POST['codefaculte'];
+	if (isset($_POST['faculte']))
+		$faculte = $_POST['faculte'];
+	if (isset($_POST['add']))
+		$add = $_POST['add'];
 	if (isset($add)) {
 		// Check for empty fields
 		if (empty($codefaculte) or empty($faculte)) {
@@ -159,7 +169,7 @@ elseif ($a == 1)  {
 		elseif (mysql_num_rows(mysql_query("SELECT * from faculte WHERE name=" . autoquote($faculte))) > 0) {
 			$tool_content .= "<p>".$langFaculteExists."</p><br />";
 			$tool_content .= "<center><p><a href=\"$_SERVER[PHP_SELF]?a=1\">".$langReturnToAddFaculte."</a></p></center>";
-		} else {
+		} else if (isset($_POST['vv']) && $_POST['vv']=='l') {
 		// OK Create the new faculty
 			mysql_query("INSERT into faculte(code,name,generator,number) VALUES(" . autoquote($codefaculte) . ',' . autoquote($faculte) . ",'100','1000')")
 				or die ($langNoSuccess);
@@ -182,6 +192,7 @@ elseif ($a == 1)  {
 		</tr>
 		<tr>
 		<th>&nbsp;</th>
+		<input type='hidden' name='vv' value='l' />
 		<td><input type='submit' name='add' value='".$langAdd."' /></td>
 		</tr>
 		</tbody>
@@ -221,7 +232,7 @@ elseif ($a == 3)  {
                                                    autoquote($faculte))) > 0) {
 			$tool_content .= "<p>".$langFaculteExists."</p><br>";
 			$tool_content .= "<p align='right'><a href='$_SERVER[PHP_SELF]?a=3&amp;c=$c'>$langReturnToEditFaculte</a></p>";
-		} else {
+		} else if (isset($_POST['vv']) && $_POST['vv']=='l') {
 		// OK Update the faculte
 			mysql_query("UPDATE faculte SET name = " .
                                     autoquote($faculte) . " WHERE id='".mysql_real_escape_string($c)."'")
@@ -260,6 +271,7 @@ elseif ($a == 3)  {
 		<tr>
 		<th>&nbsp;</th>
 		<td><input type='hidden' name='c' value='$c' />
+		<input type='hidden' name='vv' value='l' />
 		<input type='submit' name='edit' value='$langAcceptChanges' />
 		</td>
 		</tr>

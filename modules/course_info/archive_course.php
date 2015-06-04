@@ -48,7 +48,7 @@ if($is_adminOfCourse) {
 	$dateBackuping  = date("Y-m-d-H-i-(B)-s");
 	$shortDateBackuping  = date("YzBs"); // YEAR - Day in Year - Swatch - second
 	$archiveDir .= "/".$currentCourseID."/".$dateBackuping;
-	$zipfile = $webDir."courses/archive/$currentCourseID/archive.$currentCourseID.$shortDateBackuping.zip";
+	$zipfile = $webDir."courses/archive/$currentCourseID/crsarchive.$currentCourseID.$shortDateBackuping.zip";
 	$tool_content .= "<table class='Deps' align='center'><tbody><tr><th align=\"left\"><ol>\n";
 
 	$dirArchive = realpath("../..").$archiveDir;
@@ -78,7 +78,7 @@ if($is_adminOfCourse) {
 		draw($tool_content, 2, 'course_info');
 		exit;
 	} else {
-		$tool_content .= "<br /><p class='success_small'>$langBackupSuccesfull</p><div align=\"left\"><a href='$urlServer/courses/archive/$currentCourseID/archive.$currentCourseID.$shortDateBackuping.zip'>$langDownloadIt</a><img src='../../template/classic/img/download.gif' title='$langDownloadIt' width='30' height='29'></div>";
+		$tool_content .= "<br /><p class='success_small'>$langBackupSuccesfull</p><div align=\"left\"><a href='$urlServer/courses/archive/$currentCourseID/crsarchive.$currentCourseID.$shortDateBackuping.zip'>$langDownloadIt</a><img src='../../template/classic/img/download.gif' title='$langDownloadIt' width='30' height='29'></div>";
 	}
 
 	$tool_content .= "<p align=\"right\">";

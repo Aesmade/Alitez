@@ -49,7 +49,7 @@ if (isset($search) && ($search=="yes")) {
 	$searchurl = "&search=yes";
 }
 // Register - Unregister students - professors to course
-if (isset($_POST['submit']))  {
+if (isset($_POST['submit']) && isset($_POST['va']) && $_POST['va'] == '12')  {
         $regstuds = isset($_POST['regstuds'])? array_map('intval', $_POST['regstuds']): array();
         $regprofs = isset($_POST['regprofs'])? array_map('intval', $_POST['regprofs']): array();
         $reglist = implode(', ', array_merge($regstuds, $regprofs));
@@ -214,6 +214,7 @@ function reverseAll(cbList) {
 		$a++;
 	}
 	$tool_content .= "</select></th></tr><tr><td>&nbsp;</td>
+	<input type='hidden' name='va' value='12' />
 		<td><input type=submit value=\"".$langAcceptChanges."\" name=\"submit\" onClick=\"selectAll(this.form.elements[5],this.form.elements[6],true)\"></td>
 		<td>&nbsp;</td>
 		</tr></tbody></table>";

@@ -49,7 +49,7 @@ $all_set = register_posted_variables(array(
 
 $submit = isset($_POST['submit'])?$_POST['submit']:'';
 
-if($submit) {
+if($submit && isset($_POST['gn']) && $_POST['gn'] == 7) {
 	// register user
 	$depid = intval(isset($_POST['department'])?$_POST['department']: 0);
 	$proflanguage = isset($_POST['language'])?$_POST['language']:'';
@@ -197,6 +197,7 @@ $langEmail : $emailhelpdesk
 	<tr>
 	<th class='left'><b>$langComments</b></th>
 	<td><input class='FormData_InputText' type='text' name='comment' value='".@q($pcom)."'>&nbsp;</b></td>
+	<input type='hidden' name='gn' value='7' />
 	</tr>
 	<tr>
 	<th class='left'>$langLanguage</th>

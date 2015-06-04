@@ -93,8 +93,8 @@ $tool_content .= "<table class='FormData' width='99%' align='left'>
 // ---------------------
 // actions
 // ---------------------
-if (isset($stats)) {
-	switch ($stats) {
+if (isset($_GET['stats'])) {
+	switch ($_GET['stats']) {
 		case 'login':
 			mysql_select_db($mysqlMainDb);
 			$result = db_query("SELECT code FROM cours");
