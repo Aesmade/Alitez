@@ -54,7 +54,7 @@ if(isset($usercomment))
   $usercomment = htmlspecialchars($usercomment, ENT_QUOTES, "utf-8");
 
 // display form
-if (!isset($submit)) {
+if (!isset($_POST['submit'])) {
 
 @$tool_content .= "
 <form action=\"$_SERVER[PHP_SELF]\" method=\"post\">
@@ -129,6 +129,23 @@ if (!isset($submit)) {
 // registration
 $registration_errors = array();
 
+  if (isset($_POST['nom_form']))
+    $nom_form = htmlspecialchars(mysql_real_escape_string($_POST['nom_form']), ENT_QUOTES);
+  if (isset($_POST['prenom_form']))
+    $prenom_form = htmlspecialchars(mysql_real_escape_string($_POST['prenom_form']), ENT_QUOTES);
+  if (isset($_POST['email_form']))
+    $email_form = htmlspecialchars(mysql_real_escape_string($_POST['email_form']), ENT_QUOTES);
+  if (isset($_POST['userphone']))
+    $userphone = htmlspecialchars(mysql_real_escape_string($_POST['userphone']), ENT_QUOTES);
+  if (isset($_POST['usercomment']))
+    $usercomment = htmlspecialchars(mysql_real_escape_string($_POST['usercomment']), ENT_QUOTES);
+  if (isset($_POST['uname']))
+    $uname = htmlspecialchars(mysql_real_escape_string($_POST['uname']), ENT_QUOTES);
+  if (isset($_POST['proflang']))
+    $proflang = htmlspecialchars(mysql_real_escape_string($_POST['proflang']), ENT_QUOTES);
+  if (isset($_POST['department']))
+    $department = htmlspecialchars(mysql_real_escape_string($_POST['department']), ENT_QUOTES);
+  
     // check if there are empty fields
     if (empty($nom_form) or empty($prenom_form) or empty($userphone)
 	 or empty($usercomment) or empty($uname) or (empty($email_form))) {

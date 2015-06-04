@@ -135,16 +135,16 @@ if (!isset($_POST['submit'])) {
 	// check if there are empty fields
 	if (isset($_REQUEST['auth']))
 		$auth = $_REQUEST['auth'];
-	if (isset($_REQUEST['nom_form']))
-		$nom_form = $_REQUEST['nom_form'];
-	if (isset($_REQUEST['prenom_form']))
-		$prenom_form = $_REQUEST['prenom_form'];
-	if (isset($_REQUEST['password']))
-		$password = $_REQUEST['password'];
-	if (isset($_REQUEST['password1']))
-		$password1 = $_REQUEST['password1'];
-	if (isset($_REQUEST['email']))
-		$email = $_REQUEST['email'];
+	if (isset($_POST['nom_form']))
+		$nom_form = htmlspecialchars(mysql_real_escape_string($_POST['nom_form']), ENT_QUOTES);
+	if (isset($_POST['prenom_form']))
+		$prenom_form = htmlspecialchars(mysql_real_escape_string($_POST['prenom_form']), ENT_QUOTES);
+	if (isset($_POST['password']))
+		$password = htmlspecialchars(mysql_real_escape_string($_POST['password']), ENT_QUOTES);
+	if (isset($_POST['password1']))
+		$password1 = htmlspecialchars(mysql_real_escape_string($_POST['password1']), ENT_QUOTES);
+	if (isset($_POST['email']))
+		$email = htmlspecialchars(mysql_real_escape_string($_POST['email']), ENT_QUOTES);
 	if (empty($nom_form) or empty($prenom_form) or empty($password) or empty($uname)) {
 		$registration_errors[] = $langEmptyFields;
 	} else {

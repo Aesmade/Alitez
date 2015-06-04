@@ -63,8 +63,8 @@ if (isset($_POST['submit'])) {
                                 if (!isset($info['username'])) {
                                         $info['username'] = create_username($newstatut,
                                                                             $facid,
-                                                                            $nom,
-                                                                            $prenom,
+                                                                            $info['first'],
+                                                                            $info['last'],
                                                                             $_POST['prefix']);
                                 }
                                 $new = create_user($newstatut,

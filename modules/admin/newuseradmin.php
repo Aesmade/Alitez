@@ -124,6 +124,9 @@ $langEmail : $emailhelpdesk
 
 } else {
         $lang = false;
+        if (isset($_GET['id'])) {
+        	$id = $_GET['id'];
+        }
 	if (isset($id)) { // if we come from prof request
 		$res = mysql_fetch_array(db_query("SELECT profname, profsurname, profuname, profemail, proftmima, comment, lang, statut 
 			FROM prof_request WHERE rid='".mysql_real_escape_string($id)."'"));

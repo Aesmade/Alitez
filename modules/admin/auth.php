@@ -55,7 +55,7 @@ if((!empty($auth)) && (!empty($active))) {
 	$settings = $s['auth_settings'];
 
 	switch($active) {
-		case 'yes': $q = empty($settings)?'0':'1';
+		case 'yep': $q = empty($settings)?'0':'1';
 		break;
 		case 'no': $q = '0';
 		break;
@@ -85,7 +85,7 @@ if(empty($auth)) {
 		$tool_content .= "$langErrActiv $langActFailure";
 		$tool_content .= "</p>";
 	} else {
-		if($active == 'yes') {
+		if($active == 'yep') {
 			$tool_content .= "<p class=\"success\">";
 			$tool_content .= "$langActSuccess" . get_auth_info($auth);
 			$tool_content .= "</p>";
@@ -102,7 +102,7 @@ $tool_content .= "<table width='99%' class='FormData' align='left'>
 <td colspan=\"2\"><b>$langChooseAuthMethod</b></td>
 </tr><tr><th class=\"left\">POP3:</th><td>[";
 
-$tool_content .= in_array("2",$auth_methods)? "<a class=\"add\" href=\"auth.php?auth=2&amp;active=no\">".$langDeactivate."</a>]":"<a class=\"revoke\"  href=\"auth.php?auth=2&amp;active=yes\">".$langActivate."</a>]";
+$tool_content .= in_array("2",$auth_methods)? "<a class=\"add\" href=\"auth.php?auth=2&amp;active=no\">".$langDeactivate."</a>]":"<a class=\"revoke\"  href=\"auth.php?auth=2&amp;active=yep\">".$langActivate."</a>]";
 
 $tool_content .= "</td><td><div align=\"right\">";
 
@@ -110,26 +110,26 @@ $tool_content .= "&nbsp;&nbsp;<a href=\"auth_process.php?auth=2\">$langAuthSetti
 $tool_content .= "</div></td></tr>
 <tr><th class=\"left\">IMAP:</th><td>[";
 
-$tool_content .= in_array("3",$auth_methods)? "<a class=\"add\" href=\"auth.php?auth=3&amp;active=no\">".$langDeactivate."</a>]":"<a class=\"revoke\" href=\"auth.php?auth=3&amp;active=yes\">".$langActivate."</a>]";
+$tool_content .= in_array("3",$auth_methods)? "<a class=\"add\" href=\"auth.php?auth=3&amp;active=no\">".$langDeactivate."</a>]":"<a class=\"revoke\" href=\"auth.php?auth=3&amp;active=yep\">".$langActivate."</a>]";
 $tool_content .= "</td><td><div align=\"right\">";
 
 $tool_content .= "&nbsp;&nbsp;<a href=\"auth_process.php?auth=3\">$langAuthSettings</a>";
 $tool_content .= "</div></td></tr><tr><th class=\"left\">LDAP:</th><td>[";
 
-$tool_content .= in_array("4",$auth_methods)? "<a class=\"add\" href=\"auth.php?auth=4&amp;active=no\">".$langDeactivate."</a>]":"<a class=\"revoke\" href=\"auth.php?auth=4&amp;active=yes\">".$langActivate."</a>]";
+$tool_content .= in_array("4",$auth_methods)? "<a class=\"add\" href=\"auth.php?auth=4&amp;active=no\">".$langDeactivate."</a>]":"<a class=\"revoke\" href=\"auth.php?auth=4&amp;active=yep\">".$langActivate."</a>]";
 $tool_content .= "</td><td><div align=\"right\">";
 
 $tool_content .= "&nbsp;&nbsp;<a href=\"auth_process.php?auth=4\">$langAuthSettings</a>";	
 $tool_content .= "</div></td></tr><tr><th class=\"left\">External DB:</th><td>[";
 
-$tool_content .= in_array("5",$auth_methods)? "<a class=\"add\" href=\"auth.php?auth=5&amp;active=no\">".$langDeactivate."</a>]":"<a class=\"revoke\" href=\"auth.php?auth=5&amp;active=yes\">".$langActivate."</a>]";
+$tool_content .= in_array("5",$auth_methods)? "<a class=\"add\" href=\"auth.php?auth=5&amp;active=no\">".$langDeactivate."</a>]":"<a class=\"revoke\" href=\"auth.php?auth=5&amp;active=yep\">".$langActivate."</a>]";
 $tool_content .= "</td><td><div align=\"right\">";
 
 $tool_content .= "<a href=\"auth_process.php?auth=5\">$langAuthSettings</a>";
 
 $tool_content .= "</div></td></tr><tr><th class=\"left\">Shibboleth:</th><td>[";
 
-$tool_content .= in_array("6",$auth_methods)? "<a class=\"add\" href=\"auth.php?auth=6&amp;active=no\">".$langDeactivate."</a>]":"<a class=\"revoke\" href=\"auth.php?auth=6&amp;active=yes\">".$langActivate."</a>]";
+$tool_content .= in_array("6",$auth_methods)? "<a class=\"add\" href=\"auth.php?auth=6&amp;active=no\">".$langDeactivate."</a>]":"<a class=\"revoke\" href=\"auth.php?auth=6&amp;active=yep\">".$langActivate."</a>]";
 $tool_content .= "</td><td><div align=\"right\">";
 
 $tool_content .= "<a href=\"auth_process.php?auth=6\">$langAuthSettings</a>";

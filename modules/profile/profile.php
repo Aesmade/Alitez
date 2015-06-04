@@ -39,21 +39,21 @@ $allow_username_change = !get_config('block-username-change');
 if (isset($_REQUEST['submit']))
 	$submit = $_REQUEST['submit'];
 if (isset($_REQUEST['changePass']))
-	$changePass = mysql_real_escape_string($_REQUEST['changePass']);
+	$changePass = htmlspecialchars(mysql_real_escape_string($_REQUEST['changePass']), ENT_QUOTES);
 if (isset($_REQUEST['nom_form']))
-	$nom_form = mysql_real_escape_string($_REQUEST['nom_form']);
+	$nom_form = htmlspecialchars(mysql_real_escape_string($_REQUEST['nom_form']), ENT_QUOTES);
 if (isset($_REQUEST['prenom_form']))
-	$prenom_form = mysql_real_escape_string($_REQUEST['prenom_form']);
+	$prenom_form = htmlspecialchars(mysql_real_escape_string($_REQUEST['prenom_form']), ENT_QUOTES);
 if (isset($_REQUEST['username_form']))
-	$username_form = mysql_real_escape_string($_REQUEST['username_form']);
+	$username_form = htmlspecialchars(mysql_real_escape_string($_REQUEST['username_form']), ENT_QUOTES);
 if (isset($_REQUEST['email_form']))
-	$email_form = mysql_real_escape_string($_REQUEST['email_form']);
+	$email_form = htmlspecialchars(mysql_real_escape_string($_REQUEST['email_form']), ENT_QUOTES);
 if (isset($_REQUEST['am_form']))
-	$am_form = mysql_real_escape_string($_REQUEST['am_form']);
+	$am_form = htmlspecialchars(mysql_real_escape_string($_REQUEST['am_form']), ENT_QUOTES);
 if (isset($_REQUEST['persoStatus']))
-	$persoStatus = mysql_real_escape_string($_REQUEST['persoStatus']);
+	$persoStatus = htmlspecialchars(mysql_real_escape_string($_REQUEST['persoStatus']), ENT_QUOTES);
 if (isset($_REQUEST['language']))
-	$language = mysql_real_escape_string($_REQUEST['language']);
+	$language = htmlspecialchars(mysql_real_escape_string($_REQUEST['language']), ENT_QUOTES);
 if (isset($submit) && (!isset($ldap_submit)) && !isset($changePass)) {
         if (!$allow_username_change) {
                 $username_form = $uname;
