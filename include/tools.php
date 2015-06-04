@@ -197,7 +197,7 @@ function loggedInMenu(){
 
 	array_push($sideMenuSubGroup, $arrMenuType);
 
-	$res2 = db_query("SELECT statut FROM user WHERE user_id = '$uid'",$mysqlMainDb);
+	$res2 = db_query("SELECT statut FROM user WHERE user_id = '".mysql_real_escape_string($uid)."'",$mysqlMainDb);
 
 	if ($row = mysql_fetch_row($res2)) $statut = $row[0];
 
@@ -525,7 +525,7 @@ function lessonToolsMenu(){
 	//	Get professor's tools
 	//	------------------------------------------------------------------
 
-	$res2 = db_query("SELECT statut FROM user WHERE user_id = '$uid'",$mysqlMainDb);
+	$res2 = db_query("SELECT statut FROM user WHERE user_id = '".mysql_real_escape_string($uid)."'",$mysqlMainDb);
 
 	if ($row = mysql_fetch_row($res2)) $statut = $row[0];
 
