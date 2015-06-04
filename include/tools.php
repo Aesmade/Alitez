@@ -211,9 +211,9 @@ function loggedInMenu(){
 	array_push($sideMenuLink, $urlServer . "modules/auth/courses.php");
 	array_push($sideMenuImg, "black-arrow1.gif");
 
-	array_push($sideMenuText, $GLOBALS['langMyAgenda']);
-	array_push($sideMenuLink, $urlServer . "modules/agenda/myagenda.php");
-	array_push($sideMenuImg, "black-arrow1.gif");
+	//array_push($sideMenuText, $GLOBALS['langMyAgenda']);
+	//array_push($sideMenuLink, $urlServer . "modules/agenda/myagenda.php");
+	//array_push($sideMenuImg, "black-arrow1.gif");
 
 	array_push($sideMenuText, $GLOBALS['langModifyProfile']);
 	array_push($sideMenuLink, $urlServer . "modules/profile/profile.php");

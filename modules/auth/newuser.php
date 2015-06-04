@@ -56,7 +56,7 @@ if (isset($close_user_registration) and $close_user_registration == TRUE) {
 $lang = langname_to_code($language);
 
 // display form
-if (!isset($submit)) {
+if (!isset($_POST['submit'])) {
 	// Main body
 	@$tool_content .= "<form action='$_SERVER[PHP_SELF]' method='post'>
 	<table width='99%' style='border: 1px solid #edecdf;'>
@@ -133,6 +133,18 @@ if (!isset($submit)) {
 	// registration
 	$registration_errors = array();
 	// check if there are empty fields
+	if (isset($_REQUEST['auth']))
+		$auth = $_REQUEST['auth'];
+	if (isset($_REQUEST['nom_form']))
+		$nom_form = $_REQUEST['nom_form'];
+	if (isset($_REQUEST['prenom_form']))
+		$prenom_form = $_REQUEST['prenom_form'];
+	if (isset($_REQUEST['password']))
+		$password = $_REQUEST['password'];
+	if (isset($_REQUEST['password1']))
+		$password1 = $_REQUEST['password1'];
+	if (isset($_REQUEST['email']))
+		$email = $_REQUEST['email'];
 	if (empty($nom_form) or empty($prenom_form) or empty($password) or empty($uname)) {
 		$registration_errors[] = $langEmptyFields;
 	} else {
@@ -200,7 +212,7 @@ if (!isset($submit)) {
 	$q1 = "INSERT INTO `$mysqlMainDb`.user
 	(user_id, nom, prenom, username, password, email, statut, department, am, registered_at, expires_at, lang)
 	VALUES ('NULL', '$nom_form', '$prenom_form', '$uname', '$password_encrypted', '$email','5',
-		'$department','$am',".$registered_at.",".$expires_at.",'$lang')";
+		'$_REQUEST[department]','$_REQUEST[am]',".$registered_at.",".$expires_at.",'$lang')";
 	$inscr_user = mysql_query($q1);
 	$last_id = mysql_insert_id();
 	$result=mysql_query("SELECT user_id, nom, prenom FROM `$mysqlMainDb`.user WHERE user_id='".mysql_real_escape_string($last_id)."'");
@@ -210,7 +222,7 @@ if (!isset($submit)) {
 		$prenom=$myrow[2];
 	}
 	mysql_query("INSERT INTO `$mysqlMainDb`.loginout (loginout.idLog, loginout.id_user, loginout.ip, loginout.when, loginout.action)
-	VALUES ('', '".$uid."', '".$REMOTE_ADDR."', NOW(), 'LOGIN')");
+	VALUES ('', '".$uid."', '".$_SERVER['REMOTE_ADDR']."', NOW(), 'LOGIN')");
 	$_SESSION['uid'] = $uid;
 	$_SESSION['statut'] = 5;
 	$_SESSION['prenom'] = $prenom;

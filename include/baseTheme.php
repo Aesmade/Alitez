@@ -1,4 +1,8 @@
 <?php
+/*echo "post ";
+print_r($_POST);
+echo "<br />get ";
+print_r($_GET);*/
 /*========================================================================
 *   Open eClass 2.1
 *   E-learning and Course Management System

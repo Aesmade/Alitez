@@ -45,8 +45,8 @@ include '../../include/lib/textLib.inc.php';
 include('../../include/phpmathpublisher/mathpublisher.php');
 
 $coursePath=$webDir."courses";
-$fileChatName   = $coursePath.'/'.$currentCourseID.'.chat.txt';
-$tmpArchiveFile = $coursePath.'/'.$currentCourseID.'.tmpChatArchive.txt';
+$fileChatName   = $coursePath.'/'.$currentCourseID.'.chatt.txt';
+$tmpArchiveFile = $coursePath.'/'.$currentCourseID.'.tmpChatArchived.txt';
 $pathToSaveChat = $coursePath.'/'.$currentCourseID.'/document/';
 
 $nick = uid_to_name($uid);
@@ -96,6 +96,8 @@ if (isset($_GET['store']) && $is_adminOfCourse) {
 }
 
 // add new line
+if (isset($_REQUEST['chatLine']))
+	$chatLine = htmlspecialchars($_REQUEST['chatLine'], ENT_QUOTES);
 if (isset($chatLine) and trim($chatLine) != '') {
 	$fchat = fopen($fileChatName,'a');
 	$chatLine = mathfilter($chatLine, 12, '../../courses/mathimg/');

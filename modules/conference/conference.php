@@ -88,7 +88,7 @@ if ($is_adminOfCourse) {
 }
 
 $tool_content .= "
-<form name='chatForm' action='messageList.php' method='get' target='messageList' onSubmit='return prepare_message();'>
+<form name='chatForm' action='messageList.php' method='post' target='messageList' onSubmit='return prepare_message();'>
   <table width='99%' class='FormData'>
   <thead>
   <tr>
