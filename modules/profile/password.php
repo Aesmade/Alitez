@@ -45,7 +45,7 @@ check_uid();
 $tool_content = "";
 $passurl = $urlSecure.'modules/profile/password.php';
 
-if (isset($submit) && isset($changePass) && ($changePass == "do")) {
+if (isset($_REQUEST['submit']) && isset($_REQUEST['changePass']) && ($_REQUEST['changePass'] == "do")) {
 
 	if (empty($_REQUEST['password_form']) || empty($_REQUEST['password_form1']) || empty($_REQUEST['old_pass'])) {
 		header("location:". $passurl."?msg=3");
@@ -94,9 +94,9 @@ if (isset($submit) && isset($changePass) && ($changePass == "do")) {
 }
 
 //Show message if exists
-if(isset($msg)) {
+if(isset($_REQUEST['msg'])) {
 
-	switch ($msg){
+	switch ($_REQUEST['msg']){
 
 		case 1: {//passwords do not match
 			$message = $langPassTwo;

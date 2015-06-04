@@ -39,6 +39,8 @@
  *
  */
 include ('init.php');
+if (isset($_REQUEST['eclass_module_id']))
+	$eclass_module_id = mysql_real_escape_string($_REQUEST['eclass_module_id']);
 if ($is_adminOfCourse and isset($currentCourseID)) {
 	if (isset($_GET['hide']) and $_GET['hide'] == 0) {
 		db_query("UPDATE accueil SET visible = 0 WHERE id='$eclass_module_id'", $currentCourseID);
@@ -538,15 +540,15 @@ if (isset($_SERVER['HTTP_REFERER']) && strlen($_SERVER['HTTP_REFERER']) > 0) {
 		}
 		unset($_POST);
 		$_POST = array();
-		foreach ($_REQUEST as $key => $val) {
+		/*foreach ($_REQUEST as $key => $val) {
         	${$key} = $val;
-        }
+        }*/
 	} else {
 		foreach ($_GET as $key => $val) {
 			preg_match("/^[0-9a-zA-Z ]*/", $val, $pmatch);
 			$_GET[$key] = $pmatch[0];
 			$_REQUEST[$key] = $pmatch[0];
-			${$key} = $pmatch[0];
+			//${$key} = $pmatch[0];
 		}
 	}
 } else {
@@ -560,9 +562,9 @@ if (isset($_SERVER['HTTP_REFERER']) && strlen($_SERVER['HTTP_REFERER']) > 0) {
 		$_POST[$key] = $pmatch[0];
 		$_REQUEST[$key] = $pmatch[0];
 	}
-	foreach ($_REQUEST as $key => $val) {
+	/*foreach ($_REQUEST as $key => $val) {
        	${$key} = $val;
-    }
+    }*/
 }
 
 $_SERVER['PHP_SELF'] = htmlspecialchars($_SERVER["PHP_SELF"], ENT_QUOTES, "utf-8");

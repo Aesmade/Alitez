@@ -235,7 +235,7 @@ elseif ((isset($logout) && isset($uid)) OR (1==1)) {
 	if (isset($logout) && isset($uid)) {
 		mysql_query("INSERT INTO loginout (loginout.idLog, loginout.id_user,
 			loginout.ip, loginout.when, loginout.action)
-			VALUES ('', '$uid', '$REMOTE_ADDR', NOW(), 'LOGOUT')");
+			VALUES ('', '$uid', '".$_SERVER['REMOTE_ADDR']."', NOW(), 'LOGOUT')");
 		unset($prenom);
 		unset($nom);
 		unset($statut);

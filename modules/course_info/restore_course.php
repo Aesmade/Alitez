@@ -464,7 +464,8 @@ function course_index($dir, $code) {
 	fputs($f, "<?php
 session_start();
 \$dbname=\"$code\";
-session_register(\"dbname\");
+\$_SESSION['dbname'] = \$dbname;
+//session_register(\"dbname\");
 include(\"../../modules/course_home/course_home.php\");
 ?>
 ");

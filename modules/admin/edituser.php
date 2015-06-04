@@ -1,4 +1,5 @@
 <? session_start();
+$u = $_REQUEST['u'];
 /*========================================================================
 *   Open eClass 2.3
 *   E-learning and Course Management System
@@ -47,7 +48,7 @@ include '../auth/auth.inc.php';
 include '../../include/jscalendar/calendar.php';
 
 if (isset($_GET['u']) or isset($_POST['u']))
-$_SESSION['u_tmp']=$u;
+$_SESSION['u_tmp']=$_REQUEST['u'];
 if(!isset($_GET['u']) or !isset($_POST['u']))
 $u=$_SESSION['u_tmp'];
 
@@ -218,7 +219,7 @@ $tool_content .= "
 		$sql = mysql_query("SELECT nom, prenom, username FROM user WHERE user_id ='".mysql_real_escape_string($u)."'");
 		$sql = mysql_query("SELECT a.code, a.intitule, b.reg_date, b.statut, a.cours_id
 			FROM cours AS a LEFT JOIN cours_user AS b ON a.cours_id = b.cours_id
-			WHERE b.user_id = '".mysql_real_escape_string($u)." ORDER BY b.statut, a.faculte");
+			WHERE b.user_id = '".mysql_real_escape_string($u)."' ORDER BY b.statut, a.faculte");
 
 		// αν ο χρήστης συμμετέχει σε μαθήματα τότε παρουσίασε τη λίστα
 		if (mysql_num_rows($sql) > 0)

@@ -75,7 +75,7 @@ if($view == 2)	// coming from search_user.php(search with criteria)
 		$user_firstname = isset($_POST['user_firstname'])?htmlspecialchars($_POST['user_firstname'], ENT_QUOTES, "utf-8"):'';
 		$user_username = isset($_POST['user_username'])?htmlspecialchars($_POST['user_username'], ENT_QUOTES, "utf-8"):'';
 		$user_am = isset($_POST['user_am'])?htmlspecialchars($_POST['user_am'], ENT_QUOTES, "utf-8"):'';
-		$user_type = isset($_POST['user_type'])?htmlspecialchars($_POST['user_type'], ENT_QUOTES, "utf-8")'';
+		$user_type = isset($_POST['user_type'])?htmlspecialchars($_POST['user_type'], ENT_QUOTES, "utf-8"):'';
 		$user_email = isset($_POST['user_email'])?htmlspecialchars($_POST['user_email'], ENT_QUOTES, "utf-8"):'';
 		$user_registered_at_flag = isset($_POST['user_registered_at_flag'])?htmlspecialchars($_POST['user_registered_at_flag'], ENT_QUOTES, "utf-8"):'';
 

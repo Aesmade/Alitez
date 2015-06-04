@@ -69,7 +69,7 @@ function checkrequired(which, entry, entry2) {
 <script type="text/javascript" src="$urlAppend/include/xinha/my_config.js"></script>
 hContent;
 
-$titulaire_probable="$prenom $nom";
+$titulaire_probable="$_SESSION[prenom] $_SESSION[nom]";
 
 $tool_content .= "<form method='post' name='createform' action='$_SERVER[PHP_SELF]' onsubmit=\"return checkrequired(this, 'intitule', 'titulaires');\">";
 
@@ -388,7 +388,7 @@ if (isset($_POST['create_course'])) {
                         course_addon = " . quote($course_addon) . ",
                         course_keywords = " . quote($course_keywords) . ",
                         faculte = " . quote($facname) . ",
-                        visible = " . quote($formvisible) . ",
+                        visible = " . quote($_REQUEST['formvisible']) . ",
                         titulaires = " . quote($titulaires) . ",
                         fake_code = " . quote($code) . ",
                         type = " . quote($type) . ",
@@ -415,7 +415,8 @@ if (isset($_POST['create_course'])) {
         $string="<?php
                 session_start();
         $titou=\"$repertoire\";
-        session_register(\"dbname\");
+        \$_SESSION['dbname'] = \$dbname;
+        //session_register(\"dbname\");
         include(\"../../modules/course_home/course_home.php\");
         ?>";
 

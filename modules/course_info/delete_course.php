@@ -30,7 +30,8 @@ include '../../include/baseTheme.php';
 
 $nameTools = $langDelCourse;
 $tool_content = "";
-
+if (isset($_REQUEST['delete']))
+	$delete = $_REQUEST['delete'];
 if($is_adminOfCourse) {
 	if(isset($delete)) {
 		mysql_select_db("$mysqlMainDb",$db);

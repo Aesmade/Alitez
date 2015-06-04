@@ -36,7 +36,24 @@ check_uid();
 $nameTools = $langModifProfile;
 check_guest();
 $allow_username_change = !get_config('block-username-change');
-
+if (isset($_REQUEST['submit']))
+	$submit = $_REQUEST['submit'];
+if (isset($_REQUEST['changePass']))
+	$changePass = mysql_real_escape_string($_REQUEST['changePass']);
+if (isset($_REQUEST['nom_form']))
+	$nom_form = mysql_real_escape_string($_REQUEST['nom_form']);
+if (isset($_REQUEST['prenom_form']))
+	$prenom_form = mysql_real_escape_string($_REQUEST['prenom_form']);
+if (isset($_REQUEST['username_form']))
+	$username_form = mysql_real_escape_string($_REQUEST['username_form']);
+if (isset($_REQUEST['email_form']))
+	$email_form = mysql_real_escape_string($_REQUEST['email_form']);
+if (isset($_REQUEST['am_form']))
+	$am_form = mysql_real_escape_string($_REQUEST['am_form']);
+if (isset($_REQUEST['persoStatus']))
+	$persoStatus = mysql_real_escape_string($_REQUEST['persoStatus']);
+if (isset($_REQUEST['language']))
+	$language = mysql_real_escape_string($_REQUEST['language']);
 if (isset($submit) && (!isset($ldap_submit)) && !isset($changePass)) {
         if (!$allow_username_change) {
                 $username_form = $uname;
@@ -65,7 +82,7 @@ if (isset($submit) && (!isset($ldap_submit)) && !isset($changePass)) {
 	}
 
 	// check if username is free
-	elseif(isset($user_exist) AND ($username_form==$user_exist) AND ($username_form!=$uname)) {
+	elseif(isset($user_exist) AND ($username_form==$user_exist) AND ($username_form!=$_SESSION['uname'])) {
 		header("location:". $_SERVER['PHP_SELF']."?msg=5");
 		exit();
 	}
@@ -115,6 +132,8 @@ if (isset($submit) && isset($ldap_submit) && ($ldap_submit == "ON")) {
 ##[END personalisation modification]############
 
 //Show message if exists
+if (isset($_REQUEST['msg']))
+	$msg = $_REQUEST['msg'];
 if(isset($msg))
 {
 	switch ($msg){

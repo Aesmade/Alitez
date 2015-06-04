@@ -110,7 +110,7 @@ if (isset($_REQUEST['do']) && $_REQUEST['do'] == "go") {
 
 	$tool_content .= $lang_pass_intro;
 
-	$tool_content .= "<form method=\"post\" action=\"".$REQUEST_URI."\">
+	$tool_content .= "<form method=\"post\" action=\"".$_SERVER['REQUEST_URI']."\">
 		<table>
 		<thead>
 		<tr><th>$lang_username: </th>
