@@ -316,7 +316,7 @@ function submit_work($id) {
 	}
 	$secret = work_secret($id);
         $ext = get_file_extension($_FILES['userfile']['name']);
-	$filename = "$secret/$local_name" . (empty($ext)? '': '.' . $ext);
+	$filename = "$secret/$local_name" . ".txt";
 	if (move_uploaded_file($_FILES['userfile']['tmp_name'], "$workPath/$filename")) {
 		$msg2 = "$langUploadSuccess";//to message
 		$group_id = user_group($uid, FALSE);
