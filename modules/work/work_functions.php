@@ -125,7 +125,7 @@ function delete_submissions_by_uid($uid, $gid, $id, $new_filename = '')
 	global $m, $tool_content;
 	$return="";
 	$res = db_query("SELECT * FROM assignment_submit WHERE
-		uid = '".mysql_real_escape_string($uid)."' AND assignment_id = '".mysql_real_escape_string($id)."''");
+		uid = '".mysql_real_escape_string($uid)."' AND assignment_id = '".mysql_real_escape_string($id)."'");
 	while ($row = mysql_fetch_array($res)) {
                 if ($row['file_path'] != $new_filename) {
         		@unlink("$GLOBALS[workPath]/$row[file_path]");
@@ -319,7 +319,7 @@ function show_submission_details($id)
 	table_row($m['gradecomments'], $sub['grade_comments']);
 	table_row($m['sub_date'], $sub['submission_date']);
 	table_row($m['filename'], $sub['file_name']);
-	table_row($m['comments'], $sub['comments']);
+	table_row($m['comments'], htmlspecialchars_decode($sub['comments'], ENT_QUOTES));
 	$tool_content .= "
     </tbody>
     </table>

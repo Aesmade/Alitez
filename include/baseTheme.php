@@ -538,7 +538,7 @@ if (isset($_SERVER['HTTP_REFERER']) && strlen($_SERVER['HTTP_REFERER']) > 0) {
 				unset($_REQUEST[$key]);
 		}
 		foreach ($_GET as $key => $val) {
-			preg_match("/^[0-9a-zA-Z ]*/", $val, $pmatch);
+			preg_match("/^[0-9a-zA-Z_ ]*/", $val, $pmatch);
 			$_GET[$key] = $pmatch[0];
 			$_REQUEST[$key] = $pmatch[0];
 		}
@@ -549,7 +549,7 @@ if (isset($_SERVER['HTTP_REFERER']) && strlen($_SERVER['HTTP_REFERER']) > 0) {
         }*/
 	} else {
 		foreach ($_GET as $key => $val) {
-			preg_match("/^[0-9a-zA-Z ]*/", $val, $pmatch);
+			preg_match("/^[0-9a-zA-Z_ ]*/", $val, $pmatch);
 			$_GET[$key] = $pmatch[0];
 			$_REQUEST[$key] = $pmatch[0];
 			//${$key} = $pmatch[0];
@@ -557,12 +557,12 @@ if (isset($_SERVER['HTTP_REFERER']) && strlen($_SERVER['HTTP_REFERER']) > 0) {
 	}
 } else {
 	foreach ($_GET as $key => $val) {
-		preg_match("/^[0-9a-zA-Z ]*/", $val, $pmatch);
+		preg_match("/^[0-9a-zA-Z_ ]*/", $val, $pmatch);
 		$_GET[$key] = $pmatch[0];
 		$_REQUEST[$key] = $pmatch[0];
 	}
 	foreach ($_POST as $key => $val) {
-		preg_match("/^[0-9a-zA-Z ]*/", $val, $pmatch);
+		preg_match("/^[0-9a-zA-Z_ ]*/", $val, $pmatch);
 		$_POST[$key] = $pmatch[0];
 		$_REQUEST[$key] = $pmatch[0];
 	}

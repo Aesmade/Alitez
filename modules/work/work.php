@@ -99,8 +99,8 @@ include('work_functions.php');
 $workPath = $webDir."courses/".$currentCourseID."/work";
 
 if ($is_adminOfCourse) { //Only course admins can download assignments
-  if (isset($get)) {
-	send_file($get);
+  if (isset($_GET['get'])) {
+	send_file($_GET['get']);
   }
 
   if (isset($download)) {
@@ -131,25 +131,27 @@ hContent;
 //-------------------------------------------
 
 if ($is_adminOfCourse) {
-	if (isset($grade_comments)) {
+	if (isset($_POST['grade_comments'])) {
 		$nameTools = $m['WorkView'];
 		$navigation[] = array("url"=>"work.php", "name"=> $langWorks);
-		submit_grade_comments($assignment, $submission, $grade, $comments);
-	} elseif (isset($add)) {
+		submit_grade_comments($_POST['assignment'], $_POST['submission'], $_POST['grade'], $_POST['comments']);
+	} elseif (isset($_GET['add'])) {
 		$nameTools = $langNewAssign;
 		$navigation[] = array("url"=>"work.php", "name"=> $langWorks);
 		new_assignment();
-	} elseif (isset($sid)) {
+	} elseif (isset($_GET['sid'])) {
 		show_submission($sid);
 	} elseif (isset($_POST['new_assign'])) {
-		add_assignment($title, $comments, $desc, "$WorkEnd", $group_submissions);
+		add_assignment($_POST['title'], $_POST['comments'], $_POST['desc'], "".$_POST['WorkEnd'], $_POST['group_submissions']);
 		show_assignments();
-	} elseif (isset($grades)) {
+	} elseif (isset($_POST['grades'])) {
 		$nameTools = $m['WorkView'];
 		$navigation[] = array("url"=>"work.php", "name"=> $langWorks);
-		submit_grades($grades_id, $grades);
-	} elseif (isset($id)) {
-		if (isset($choice)) {
+		submit_grades($_POST['grades_id'], $_POST['grades']);
+	} elseif (isset($_GET['id'])) {
+		$id = $_GET['id'];
+		if (isset($_GET['choice'])) {
+			$choice = $_GET['choice'];
 			if ($choice == 'disable') {
 				db_query("UPDATE assignments SET active = '0' WHERE id = '".mysql_real_escape_string($id)."'");
 				show_assignments($langAssignmentDeactivated);
@@ -170,7 +172,7 @@ if ($is_adminOfCourse) {
 				$nameTools = $m['WorkView'];
 				$navigation[] = array("url"=>"work.php", "name"=> $langWorks);
 				edit_assignment($id);
-			} elseif ($choice = 'plain') {
+			} elseif ($choice == 'plain') {
 				show_plain_view($id);
 			}
 		} else {
@@ -184,8 +186,9 @@ if ($is_adminOfCourse) {
 		show_assignments();
 	}
 } else {
-	if (isset($id)) {
-		if (isset($work_submit)) {
+	if (isset($_REQUEST['id'])) {
+		$id = $_REQUEST['id'];
+		if (isset($_POST['work_submit'])) {
 			$nameTools = $m['SubmissionStatusWorkInfo'];
 			$navigation[] = array("url"=>"work.php", "name"=> $langWorks);
 			$navigation[] = array("url"=>"work.php?id=$id", "name"=>$m['WorkView']);
@@ -264,6 +267,9 @@ function submit_work($id) {
 		unset($status);
 	}
 
+	if (isset($_POST['stud_comments']))
+		$stud_comments = $_POST['stud_comments'];
+
 	$submit_ok = FALSE; //Default do not allow submission
 	if(isset($uid) && $uid) { //check if loged-in
 		if ($GLOBALS['statut'] == 10) { //user is guest
@@ -318,15 +324,15 @@ function submit_work($id) {
 			delete_submissions_by_uid(-1, $group_id, $id);
 			db_query("INSERT INTO assignment_submit
 				(uid, assignment_id, submission_date, submission_ip, file_path,
-				file_name, comments, group_id) VALUES ('$uid','$id', NOW(),
-				'$REMOTE_ADDR', '$filename','".$_FILES['userfile']['name'].
-				"', '$stud_comments', '$group_id')", $currentCourseID);
+				file_name, comments, group_id) VALUES ('$uid',".autoquote(htmlspecialchars($id, ENT_QUOTES)).", NOW(),
+				'$REMOTE_ADDR', ".autoquote(htmlspecialchars($filename, ENT_QUOTES)).",".autoquote(htmlspecialchars($_FILES['userfile']['name'], ENT_QUOTES
+					)).", ".autoquote(htmlspecialchars($stud_comments, ENT_QUOTES)).", ".autoquote($group_id).")", $currentCourseID);
 		} else {
 			db_query("INSERT INTO assignment_submit
 				(uid, assignment_id, submission_date, submission_ip, file_path,
-				file_name, comments) VALUES ('$uid','$id', NOW(), '$REMOTE_ADDR',
-				'$filename','".$_FILES['userfile']['name'].
-				"', '$stud_comments')", $currentCourseID);
+				file_name, comments) VALUES ('$uid',".autoquote(htmlspecialchars($id, ENT_QUOTES)).", NOW(), '$REMOTE_ADDR',
+				".autoquote(htmlspecialchars($filename, ENT_QUOTES)).",".autoquote(htmlspecialchars($_FILES['userfile']['name'], ENT_QUOTES)
+				).", ".autoquote(htmlspecialchars($stud_comments, ENT_QUOTES)).")", $currentCourseID);
 		}
 
 		$tool_content .="<p class='success_small'>$msg2<br />$msg1<br /><a href='work.php'>$langBack</a></p><br />";
@@ -1180,7 +1186,7 @@ function submit_grade_comments($id, $sid, $grade, $comment)
 		$tool_content .= $langWorkWrongInput;
 		$stupid_user = 1;
 	} else {
-		db_query("UPDATE assignment_submit SET grade='$grade', grade_comments='$comment',
+		db_query("UPDATE assignment_submit SET grade='$grade', grade_comments=".autoquote($comment).",
 		grade_submission_date=NOW(), grade_submission_ip='$REMOTE_ADDR'
 		WHERE id = '".mysql_real_escape_string($sid)."'");
 	}
