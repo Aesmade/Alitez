@@ -74,11 +74,20 @@ hContent;
 include_once("./config.php");
 include("functions.php"); // application logic for phpBB
 
+if (isset($_REQUEST['topic']))
+	$topic = mysql_real_escape_string($_REQUEST['topic']);
+if (isset($_REQUEST['forum']))
+	$forum = mysql_real_escape_string($_REQUEST['forum']);
+if (isset($_REQUEST['post_id']))
+	$post_id = mysql_real_escape_string($_REQUEST['post_id']);
+if (isset($_REQUEST['message']))
+	$message = mysql_real_escape_string($_REQUEST['message']);
+
 /******************************************************************************
  * Actual code starts here
  *****************************************************************************/
 if ($is_adminOfCourse) { // course admin 
-	if (isset($submit) && $submit) {
+	if (isset($_REQUEST['submit']) && $_REQUEST['submit']) {
 		$sql = "SELECT * FROM posts WHERE post_id = '".mysql_real_escape_string($post_id)."'";
 		if (!$result = db_query($sql, $currentCourseID)) {
 			$tool_content .= $langErrorDataOne;
@@ -109,17 +118,19 @@ if ($is_adminOfCourse) { // course admin
 	
 		// IF we made it this far we are allowed to edit this message, yay!
 		$is_html_disabled = false;
-		if ( (isset($allow_html) && $allow_html == 0) || isset($html) ) {
+		//if ( (isset($allow_html) && $allow_html == 0) || isset($html) ) {
+		if (isset($message)) {
 			$message = htmlspecialchars($message);
 			$is_html_disabled = true;
 		}
+		//}
 		if ( isset($allow_bbcode) && $allow_bbcode == 1 && !isset($bbcode)) {
 			$message = bbencode($message, $is_html_disabled);
 		}
 		if (isset($message)) {
 			$message = format_message($message);
 		}
-		if (!isset($delete) || !$delete) {
+		if (!isset($_REQUEST['delete']) || !$_REQUEST['delete']) {
 			$forward = 1;
 			$topic = $topic_id;
 			$forum = $forum_id;
@@ -216,7 +227,7 @@ if ($is_adminOfCourse) { // course admin
 		// Gotta handle private forums right here. They're naturally covered on submit, but not in this part.
 		$sql = "SELECT f.forum_type, f.forum_name, t.topic_title
 			FROM forums f, topics t
-			WHERE (f.forum_id = '$forum') AND (t.topic_id = $topic) AND (t.forum_id = f.forum_id)";
+			WHERE (f.forum_id = '$forum') AND (t.topic_id = '$topic') AND (t.forum_id = f.forum_id)";
 		
 		if (!$result = db_query($sql, $currentCourseID)) {
 			$tool_content .= "$langTopicInformation";

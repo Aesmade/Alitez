@@ -78,6 +78,11 @@ function confirmation()
 </script>
 ';
  
+if (isset($_GET['forum']))
+	$forum = htmlspecialchars($_GET['forum'], ENT_QUOTES);
+if (isset($_GET['topic']))
+	$topic = htmlspecialchars($_GET['topic'], ENT_QUOTES);
+
 if (isset($_GET['all'])) {
         $paging = false;
 } else {
@@ -240,7 +245,7 @@ do {
 		$row_color = 'topic_row2';
 	$tool_content .= "<tr>";
 	$tool_content .= "<td class=\"$row_color\"><b>" . $myrow["prenom"] . " " . $myrow["nom"] . "</b></td>";
-	$message = own_stripslashes($myrow["post_text"]);
+	$message = htmlspecialchars_decode(own_stripslashes($myrow["post_text"]));
 	// support for math symbols
 	$message = mathfilter($message, 12, "../../courses/mathimg/");
 

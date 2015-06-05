@@ -75,6 +75,11 @@ hContent;
 include_once("./config.php");
 include("functions.php"); // application logic for phpBB
 
+
+if (isset($_REQUEST['forum']))
+	$forum = htmlspecialchars(mysql_real_escape_string($_REQUEST['forum']), ENT_QUOTES);
+
+
 /******************************************************************************
  * Actual code starts here
  *****************************************************************************/
@@ -101,14 +106,18 @@ if (!does_exists($forum, $currentCourseID, "forum")) {
 	$tool_content .= $langErrorPost;
 }
 
-if (isset($submit) && $submit) {
-	$subject = strip_tags($subject);
+if (isset($_REQUEST['submit']) && $_REQUEST['submit']) {
+	$subject = htmlspecialchars(mysql_real_escape_string($_REQUEST['subject']), ENT_QUOTES);
+	$message = htmlspecialchars(mysql_real_escape_string($_REQUEST['message']), ENT_QUOTES);
 	if (trim($message) == '' || trim($subject) == '') {
 		$tool_content .= $langEmptyMsg;
 		draw($tool_content, 2, 'phpbb', $head_content);
 		exit;
 	}
-	if (!isset($username)) {
+	
+	if (isset($_REQUEST['username']))
+			$username = htmlspecialchars(mysql_real_escape_string($_REQUEST['username']), ENT_QUOTES);
+	else {
 		$username = $langAnonymous;
 	}
 	
@@ -127,19 +136,19 @@ if (isset($submit) && $submit) {
 		}
 	}
 	$is_html_disabled = false;
-	if ((isset($allow_html) && $allow_html == 0) || isset($html)) {
+	//if ((isset($allow_html) && $allow_html == 0) || isset($html)) {
 		$message = htmlspecialchars($message);
 		$is_html_disabled = true;
-	}
+	//}
 	if ((isset($allow_bbcode) && $allow_bbcode == 1) && !($_POST['bbcode'])) {
 		$message = bbencode($message, $is_html_disabled);
 	}
 	$message = format_message($message);
 	$subject = strip_tags($subject);
-	$poster_ip = $REMOTE_ADDR;
+	$poster_ip = $_SERVER['REMOTE_ADDR'];
 	$time = date("Y-m-d H:i");
-	$nom = addslashes($nom);
-	$prenom = addslashes($prenom);
+	$nom = addslashes($_SESSION['nom']);
+	$prenom = addslashes($_SESSION['prenom']);
 
 	if (isset($sig) && $sig) {
 		$message .= "\n[addsig]";

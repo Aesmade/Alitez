@@ -69,6 +69,20 @@ include $relPathLib . "lib/main.lib.php";
 //if session isn't started, start it. Needed by the language switch
 if (!session_id()) { session_start(); }
 
+//print_r($_SESSION);
+
+if ((isset($_SESSION['last_logged_info']) && $_SESSION['last_logged_info'] !== md5($_SERVER['REMOTE_ADDR'] . " " . $_SERVER['HTTP_USER_AGENT']))) {
+	//echo $_SESSION['last_logged_info'] ." ". ($_SERVER['REMOTE_ADDR'] . " " . $_SERVER['HTTP_USER_AGENT']);
+	unset($_SESSION['uid']);
+	/*$params = session_get_cookie_params();
+    setcookie(session_name(), '', time() - 42000,
+        $params["path"], $params["domain"],
+        $params["secure"], $params["httponly"]
+    );*/
+	session_destroy();
+	//header("Location:" . $urlServer . "index.php");
+}
+
 header('Content-Type: text/html; charset=UTF-8');
 
 // Set user desired language (Author: Evelthon Prodromou)

@@ -59,6 +59,15 @@ $helpTopic = 'For';
 include '../../include/baseTheme.php';
 include '../../include/sendMail.inc.php';
 
+if (isset($_REQUEST['topic']))
+	$topic = mysql_real_escape_string($_REQUEST['topic']);
+if (isset($_REQUEST['forum']))
+	$forum = mysql_real_escape_string($_REQUEST['forum']);
+if (isset($_SESSION['nom']))
+	$nom = mysql_real_escape_string($_SESSION['nom']);
+if (isset($_SESSION['prenom']))
+	$prenom = mysql_real_escape_string($_SESSION['prenom']);
+
 $tool_content = "";
 $lang_editor = langname_to_code($language);
 $head_content = <<<hContent
@@ -109,7 +118,8 @@ if (!does_exists($forum, $currentCourseID, "forum") || !does_exists($topic, $cur
 	exit();
 }
 
-if (isset($submit) && $submit) {
+if (isset($_POST['submit']) && $_POST['submit']) {
+	$message = $_POST['message'];
 	if (trim($message) == '') {
 		$tool_content .= $langEmptyMsg;
 		draw($tool_content, 2, 'phpbb', $head_content);
@@ -142,10 +152,10 @@ if (isset($submit) && $submit) {
 			exit();
 		}
 	}
-	$poster_ip = $REMOTE_ADDR;
+	$poster_ip = $_SERVER['REMOTE_ADDR'];
 	$is_html_disabled = false;
-	if ( (isset($allow_html) && $allow_html == 0) || isset($html)) {
-		$message = htmlspecialchars($message);
+	//if ( (isset($allow_html) && $allow_html == 0) || isset($html)) {
+		$message = htmlspecialchars($message, ENT_QUOTES);
 		$is_html_disabled = true;
 		if (isset($quote) && $quote) {
 			$edit_by = get_syslang_string($sys_lang, "l_editedby");
@@ -153,7 +163,7 @@ if (isset($submit) && $submit) {
 			// escaped HTML code in them. We want to fix this up right here:
 			$message = preg_replace("#&lt;font\ size\=-1&gt;\[\ $edit_by(.*?)\ \]&lt;/font&gt;#si", '[ ' . $edit_by . '\1 ]', $message);
 		}
-	}
+	//}
 	if ( (isset($allow_bbcode) && $allow_bbcode == 1) && !isset($bbcode)) {
 		$message = bbencode($message, $is_html_disabled);
 	}

@@ -42,7 +42,9 @@ print_r($_GET);*/
  * interface. In that case function drawPerso needs to be called.
  *
  */
+
 include ('init.php');
+
 if (isset($_REQUEST['eclass_module_id']))
 	$eclass_module_id = mysql_real_escape_string($_REQUEST['eclass_module_id']);
 if ($is_adminOfCourse and isset($currentCourseID)) {
