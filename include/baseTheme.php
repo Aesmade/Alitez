@@ -447,6 +447,13 @@ function draw($toolContent, $menuTypeID, $tool_css = null, $head_content = null,
 	}
 }
 
+function nohtml($v) {
+	return htmlspecialchars($v, ENT_QUOTES);
+}
+
+function escall($v) {
+	return mysql_real_escape_string(nohtml($v));
+}
 
 /**
  * Function dumpArray

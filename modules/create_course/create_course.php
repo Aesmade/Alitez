@@ -324,6 +324,7 @@ if (isset($_POST['back1']) or !isset($_POST['visit'])) {
 	<tr>
 	<th>&nbsp;</th>
 	<td width='400'><input type='submit' name='back2' value='< $langPreviousStep '>&nbsp;
+	<input type='hidden' name='vva' value='22' />
 	<input type='submit' name='create_course' value=\"$langFinalize\"></td>
 	<td><p align='right'><small>$langFieldsOptionalNote</small></p></td>
 	</tr>
@@ -332,7 +333,7 @@ if (isset($_POST['back1']) or !isset($_POST['visit'])) {
 } // end of create3
 
 // create the course and the course database
-if (isset($_POST['create_course'])) {
+if (isset($_POST['create_course']) && isset($_POST['vva']) && $_POST['vva']==22) {
 
         $nameTools = $langCourseCreate;
         $facid = intval($faculte);
@@ -382,30 +383,30 @@ if (isset($_POST['create_course'])) {
 
         db_query("INSERT INTO cours SET
                         code = '$code',
-                        languageCourse =" . quote($language) . ",
-                        intitule = " . quote($intitule) . ",
-                        description = " . quote($description) . ",
-                        course_addon = " . quote($course_addon) . ",
-                        course_keywords = " . quote($course_keywords) . ",
-                        faculte = " . quote($facname) . ",
-                        visible = " . quote($_REQUEST['formvisible']) . ",
-                        titulaires = " . quote($titulaires) . ",
-                        fake_code = " . quote($code) . ",
-                        type = " . quote($type) . ",
+                        languageCourse =" . quote(nohtml($language)) . ",
+                        intitule = " . quote(nohtml($intitule)) . ",
+                        description = " . quote(nohtml($description)) . ",
+                        course_addon = " . quote(nohtml($course_addon)) . ",
+                        course_keywords = " . quote(nohtml($course_keywords)) . ",
+                        faculte = " . quote(nohtml($facname)) . ",
+                        visible = " . quote(nohtml($_REQUEST['formvisible'])) . ",
+                        titulaires = " . quote(nohtml($titulaires)) . ",
+                        fake_code = " . quote(nohtml($code)) . ",
+                        type = " . quote(nohtml($type)) . ",
                         faculteid = '$facid',
                         first_create = NOW()");
         $new_cours_id = mysql_insert_id();
         mysql_query("INSERT INTO cours_user SET
-                        cours_id = $new_cours_id,
+                        cours_id = '$new_cours_id',
                         user_id = '$uid',
                         statut = '1',
                         tutor='1',
                         reg_date = CURDATE()");
 
         mysql_query("INSERT INTO cours_faculte SET
-                        faculte = '$faculte',
-                        code = '$repertoire',
-                        facid = '$facid'");
+                        faculte = '".escall($faculte)."',
+                        code = '".escall($repertoire)."',
+                        facid = '".escall($facid)."'");
 
         $titou='$dbname';
 
@@ -428,7 +429,7 @@ if (isset($_POST['create_course'])) {
         $tool_content .= doImportFromBetaCMSAfterCourseCreation($repertoire, $mysqlMainDb, $webDir);
         // --------------------------------------------------
         $tool_content .= "
-                <p class=\"success_small\">$langJustCreated: &nbsp;<b>$intitule</b></p>
+                <p class=\"success_small\">$langJustCreated: &nbsp;<b>".nohtml($intitule)."</b></p>
                 <p><small>$langEnterMetadata</small></p><br />
                 <p align='center'>&nbsp;<a href='../../courses/$repertoire/index.php' class=mainpage>$langEnter</a>&nbsp;</p>";
 } // end of submit

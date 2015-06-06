@@ -56,7 +56,7 @@ $head_content = <<<hContent
 <script type="text/javascript" src="$urlAppend/include/xinha/my_config2.js"></script>
 hContent;
 
-if (isset($_POST['submit'])) {
+if (isset($_POST['submit']) && isset($_POST['sc']) && $_POST['sc']==12) {
         if (empty($_POST['title'])) {
                 $tool_content .= "<p class='caution_small'>$langNoCourseTitle<br />
                                   <a href='$_SERVER[PHP_SELF]'>$langAgain</a></p><br />";
@@ -88,20 +88,20 @@ if (isset($_POST['submit'])) {
 
                 list($facid, $facname) = explode('--', $_POST['facu']);
                 db_query("UPDATE `$mysqlMainDb`.cours
-                          SET intitule = " . autoquote($_POST['title']) .",
-                              faculte = " . autoquote($facname) . ",
-                              description = " . autoquote($_POST['description']) . ",
-                              course_addon = " . autoquote($_POST['course_addon']) . ",
-                              course_keywords = ".autoquote($_POST['course_keywords']) . ",
+                          SET intitule = " . autoquote(nohtml($_POST['title'])) .",
+                              faculte = " . autoquote(nohtml($facname)) . ",
+                              description = " . autoquote(nohtml($_POST['description'])) . ",
+                              course_addon = " . autoquote(nohtml($_POST['course_addon'])) . ",
+                              course_keywords = ".autoquote(nohtml($_POST['course_keywords'])) . ",
                               visible = " . intval($_POST['formvisible']) . ",
-                              titulaires = " . autoquote($_POST['titulary']) . ",
+                              titulaires = " . autoquote(nohtml($_POST['titulary'])) . ",
                               languageCourse = '$newlang',
-                              type = " . autoquote($_POST['type']) . ",
-                              password = " . autoquote($_POST['password']) . ",
+                              type = " . autoquote(nohtml($_POST['type'])) . ",
+                              password = " . autoquote(nohtml($_POST['password'])) . ",
                               faculteid = " . intval($facid) . "
                           WHERE cours_id = '".mysql_real_escape_string($cours_id)."'");
                 db_query("UPDATE `$mysqlMainDb`.cours_faculte
-                          SET faculte = " . autoquote($facname) . ",
+                          SET faculte = " . autoquote(nohtml($facname)) . ",
                               facid = " . intval($facid) . "
                           WHERE code='".mysql_real_escape_string($currentCourseID)."'");
 
@@ -287,6 +287,7 @@ if (isset($_POST['submit'])) {
       </tr>
       <tr>
         <th class='left' width='150'>&nbsp;</th>
+        <input type='hidden' name='sc' value='12' />
         <td><input type='submit' name='submit' value='$langSubmit' /></td>
         <td>&nbsp;</td>
       </tr>
