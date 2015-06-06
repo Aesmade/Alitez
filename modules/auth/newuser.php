@@ -243,7 +243,7 @@ if (!isset($_POST['submit'])) {
 		foreach ($registration_errors as $error) {
 			$tool_content .= "<p>$error</p>";
 		}
-		$tool_content .= "<p><a href='$_SERVER[PHP_SELF]?prenom_form=$_POST[prenom_form]&nom_form=$_POST[nom_form]&uname=$_POST[uname]&email=$_POST[email]&am=$_POST[am]'>$langAgain</a></p>" .
+		$tool_content .= "<p><a href='$_SERVER[PHP_SELF]'>$langAgain</a></p>" .
 					"</td></tr></tbody></table><br /><br />";
 	}
 

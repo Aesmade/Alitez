@@ -171,7 +171,7 @@ elseif ($a == 1)  {
 			$tool_content .= "<center><p><a href=\"$_SERVER[PHP_SELF]?a=1\">".$langReturnToAddFaculte."</a></p></center>";
 		} else if (isset($_POST['vv']) && $_POST['vv']=='l') {
 		// OK Create the new faculty
-			mysql_query("INSERT into faculte(code,name,generator,number) VALUES(" . autoquote($codefaculte) . ',' . autoquote($faculte) . ",'100','1000')")
+			mysql_query("INSERT into faculte(code,name,generator,number) VALUES(" . autoquote($codefaculte) . ',' . autoquote(nohtml($faculte)) . ",'100','1000')")
 				or die ($langNoSuccess);
 			$tool_content .= "<p>".$langAddSuccess."</p><br />";
 			}

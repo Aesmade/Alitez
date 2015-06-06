@@ -58,7 +58,7 @@ if (!$q or mysql_num_rows($q) == 0) {
 if (isset($_POST['submit_doc'])) {
 	insert_docs($id);
 } elseif (isset($_POST['submit_text'])) {
-	$comments = $_POST['comments'];
+	$comments = nohtml($_POST['comments']);
 	insert_text($id);
 } elseif (isset($_POST['submit_lp'])) {
 	insert_lp($id);
@@ -142,7 +142,7 @@ function insert_text($id)
 	
 	list($order) = mysql_fetch_array(db_query("SELECT MAX(`order`) FROM unit_resources WHERE unit_id='".mysql_real_escape_string($id)."'"));
 	$order++;
-	db_query("INSERT INTO unit_resources SET unit_id=$id, type='text', title='', 
+	db_query("INSERT INTO unit_resources SET unit_id=$id, type='".nohtml(text)."', title='', 
 		comments=" . autoquote($comments) . ", visibility='v', `order`=$order, `date`=NOW(), res_id=0",
 		$GLOBALS['mysqlMainDb']);
 			

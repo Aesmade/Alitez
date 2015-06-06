@@ -63,7 +63,7 @@ $id_hidden_input = '';
 
 foreach (array('title', 'title_en', 'newContent', 'newContent_en', 'comment', 'comment_en') as $var) {
         if (isset($_POST[$var])) {
-                $GLOBALS[$var] = autoquote($_POST[$var]);
+                $GLOBALS[$var] = ($_POST[$var]);
         } else {
                 $GLOBALS[$var] = '';
         }
@@ -84,10 +84,10 @@ if (isset($_GET['delete'])) {
         if ($myrow) {
                 $id_hidden_input = "<input type='hidden' name='id' value='$myrow[id] />";
                 $titleToModify = q($myrow['gr_title']);
-                $contentToModify = $myrow['gr_body'];
+                $contentToModify = q($myrow['gr_body']);
                 $commentToModify = q($myrow['gr_comment']);
                 $titleToModifyEn = q($myrow['en_title']);
-                $contentToModifyEn = $myrow['en_body'];
+                $contentToModifyEn = q($myrow['en_body']);
                 $commentToModifyEn = q($myrow['en_comment']);
                 $visibleToModify = $myrow['visible'];
                 $displayAnnouncementList = true;
@@ -98,16 +98,16 @@ if (isset($_GET['delete'])) {
                 // modify announcement
                 $id = intval($_POST['id']);
                 db_query("UPDATE admin_announcements
-                        SET gr_title = $title, gr_body = $newContent, gr_comment = $comment,
-                        en_title = $title_en, en_body = $newContent_en, en_comment = $comment_en,
+                        SET gr_title = '".nohtml($title)."', gr_body = '".nohtml($newContent)."', gr_comment = '".nohtml($comment)."',
+                        en_title = '".nohtml($title_en)."', en_body = '".nohtml($newContent_en)."', en_comment = '".nohtml($comment_en)."',
                         visible = '$visible', date = NOW()
                         WHERE id = $id", $mysqlMainDb);
                 $message = $langAdminAnnModify;
         } else {
                 // add new announcement
                 db_query("INSERT INTO admin_announcements
-                        SET gr_title = $title, gr_body = $newContent, gr_comment = $comment,
-                        en_title = $title_en, en_body = $newContent_en, en_comment = $comment_en,
+                        SET gr_title = '".nohtml($title)."', gr_body = '".nohtml($newContent)."', gr_comment = '".nohtml($comment)."',
+                        en_title = '".nohtml($title_en)."', en_body = '".nohtml($newContent_en)."', en_comment = '".nohtml($comment_en)."',
                         visible = '$visible', date = NOW()");
                 $message = $langAdminAnnAdd;
         }

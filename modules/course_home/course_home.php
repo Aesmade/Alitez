@@ -70,7 +70,7 @@ $res = db_query($sql, $mysqlMainDb);
 while($result = mysql_fetch_row($res)) {
 	$description = trim($result[0]);
 	$keywords = trim($result[1]);
-	$addon = nl2br(trim($result[2]));
+	$addon = nohtml(nl2br(trim($result[2])));
 	$faculte = $result[3];
 	$type = $result[5];
 	$visible = $result[6];
@@ -85,7 +85,7 @@ if ($is_adminOfCourse) {
 }
 $main_content .= "\n      <div class='course_info'>";
 if (!empty($description)) {
-        $main_content .= "\n      <h1>$langDescription$edit_link</h1>\n      <p>".htmlspecialchars_decode($description, ENT_QUOTES)."</p>";
+        $main_content .= "\n      <h1>$langDescription$edit_link</h1>\n      <p>".($description)."</p>";
 
 } else {
         $main_content .= "\n      <p>$langThisCourseDescriptionIsEmpty$edit_link</p>";
@@ -105,8 +105,8 @@ list($maxorder) = mysql_fetch_row($result);
 // other actions in course unit
 if ($is_adminOfCourse) {
         if (isset($_REQUEST['edit_submit'])) {
-                $title = autoquote($_REQUEST['unittitle']);
-                $descr = autoquote($_REQUEST['unitdescr']);
+                $title = autoquote(nohtml($_REQUEST['unittitle']));
+                $descr = autoquote(nohtml($_REQUEST['unitdescr']));
                 if (isset($_REQUEST['unit_id'])) { // update course unit
                         $unit_id = intval($_REQUEST['unit_id']);
                         $result = db_query("UPDATE course_units SET

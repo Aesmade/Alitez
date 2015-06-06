@@ -120,7 +120,7 @@ if ($is_adminOfCourse) { // course admin
 		$is_html_disabled = false;
 		//if ( (isset($allow_html) && $allow_html == 0) || isset($html) ) {
 		if (isset($message)) {
-			$message = htmlspecialchars($message);
+			$message = nohtml($message);
 			$is_html_disabled = true;
 		}
 		//}
@@ -190,7 +190,7 @@ if ($is_adminOfCourse) { // course admin
 				$topic_time_fixed = get_last_post($topic_id, $currentCourseID, "time_fix");
 				$sql = "UPDATE topics
 					SET topic_time = '$topic_time_fixed'
-					WHERE topic_id = '".mysql_real_escape_string($topic_id)."''";
+					WHERE topic_id = '".mysql_real_escape_string($topic_id)."'";
 				if (!$r = db_query($sql, $currentCourseID)) {
 					$tool_content .= $langPostRemoved;
 					draw($tool_content, 2, 'phpbb', $head_content);
@@ -316,7 +316,7 @@ if ($is_adminOfCourse) { // course admin
 		$message = stripslashes($message);
 		$message = bbdecode($message);
 		$message = undo_make_clickable($message);
-		$message = undo_htmlspecialchars($message);
+		//$message = undo_htmlspecialchars($message);
 		// Special handling for </textarea> tags in the message, which can break the editing form..
 		$message = preg_replace('#</textarea>#si', '&lt;/TEXTAREA&gt;', $message);
 		list($day, $time) = split(" ", $myrow["post_time"]);

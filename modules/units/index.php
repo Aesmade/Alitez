@@ -75,8 +75,8 @@ _editor_lang = '$lang_editor';
 }  elseif(isset($_REQUEST['edit_res_submit'])) { // edit resource
 	$res_id = intval($_REQUEST['resource_id']);	
 	if ($id = check_admin_unit_resource($res_id)) {
-		@$restitle = autoquote(trim($_REQUEST['restitle']));
-                $rescomments = autoquote(trim($_REQUEST['rescomments']));
+		@$restitle = autoquote(trim(nohtml($_REQUEST['restitle'])));
+                $rescomments = autoquote(trim(nohtml($_REQUEST['rescomments'])));
 		$result = db_query("UPDATE unit_resources SET
 				title = $restitle,
 				comments = $rescomments

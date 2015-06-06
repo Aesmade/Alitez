@@ -169,8 +169,8 @@ if (isset($_POST['submit']) && $_POST['submit']) {
 	}
 	$message = format_message($message);
 	$time = date("Y-m-d H:i");
-	$nom = addslashes($nom);
-	$prenom = addslashes($prenom);
+	$nom = addslashes(escall($nom));
+	$prenom = addslashes(escall($prenom));
 
 	//to prevent [addsig] from getting in the way, let's put the sig insert down here.
 	if (isset($sig) && $sig) {

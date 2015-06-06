@@ -245,7 +245,7 @@ do {
 		$row_color = 'topic_row2';
 	$tool_content .= "<tr>";
 	$tool_content .= "<td class=\"$row_color\"><b>" . $myrow["prenom"] . " " . $myrow["nom"] . "</b></td>";
-	$message = htmlspecialchars_decode(own_stripslashes($myrow["post_text"]));
+	$message = (own_stripslashes($myrow["post_text"]));
 	// support for math symbols
 	$message = mathfilter($message, 12, "../../courses/mathimg/");
 

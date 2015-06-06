@@ -156,9 +156,9 @@ if (isset($_POST['submit']) && isset($_POST['sc']) && $_POST['sc']==12) {
 		$fake_code = q($c['fake_code']);
 		$titulary = q($c['titulaires']);
 		$languageCourse	= $c['languageCourse'];
-		$description = q($c['description']);
+		$description = q(nohtml($c['description']));
 		$course_keywords = q($c['course_keywords']);
-		$course_addon = q($c['course_addon']);
+		$course_addon = q(nohtml($c['course_addon']));
 		$password = q($c['password']);
 		$checkpasssel = empty($password)? '': " checked='1'";
 

@@ -244,7 +244,7 @@ function add_assignment($title, $comments, $desc, $deadline, $group_submissions)
 	db_query("INSERT INTO assignments
 		(title, description, comments, deadline, submission_date, secret_directory,
 			group_submissions) VALUES
-		(".autoquote($title).", ".autoquote($desc).", ".autoquote($comments).", ".autoquote($deadline).", NOW(), '$secret',
+		(".autoquote(nohtml($title)).", ".autoquote(nohtml($desc)).", ".autoquote(nohtml($comments)).", ".autoquote($deadline).", NOW(), '$secret',
 			".autoquote($group_submissions).")");
 	mkdir("$workPath/$secret",0700);
 }
@@ -534,9 +534,9 @@ function edit_assignment($id)
 	$nav[] = array("url"=>"work.php", "name"=> $langWorks);
 	$nav[] = array("url"=>"work.php?id=$id", "name"=> $_POST['title']);
 
-	if (db_query("UPDATE assignments SET title=".autoquote($_POST['title']).",
-		description=".autoquote($_POST['desc']).", group_submissions=".autoquote($_POST['group_submissions']).",
-		comments=".autoquote($_POST['comments']).", deadline=".autoquote($_POST['WorkEnd'])." WHERE id='".mysql_real_escape_string($id)."'")) {
+	if (db_query("UPDATE assignments SET title=".autoquote(nohtml($_POST['title'])).",
+		description=".autoquote(nohtml($_POST['desc'])).", group_submissions=".autoquote($_POST['group_submissions']).",
+		comments=".autoquote(nohtml($_POST['comments'])).", deadline=".autoquote($_POST['WorkEnd'])." WHERE id='".mysql_real_escape_string($id)."'")) {
 
         $title = autounquote($_POST['title']);
 	$tool_content .="<p class='success_small'>$langEditSuccess<br /><a href='work.php?id=$id'>$langBackAssignment '$title'</a></p><br />";

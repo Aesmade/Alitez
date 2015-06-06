@@ -137,7 +137,7 @@ if (isset($_REQUEST['submit']) && $_REQUEST['submit']) {
 	}
 	$is_html_disabled = false;
 	//if ((isset($allow_html) && $allow_html == 0) || isset($html)) {
-		$message = htmlspecialchars($message);
+		//$message = htmlspecialchars($message);
 		$is_html_disabled = true;
 	//}
 	if ((isset($allow_bbcode) && $allow_bbcode == 1) && !($_POST['bbcode'])) {
@@ -151,7 +151,7 @@ if (isset($_REQUEST['submit']) && $_REQUEST['submit']) {
 	$prenom = addslashes($_SESSION['prenom']);
 
 	if (isset($sig) && $sig) {
-		$message .= "\n[addsig]";
+		//$message .= "\n[addsig]";
 	}
 	$sql = "INSERT INTO topics (topic_title, topic_poster, forum_id, topic_time, topic_notify, nom, prenom)
 			VALUES (" . autoquote($subject) . ", '$uid', '$forum', '$time', 1, '$nom', '$prenom')";
