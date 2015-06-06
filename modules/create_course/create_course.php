@@ -227,7 +227,7 @@ if (isset($_POST['back1']) or !isset($_POST['visit'])) {
 	<td width='325'><p align='right'><small>$langPrivOpen</small></p></td></tr>
 	<tr>
 	<td colspan='4' class='right'><input type='checkbox' name='checkpassword' ".$checkpasssel.">&nbsp;$langOptPassword
-	<input type='text' name='password' value='".q($password)."' class='FormData_InputText'>
+	<input type='text' name='password' value='".q(escall($password))."' class='FormData_InputText'>
 	</td>
 	</tr>
 	<tr>
@@ -386,8 +386,8 @@ if (isset($_POST['create_course']) && isset($_POST['vva']) && $_POST['vva']==22)
                         languageCourse =" . quote(nohtml($language)) . ",
                         intitule = " . quote(nohtml($intitule)) . ",
                         description = " . quote(nohtml($description)) . ",
-                        course_addon = " . quote(nohtml($course_addon)) . ",
-                        course_keywords = " . quote(nohtml($course_keywords)) . ",
+                        course_addon = " . quote(escall(nohtml($course_addon))) . ",
+                        course_keywords = " . quote(escall(nohtml($course_keywords))) . ",
                         faculte = " . quote(nohtml($facname)) . ",
                         visible = " . quote(nohtml($_REQUEST['formvisible'])) . ",
                         titulaires = " . quote(nohtml($titulaires)) . ",

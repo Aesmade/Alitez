@@ -85,18 +85,18 @@ if ($is_adminOfCourse) {
 }
 $main_content .= "\n      <div class='course_info'>";
 if (!empty($description)) {
-        $main_content .= "\n      <h1>$langDescription$edit_link</h1>\n      <p>$description</p>";
+        $main_content .= "\n      <h1>$langDescription$edit_link</h1>\n      <p>".htmlspecialchars_decode($description, ENT_QUOTES)."</p>";
 
 } else {
         $main_content .= "\n      <p>$langThisCourseDescriptionIsEmpty$edit_link</p>";
 }
 if (!empty($keywords)) {
-	$main_content .= "\n      <p><b>$langCourseKeywords</b> $keywords</p>";
+	$main_content .= "\n      <p><b>$langCourseKeywords</b> ".htmlspecialchars_decode($keywords, ENT_QUOTES)."</p>";
 }
 $main_content .= "\n      </div>\n";
 
 if (!empty($addon)) {
-	$main_content .= "\n      <div class='course_info'><h1>$langCourseAddon</h1><p>$addon</p></div>";
+	$main_content .= "\n      <div class='course_info'><h1>$langCourseAddon</h1><p>".htmlspecialchars_decode($addon, ENT_QUOTES)."</p></div>";
 }
 
 $result = db_query("SELECT MAX(`order`) FROM course_units WHERE course_id ='".mysql_real_escape_string($cours_id)."'");

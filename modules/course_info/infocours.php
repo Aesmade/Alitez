@@ -81,7 +81,7 @@ if (isset($_POST['submit']) && isset($_POST['sc']) && $_POST['sc']==12) {
                 if (isset($_POST['checkpassword']) and
                     isset($_POST['formvisible']) and
                     $_POST['formvisible'] == '1') {
-                        $password = $password;
+                        $password = $_POST['password'];
                 } else {
                         $password = "";
                 }
@@ -92,12 +92,12 @@ if (isset($_POST['submit']) && isset($_POST['sc']) && $_POST['sc']==12) {
                               faculte = " . autoquote(nohtml($facname)) . ",
                               description = " . autoquote(nohtml($_POST['description'])) . ",
                               course_addon = " . autoquote(nohtml($_POST['course_addon'])) . ",
-                              course_keywords = ".autoquote(nohtml($_POST['course_keywords'])) . ",
+                              course_keywords = ".autoquote(escall(nohtml($_POST['course_keywords']))) . ",
                               visible = " . intval($_POST['formvisible']) . ",
                               titulaires = " . autoquote(nohtml($_POST['titulary'])) . ",
                               languageCourse = '$newlang',
                               type = " . autoquote(nohtml($_POST['type'])) . ",
-                              password = " . autoquote(nohtml($_POST['password'])) . ",
+                              password = " . autoquote(escall($_POST['password'])) . ",
                               faculteid = " . intval($facid) . "
                           WHERE cours_id = '".mysql_real_escape_string($cours_id)."'");
                 db_query("UPDATE `$mysqlMainDb`.cours_faculte
@@ -181,12 +181,12 @@ if (isset($_POST['submit']) && isset($_POST['sc']) && $_POST['sc']==12) {
 		</tr>
 		<tr>
 			<th class='left'>$langCourseTitle&nbsp;:</th>
-			<td><input type='text' name='title' value='$title' size='60' class='FormData_InputText' /></td>
+			<td><input type='text' name='title' value='".htmlspecialchars_decode($title, ENT_QUOTES)."' size='60' class='FormData_InputText' /></td>
 			<td>&nbsp;</td>
 		</tr>
 		<tr>
 			<th class='left'>$langTeachers&nbsp;:</th>
-			<td><input type='text' name='titulary' value='$titulary' size='60' class='FormData_InputText' /></td>
+			<td><input type='text' name='titulary' value='".htmlspecialchars_decode($titulary, ENT_QUOTES)."' size='60' class='FormData_InputText' /></td>
 		<td>&nbsp;</td>
 		</tr>
 			<tr><th class='left'>$langFaculty&nbsp;:</th>
@@ -217,7 +217,7 @@ if (isset($_POST['submit']) && isset($_POST['sc']) && $_POST['sc']==12) {
         <td width='100'>
 	      <table class='xinha_editor'>
           <tr>
-             <td><textarea id='xinha' name='description' cols='20' rows='4' class='FormData_InputText'>$description</textarea></td>
+             <td><textarea id='xinha' name='description' cols='20' rows='4' class='FormData_InputText'>".htmlspecialchars_decode($description, ENT_QUOTES)."</textarea></td>
           </tr>
           </table>
         </td>
@@ -225,7 +225,7 @@ if (isset($_POST['submit']) && isset($_POST['sc']) && $_POST['sc']==12) {
       </tr>
       <tr>
         <th class='left'>$langCourseKeywords&nbsp;</th>
-        <td><input type='text' name='course_keywords' value='$course_keywords' size='60' class='FormData_InputText' /></td>
+        <td><input type='text' name='course_keywords' value='".htmlspecialchars_decode(htmlspecialchars_decode($course_keywords, ENT_QUOTES), ENT_QUOTES)."' size='60' class='FormData_InputText' /></td>
         <td>&nbsp;</td>
       </tr>
       <tr>
@@ -233,7 +233,7 @@ if (isset($_POST['submit']) && isset($_POST['sc']) && $_POST['sc']==12) {
         <td width='100'>
 	      <table class='xinha_editor'>
           <tr>
-        <td><textarea id='xinha2' name='course_addon' cols='20' rows='4' class='FormData_InputText'>$course_addon</textarea></td>
+        <td><textarea id='xinha2' name='course_addon' cols='20' rows='4' class='FormData_InputText'>".htmlspecialchars_decode($course_addon, ENT_QUOTES)."</textarea></td>
         </tr>
           </table>
           </td>
