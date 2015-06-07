@@ -143,10 +143,10 @@ if ($is_adminOfCourse){
 		$tool_id = null;
 		while ($i< $loopCount) {
 			if (!isset($tool_id)) {
-				$tool_id = " (`id` = " . $tool_stat_active[$i] .")" ;
+				$tool_id = " (`id` = '" . escall($tool_stat_active[$i]) ."')" ;
 			}
 			else {
-				$tool_id .= " OR (`id` = " . $tool_stat_active[$i] .")" ;
+				$tool_id .= " OR (`id` = '" . escall($tool_stat_active[$i]) ."')" ;
 			}
 			$i++;
 		}

@@ -52,35 +52,35 @@ $tool_content="";
 // IF PROF ONLY
 if($is_adminOfCourse) {
 	// give admin status
-	if(isset($giveAdmin) && $giveAdmin && $is_adminOfCourse) {
+	if(isset($_GET['giveAdmin']) && $_GET['giveAdmin']=="yeppe" && $is_adminOfCourse) {
 		$result = db_query("UPDATE cours_user SET statut = 1
-		WHERE user_id='".mysql_real_escape_string($_GET['user_id'])."' AND cours_id = $cours_id", $mysqlMainDb);
+		WHERE user_id='".mysql_real_escape_string($_GET['user_id'])."' AND cours_id = '$cours_id'", $mysqlMainDb);
 	}
 	// give tutor status
-	elseif(isset($giveTutor) && $giveTutor) {
+	elseif(isset($_GET['giveTutor']) && $_GET['giveTutor']=="yeppe") {
 		$result = db_query("UPDATE cours_user SET tutor = 1
-		WHERE user_id='".mysql_real_escape_string($_GET['user_id'])."' AND cours_id = $cours_id",$mysqlMainDb);
+		WHERE user_id='".mysql_real_escape_string($_GET['user_id'])."' AND cours_id = '$cours_id'",$mysqlMainDb);
 		$result2=db_query("DELETE FROM user_group 
 		WHERE user='".mysql_real_escape_string($_GET['user_id'])."'", $currentCourseID);
 	}
         // remove admin status
-        elseif(isset($removeAdmin) && $removeAdmin) {
+        elseif(isset($_GET['removeAdmin']) && $_GET['removeAdmin']=="yeppe") {
                 $result = db_query("UPDATE cours_user SET statut = 5
                         WHERE user_id != $uid AND user_id='".mysql_real_escape_string($_GET['user_id'])."'
-                              AND cours_id = $cours_id", $mysqlMainDb);
+                              AND cours_id = '$cours_id'", $mysqlMainDb);
         }
         // remove tutor status
-        elseif(isset($removeTutor) && $removeTutor) {
+        elseif(isset($_GET['removeTutor']) && $_GET['removeTutor']=="yeppe") {
                 $result = db_query("UPDATE cours_user SET tutor = 0
                         WHERE user_id = '".mysql_real_escape_string($_GET['user_id'])."'
-                              AND cours_id = $cours_id", $mysqlMainDb);
+                              AND cours_id = '$cours_id'", $mysqlMainDb);
         }
         // unregister user from courses
-        elseif(isset($unregister) && $unregister) {
+        elseif(isset($_GET['unregister']) && $_GET['unregister']=="yeppe") {
                 // Security: cannot remove myself
                 $result = db_query("DELETE FROM cours_user WHERE user_id!= $uid
                         AND user_id = '".mysql_real_escape_string($_GET['user_id'])."'
-                        AND cours_id = $cours_id", $mysqlMainDb);
+                        AND cours_id = '$cours_id'", $mysqlMainDb);
                 // Except: remove myself if there is another tutor
                 if ($_GET['user_id'] == $uid) {
                         $result = db_query("SELECT user_id FROM cours_user
@@ -89,7 +89,7 @@ if($is_adminOfCourse) {
                                         AND statut = 1 LIMIT 1", $mysqlMainDb);
                         if (mysql_num_rows($result) > 0) {
                                 db_query("DELETE FROM cours_user
-                                        WHERE cours_id = $cours_id
+                                        WHERE cours_id = '$cours_id'
                                         AND user_id = $uid");
                         }
                 }
@@ -97,6 +97,13 @@ if($is_adminOfCourse) {
 		WHERE user='".mysql_real_escape_string($_GET['user_id'])."'", $currentCourseID);
 	}
 	
+	if (isset($_REQUEST['search_nom']))
+		$search_nom = $_REQUEST['search_nom'];
+	if (isset($_REQUEST['search_prenom']))
+		$search_prenom = $_REQUEST['search_prenom'];
+	if (isset($_REQUEST['search_uname']))
+		$search_uname = $_REQUEST['search_uname'];
+
 	if(!isset($search_nom)) $search_nom = "";
 	if(!isset($search_prenom)) $search_prenom = "";
 	if(!isset($search_uname)) $search_uname = ""; 
@@ -179,10 +186,10 @@ if($is_adminOfCourse) {
 				}
 			// display users	
 			$tool_content .= "<td valign=\"top\" align=\"right\">$i.</td>
-			<td valign=\"top\">$myrow[nom]<br>$myrow[prenom]</td>";
+			<td valign=\"top\">".nohtml($myrow['nom'])."<br>".nohtml($myrow['prenom'])."</td>";
 			$tool_content .= "<td valign=\"top\" align=\"center\">
-			<a href=\"mailto:".$myrow["email"]."\">".$myrow["email"]."</a></td>";
-			$tool_content .= "<td valign=\"top\" align=\"center\">$myrow[am]</td>
+			<a href=\"mailto:".nohtml($myrow["email"])."\">".nohtml($myrow["email"])."</a></td>";
+			$tool_content .= "<td valign=\"top\" align=\"center\">".nohtml($myrow['am'])."</td>
 			<td valign='top' align=\"center\">";
 			if($myrow["team"] == NULL) {
 				$tool_content .= "$langUserNoneMasc";
@@ -199,31 +206,31 @@ if($is_adminOfCourse) {
 			$tool_content .= "</td>";
 			if ($myrow["tutor"]=='0') {
 				$tool_content .= "<td valign='top' align='center' class='add_user'>
-				<a href='$_SERVER[PHP_SELF]?giveTutor=yes&user_id=$myrow[user_id]&$s' title='$langGiveTutor'>$langAdd</a></td>";
+				<a href='$_SERVER[PHP_SELF]?giveTutor=yeppe&user_id=$myrow[user_id]&$s' title='$langGiveTutor'>$langAdd</a></td>";
 			} else {
 				$tool_content .= "<td class=\"highlight\" align='center'>$langTutor<br>
-				<a href='$_SERVER[PHP_SELF]?removeTutor=yes&user_id=$myrow[user_id]&$s' title='$langRemoveRight'>$langRemove</a></td>";
+				<a href='$_SERVER[PHP_SELF]?removeTutor=yeppe&user_id=$myrow[user_id]&$s' title='$langRemoveRight'>$langRemove</a></td>";
 			}
 			// admin right
 			if ($myrow["user_id"]!=$_SESSION["uid"]) {
 				if ($myrow["statut"]=='1') {
 					$tool_content .= "<td class='highlight' align='center'>$langAdministrator<br>
-					<a href='$_SERVER[PHP_SELF]?removeAdmin=yes&user_id=$myrow[user_id]&$s' title='$langRemoveRight'>$langRemove</a></td>";
+					<a href='$_SERVER[PHP_SELF]?removeAdmin=yeppe&user_id=$myrow[user_id]&$s' title='$langRemoveRight'>$langRemove</a></td>";
 				} else {
 					$tool_content .= "<td valign='top' align='center' class='add_user'>
-					<a href='$_SERVER[PHP_SELF]?giveAdmin=yes&user_id=$myrow[user_id]&$s' title='$langGiveAdmin'>$langAdd</a></td>";
+					<a href='$_SERVER[PHP_SELF]?giveAdmin=yeppe&user_id=$myrow[user_id]&$s' title='$langGiveAdmin'>$langAdd</a></td>";
 				}
 			} else {
 				if ($myrow["statut"]=='1') {
 					$tool_content .= "<td valign=\"top\" class='highlight' align='center' title='$langAdmR'><b>$langAdministrator</b></td>";
 				} else {
 					$tool_content .= "<td valign=\"top\" align='center'>
-					<a href='$_SERVER[PHP_SELF]?giveAdmin=yes&user_id=$myrow[user_id]&$s'>$langGiveAdmin</a></td>";
+					<a href='$_SERVER[PHP_SELF]?giveAdmin=yeppe&user_id=$myrow[user_id]&$s'>$langGiveAdmin</a></td>";
 				}
 			}
 				$tool_content .= "<td valign=\"top\" align='center'>";
-				$alert_uname = $myrow['prenom'] . " " . $myrow['nom'];
-				$tool_content .= "<a href='$_SERVER[PHP_SELF]?unregister=yes&user_id=$myrow[user_id]&$s' onClick=\"return confirmation('".addslashes($alert_uname)."');\">
+				$alert_uname = nohtml($myrow['prenom']) . " " . nohtml($myrow['nom']);
+				$tool_content .= "<a href='$_SERVER[PHP_SELF]?unregister=yeppe&user_id=$myrow[user_id]&$s' onClick=\"return confirmation('".addslashes($alert_uname)."');\">
 				<img src='../../template/classic/img/delete.gif' border='0' title='$langDelete'></a>";
 				$tool_content .= "</td></tr>";
 				$i++;	

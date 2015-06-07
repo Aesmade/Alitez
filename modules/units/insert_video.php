@@ -34,7 +34,7 @@ function display_video()
         $table_started = false;
         $count = 0;
         foreach (array('video', 'videolinks') as $table) {
-                $result = db_query("SELECT * FROM $table", $currentCourseID);
+                $result = db_query("SELECT * FROM '$table'", $currentCourseID);
                 $count += mysql_num_rows($result);
                 while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
                         if (!$table_started) {

@@ -65,11 +65,11 @@ if (isset($_POST['submit']) && isset($_POST['va']) && $_POST['va'] == '12')  {
         {
                 foreach ($users as $uid) {
                         db_query("INSERT IGNORE INTO cours_user (cours_id, user_id, statut, reg_date)
-                                  VALUES ($cid, $uid, $statut, CURDATE())");
+                                  VALUES ('$cid', '$uid', '$statut', CURDATE())");
                 }
                 $reglist = implode(', ', $users);
                 if ($reglist) {
-                        db_query("UPDATE cours_user SET statut = $statut WHERE user_id IN ($reglist)");
+                        db_query("UPDATE cours_user SET statut = '$statut' WHERE user_id IN ($reglist)");
                 }
         }
         regusers($cid, $regstuds, 5);
@@ -147,7 +147,7 @@ function reverseAll(cbList) {
 	// Registered users not registered in the selected course
 	$sqll= "SELECT DISTINCT u.user_id , u.nom, u.prenom FROM user u
 		LEFT JOIN cours_user cu ON u.user_id = cu.user_id 
-                     AND cu.cours_id = $cid
+                     AND cu.cours_id = '$cid'
 		WHERE cu.user_id IS NULL ORDER BY nom";
 
 	$resultAll = db_query($sqll);
@@ -204,7 +204,7 @@ function reverseAll(cbList) {
 	// Professors registered in the selected course
 	$resultProf = db_query("SELECT DISTINCT u.user_id , u.nom, u.prenom
 				FROM user u, cours_user cu
-				WHERE cu.cours_id = $cid
+				WHERE cu.cours_id = '$cid'
 				AND cu.user_id = u.user_id
 				AND cu.statut = 1
 				ORDER BY nom, prenom");

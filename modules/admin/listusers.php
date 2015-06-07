@@ -58,6 +58,10 @@ $nameTools = $langListUsersActions;
 $search = isset($_GET['search'])? $_GET['search']: '';
 $c = isset($_GET['c'])? $_GET['c']: (isset($_POST['c'])? $_POST['c']: '');
 
+$ord = isset($_GET['ord'])?nohtml($_GET['ord']):'';
+$startList = isset($_GET['startList'])?nohtml($_GET['startList']):'';
+$numbList = isset($_GET['numbList'])?nohtml($_GET['numbList']):'';
+
 switch($c)	// get the case for each different listing
 {
 	case '': $view = 1; break; // normal listing
@@ -271,10 +275,6 @@ else
 	$users_active_qry = "";
 }
 // end filter/criteria
-
-$ord = isset($_GET['ord'])?$_GET['ord']:'';
-$startList = isset($_GET['startList'])?$_GET['startList']:'';
-$numbList = isset($_GET['numbList'])?$_GET['numbList']:'';
 
 if(!empty($ord)) {
 	switch ($ord) {

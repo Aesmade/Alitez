@@ -274,12 +274,12 @@ while ($myrow = mysql_fetch_array($result)) {
         }
         // show public list of users
         $tool_content .= "<td valign='top' align='right'>$i.</td>\n" .
-                "<td valign='top'>$myrow[nom]<br />$myrow[prenom]</td>\n";
+                "<td valign='top'>".nohtml($myrow['nom'])."<br />".nohtml($myrow['prenom'])."</td>\n";
 
         if (isset($status) and ($status[$currentCourseID] == 1 or $status[$currentCourseID] == 2))  {
-                $tool_content .= "<td valign='top' align='center'><a href='mailto:$myrow[email]'>$myrow[email]</a></td>";
+                $tool_content .= "<td valign='top' align='center'><a href='mailto:".nohtml($myrow['email'])."'>".nohtml($myrow['email'])."</a></td>";
         }
-        $tool_content .= "<td valign='top' align='center'>$myrow[am]</td>\n" .
+        $tool_content .= "<td valign='top' align='center'>".nohtml($myrow['am'])."</td>\n" .
                 "<td valign=top align='center'>\n";
 
         // NULL and not '0' because team may not exist
@@ -321,7 +321,7 @@ while ($myrow = mysql_fetch_array($result)) {
                         }
                 }
                 $tool_content .= "<td valign='top' align='center'>";
-                $alert_uname = $myrow['prenom'] . " " . $myrow['nom'];
+                $alert_uname = nohtml($myrow['prenom']) . " " . nohtml($myrow['nom']);
                 $tool_content .= "<a href='$_SERVER[PHP_SELF]?v=1&unregister=$myrow[user_id]' onClick=\"return confirmation('".addslashes($alert_uname)."');\"><img src='../../template/classic/img/delete.gif' title='$langDelete' /></a>";
         }	// admin only
         $tool_content .= "</td></tr>";$i++;

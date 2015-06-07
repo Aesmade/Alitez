@@ -41,6 +41,15 @@ $nameTools = $langSearch;
 $tool_content = "";
 
 
+if (isset($_REQUEST['search_terms_title']))
+	$search_terms_title = $_REQUEST['search_terms_title'];
+if (isset($_REQUEST['search_terms_keywords']))
+	$search_terms_keywords = $_REQUEST['search_terms_keywords'];
+if (isset($_REQUEST['search_terms_instructor']))
+	$search_terms_instructor = $_REQUEST['search_terms_instructor'];
+if (isset($_REQUEST['search_terms_coursecode']))
+	$search_terms_coursecode = $_REQUEST['search_terms_coursecode'];
+
 //elegxos ean *yparxoun* oroi anazhthshs
 if(empty($search_terms_title) && empty($search_terms_keywords) && empty($search_terms_instructor) && empty($search_terms_coursecode)) {
 /**********************************************************************************************

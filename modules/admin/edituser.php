@@ -338,8 +338,8 @@ if (mysql_num_rows($username_check) > 1) {
 			$tool_content .= "<center><br><b>$langExpireBeforeRegister<br><br><a href=\"edituser.php?u=".$u."\">$langAgain</a></b><br />";
 		} else {
 			if ($u=='1') $department = 'NULL';
-			$sql = "UPDATE user SET nom = ".autoquote($lname).", prenom = ".autoquote($fname).",
-				username = ".autoquote($username).", email = ".autoquote($email).", 
+			$sql = "UPDATE user SET nom = ".autoquote(nohtml($lname)).", prenom = ".autoquote(nohtml($fname)).",
+				username = ".autoquote(nohtml($username)).", email = ".autoquote(nohtml($email)).", 
 				statut = ".intval($newstatut).", phone=".autoquote($phone).",
 				department = ".intval($department).", expires_at=".$expires_at.",
                                 am = ".autoquote($am)." WHERE user_id = ".intval($u);

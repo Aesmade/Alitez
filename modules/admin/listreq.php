@@ -107,7 +107,7 @@ if (!empty($show) && ($show=="closed")) {
  		$sql = db_query("SELECT rid,profname,profsurname,profuname,profemail,proftmima,
 				profcomm,date_open,date_closed,comment
 				FROM prof_request
-                                WHERE (status = 2 AND statut = $list_statut)");
+                                WHERE (status = 2 AND statut = '$list_statut')");
         	$k = 0;
 		while ($req = mysql_fetch_array($sql)) {
 			if ($k%2 == 0) {
@@ -157,7 +157,7 @@ if (!empty($show) && ($show=="closed")) {
  		$sql = db_query("SELECT rid,profname,profsurname,profuname,profemail,
 				proftmima,profcomm,date_open,date_closed,comment
 				FROM prof_request
-                                WHERE (status = 3 AND statut = $list_statut)");
+                                WHERE (status = 3 AND statut = '$list_statut')");
 
         	$k = 0;
 		while ($req = mysql_fetch_array($sql)) {
@@ -203,7 +203,7 @@ if (!empty($show) && ($show=="closed")) {
  	$sql = db_query("SELECT rid,profname,profsurname,profuname,profemail,proftmima,
 			profcomm,date_open,date_closed,comment
 			FROM prof_request
-                        WHERE (status = 0 AND statut = $list_statut)");
+                        WHERE (status = 0 AND statut = '$list_statut')");
 
     	$k = 0;
 	for ($j = 0; $j < mysql_num_rows($sql); $j++) {

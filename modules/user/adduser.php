@@ -40,10 +40,10 @@ $tool_content="";
 // IF PROF ONLY
 if($is_adminOfCourse) {
 
-if (isset($add)) {
+if (isset($_REQUEST['add'])) {
 	mysql_select_db($mysqlMainDb);
 	$result = db_query("INSERT INTO cours_user (user_id, cours_id, statut, reg_date) ".
-		"VALUES ('".mysql_escape_string($add)."', $cours_id, ".
+		"VALUES ('".mysql_escape_string($_REQUEST['add'])."', '$cours_id', ".
 		"'5', CURDATE())");
 
 		$tool_content .= "<p class=\"success_small\">";
@@ -55,6 +55,13 @@ if (isset($add)) {
 		$tool_content .= "<br /><a href=\"adduser.php\">$langAddBack</a></p><br />\n";
 
 } else {
+
+	if (isset($_REQUEST['search_nom']))
+		$search_nom = $_REQUEST['search_nom'];
+	if (isset($_REQUEST['search_prenom']))
+		$search_prenom = $_REQUEST['search_prenom'];
+	if (isset($_REQUEST['search_uname']))
+		$search_uname = $_REQUEST['search_uname'];
 
 	$tool_content .= "<form method='post' action='$_SERVER[PHP_SELF]'>";
 
@@ -135,8 +142,8 @@ tCont3;
 		        	} else {
 					$tool_content .= "<tr class=\"odd\">";
 				}
-				$tool_content .= "<td align=\"right\">$i.</td><td>$myrow[prenom]</td>
-      				<td>$myrow[nom]</td><td>$myrow[username]</td>
+				$tool_content .= "<td align=\"right\">$i.</td><td>".nohtml($myrow['prenom'])."</td>
+      				<td>".nohtml($myrow['nom'])."</td><td>".nohtml($myrow['username'])."</td>
       				<td align=\"center\">
 				<a href=\"$_SERVER[PHP_SELF]?add=$myrow[user_id]\">$langRegister</a></td></tr>\n";
 				$i++;

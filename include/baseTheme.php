@@ -206,9 +206,9 @@ function draw($toolContent, $menuTypeID, $tool_css = null, $head_content = null,
 
 		//show user's name and surname on the user bar
 		if (isset($_SESSION['uid']) && strlen ($nom) > 0) {
-			$t->set_var ( 'LANG_USER', $langUserHeader );
-			$t->set_var ( 'USER_NAME', $prenom );
-			$t->set_var ( 'USER_SURNAME', $nom . ", " );
+			$t->set_var ( 'LANG_USER', nohtml($langUserHeader) );
+			$t->set_var ( 'USER_NAME', nohtml($prenom) );
+			$t->set_var ( 'USER_SURNAME', nohtml($nom) . ", " );
 		} else {
                         $t->set_var ( 'LANG_USER', '' );
 			$t->set_var ( 'USER_NAME', '&nbsp;' );
@@ -563,6 +563,10 @@ if (isset($_SERVER['HTTP_REFERER']) && strlen($_SERVER['HTTP_REFERER']) > 0) {
 			$_REQUEST[$key] = $pmatch[0];
 			//${$key} = $pmatch[0];
 		}
+		foreach ($_POST as $key => $val) {
+			$_POST[$key] = mysql_real_escape_string($_POST[$key]);
+			$_REQUEST[$key] = mysql_real_escape_string($_REQUEST[$key]);
+		}
 	}
 } else {
 	foreach ($_GET as $key => $val) {
@@ -581,3 +585,4 @@ if (isset($_SERVER['HTTP_REFERER']) && strlen($_SERVER['HTTP_REFERER']) > 0) {
 }
 
 $_SERVER['PHP_SELF'] = htmlspecialchars($_SERVER["PHP_SELF"], ENT_QUOTES, "utf-8");
+$_SERVER['REQUEST_URI'] = htmlspecialchars($_SERVER["REQUEST_URI"], ENT_QUOTES, "utf-8");
